@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>用户注册</title>
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../js/util.js"></script>
+    <script>
+        function getCode() {
+            if(t > 0){
+                return;
+            }
+            var email = document.getElementById("email").value;
+            console.log(email);
+            if(email === ""){
+                alert("请检查邮箱是否正确输入！");
+                document.getElementById("tips1").innerHTML = "请输入邮箱";
+                return;
+            }
+            let datas = {
+                "email":email,
+            };
+            $.ajax(
+                {
+                    url: '../user/register.code',//这里是写controller中requestMapping中的路径
+                    type: 'POST',//通过get或者post在发送请求
+                    datatype: "json",//这是数据的格式，可以是String、json、xml等
+                    async: true,//同步或异步，如果有多个ajax请求，则设成false
+                    data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                    success: function(data){//回调函数，如果请求成功，则会调用success方法
+                        console.log("yes");
+
+                        printTime();
+                        if(data === "ok"){
+                            console.log(data);
+                            printTime();
+                        }else if(data === "existed"){
+                            document.getElementById("tips1").innerHTML = "邮箱已注册，请登录或找回密码";
+                        }
+                        else {
+                            document.getElementById("tips1").innerHTML = "验证码发送失败，请重试";
+                        }
+                    },
+                    error: function(){//如果失败则会调用error方法
+                        alert("未知网络错误");
+                    }
+                }
+            )
+        }
+
+        function register() {
+            var email = document.getElementById("email").value;
+            var code = document.getElementById("checkCode").value;
+            var psw = document.getElementById("psw").value;
+            if(!pattern.test(psw)){
+                document.getElementById("tips3").innerHTML = "密码6-16位";
+                return;
+            }
+            if(email === ""){
+                alert("请检查邮箱是否正确输入！");
+                return;
+            }
+            let datas = {
+                "email": email,
+                "checkCode": code,
+                "psw": psw
+            };
+            $.ajax(
+                {
+                    url: '../user/register.do',//这里是写controller中requestMapping中的路径
+                    type: 'POST',//通过get或者post在发送请求
+                    datatype: "json",//这是数据的格式，可以是String、json、xml等
+                    async: true,//同步或异步，如果有多个ajax请求，则设成false
+                    data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                    success: function(data){//回调函数，如果请求成功，则会调用success方法
+                        console.log("yes");
+                        if(data === "ok"){
+                            console.log(data);
+                            alert("注册成功了，去登录吧");
+                        }else if(data === "error"){
+                            // alert("验证码错误");
+                            document.getElementById("tips2").innerHTML = "验证码错误";
+                        }
+                        else {
+                            alert("未知错误，请重试");
+                        }
+                    },
+                    error: function(){//如果失败则会调用error方法
+                        alert("未知网络错误");
+                    }
+                }
+            )
+        }
+        var t = 0;
+        function printTime(){
+            t = 60;
+            for (i = t; i > 0; i--)
+            {
+                document.getElementById("tips1").innerHTML = i + "s后再次获取验证码";
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+<!--<form>-->
+    邮箱: <input type="email" id="email" name="email" placeholder="请输入邮箱"><button onclick="getCode()">发送验证码</button>
+    <div id="tips1"></div>
+    验证码:<input type="text" id="checkCode" name="checkCode" placeholder="查看您的邮箱以获取验证码">
+    <div id="tips2"></div>
+    密码:<input type="password" id="psw" name="psw" placeholder="请输入密码">
+    <div id="tips3"></div>
+    <input type="submit" onclick="register()" value="注册">
+<!--</form>-->
+</body>
+</html>

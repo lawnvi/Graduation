@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <title>用户登录</title>
+    <script>
+        function login() {
+            var email = document.getElementById("email").value;
+            var psw = document.getElementById("psw").value;
+            if(email === ""){
+                document.getElementById("tips1").innerHTML = "请输入邮箱";
+                return;
+            }
+            if(psw.length < 6){
+                document.getElementById("tips2").innerHTML = "请输入正确的密码";
+                return;
+            }
+            let datas = {
+                "email": email,
+                "psw": psw
+            };
+            $.ajax(
+                {
+                    url: '../user/login.do',//这里是写controller中requestMapping中的路径
+                    type: 'POST',//通过get或者post在发送请求
+                    datatype: "json",//这是数据的格式，可以是String、json、xml等
+                    async: true,//同步或异步，如果有多个ajax请求，则设成false
+                    data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                    success: function(data){//回调函数，如果请求成功，则会调用success方法
+                        console.log("yes");
+                        if(data === "ok"){
+                            window.location.href="../index";
+                            alert("登录成功了");
+                        }else if(data === "error"){
+                            document.getElementById("tips2").innerHTML = "邮箱或密码错误";
+                        }
+                        else {
+                            alert("未知错误，请重试");
+                        }
+                    },
+                    error: function(){//如果失败则会调用error方法
+                        alert("未知网络错误");
+                    }
+                }
+            )
+        }
+    </script>
+</head>
+<body>
+<!--<form action="/user/login.do" method="post">-->
+    邮箱:<input type="email" id="email" name="email">
+    <div id="tips1"></div>
+    密码:<input type="password" id="psw" name="psw" onclick="">
+    <div id="tips2"></div>
+    <input type="submit" onclick="login()">
+<!--</form>-->
+</body>
+</html>

@@ -1,0 +1,27 @@
+package com.buct.graduation.mapper;
+
+import com.buct.graduation.model.pojo.User;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
+
+@Mapper
+public interface UserMapper {
+    @Insert("insert into user (email, psw) values(#{email}, #{psw})")
+    int addUser(User user);
+
+    @Update("update user set name = #{name}, email = #{email}, psw = #{psw}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, postTime=#{postTime}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")
+    int updateUser(User user);
+
+    @Select("select * from user where id = #{id}")
+    User findUserById(int id);
+
+    @Select("select * from user where email = #{email}")
+    User findUserByEmail(String email);
+
+    @Select("select * from user where status = #{status}")
+    List<User> findUserByStatus(String status);
+}
