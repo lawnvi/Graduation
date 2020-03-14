@@ -19,8 +19,8 @@ public class SpiderConfig {
 
     public static synchronized String visitSIDTimes(int n){
         System.out.println("sidUseTimes:"+SIDTimes+"  qid:"+n);
-        if(n > maxTimes)
-            getNewSID();
+//        if(n > maxTimes)
+//            getNewSID();
         return SID;
     }
 

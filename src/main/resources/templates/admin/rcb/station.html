@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <title>后台岗位详情展示</title>
+</head>
+<body>
+标题:<div th:text="${station.getTitle()}"></div>
+发布时间:<div th:text="${station.getStart()}"></div>
+截至时间:<div th:text="${station.getEnd()}"></div>
+岗位职责:<div th:text="${station.getNotes()}"></div>
+岗位要求:<div th:text="${station.getConditions()}"></div>
+岗位待遇:<div th:text="${station.getTreatment()}"></div>
+招聘流程:<div th:text="${station.getProcess()}"></div>
+联系人：<div th:text="${station.getContacts()}"></div>
+联系电话:<div th:text="${station.getTel()}"></div>
+联系邮箱:<div th:text="${station.getEmail()}"></div>
+联系地址:<div th:text="${station.getContactAddress()}"></div>
+</body>
+</html>

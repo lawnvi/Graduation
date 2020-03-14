@@ -28,6 +28,10 @@ public class NowDate {
         return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
     }
 
+    public String toDate(){
+        return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
+    }
+
     public int getYear() {
         return year;
     }

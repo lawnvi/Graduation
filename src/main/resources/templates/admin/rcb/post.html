@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <title>岗位信息填写</title>
+</head>
+<body>
+<form method="post" action="./post.do">
+    标题:<input type="text" name="title" th:value="${station.getTitle()}">
+    所需人数:<input type="number" name="number" th:value="${station.getNumber()}">
+    状态:<select name="status">
+            <option value="正常" th:selected="${station.getStatus().equals('正常')}">正常</option>
+            <option value="暂停" th:selected="${station.getStatus().equals('暂停')}">暂停</option>
+            <option value="急缺" th:selected="${station.getStatus().equals('急缺')}">急缺</option>
+            <option value="关闭" th:selected="${station.getStatus().equals('关闭')}">关闭</option>
+        </select><br>
+    最高年龄:<input type="number" name="maxAge" th:value="${station.getMaxAge()}">
+    专业要求:<input type="text" name="major" th:value="${station.getMajor()}">
+    学位要求:<select name="education">
+                <option value="博士后" th:selected="${station.getEducation().equals('博士后')}">博士后</option>
+                <option value="博士" th:selected="${station.getEducation().equals('博士')}">博士</option>
+                <option value="硕士" th:selected="${station.getEducation().equals('硕士')}">硕士</option>
+                <option value="学士" th:selected="${station.getEducation().equals('学士')}">学士</option>
+                <option value="无" th:selected="${station.getEducation().equals('无')}">无</option>
+            </select><br>
+    任职条件:<textarea name="conditions" th:text="${station.getConditions()}"></textarea><br>
+    岗位职责:<textarea type="text" name="notes" th:text="${station.getNotes()}"></textarea><br>
+    相关待遇:<textarea type="text" name="treatment" th:text="${station.getTreatment()}"></textarea><br>
+    招聘程序:<textarea type="text" name="process" th:text="${station.getProcess()}"></textarea><br>
+    发布时间:<input type="date" name="start" th:value="${station.getStart()}">
+    截止时间:<input type="date" name="end" th:value="${station.getEnd()}"><br>
+    联系人:<input type="text" name="contacts" th:value="${station.getContacts()}">
+    联系电话:<input type="tel" name="tel" th:value="${station.getTel()}">
+    联系邮箱:<input type="email" name="email" th:value="${station.getEmail()}"><br>
+    联系地址:<input type="text" name="contactAddress" th:value="${station.getContactAddress()}">
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

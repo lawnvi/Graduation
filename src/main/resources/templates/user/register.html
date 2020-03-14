@@ -7,9 +7,8 @@
     <script type="text/javascript" src="../js/util.js"></script>
     <script>
         function getCode() {
-            if(t > 0){
+            if(countdown > 0)
                 return;
-            }
             var email = document.getElementById("email").value;
             console.log(email);
             if(email === ""){
@@ -29,11 +28,11 @@
                     data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
                     success: function(data){//回调函数，如果请求成功，则会调用success方法
                         console.log("yes");
-
-                        printTime();
                         if(data === "ok"){
                             console.log(data);
-                            printTime();
+                            document.getElementById("tips1").innerHTML = "验证码发送成功";
+                            countdown = 60;
+                            setTime();
                         }else if(data === "existed"){
                             document.getElementById("tips1").innerHTML = "邮箱已注册，请登录或找回密码";
                         }
@@ -91,13 +90,24 @@
                 }
             )
         }
-        var t = 0;
-        function printTime(){
-            t = 60;
-            for (i = t; i > 0; i--)
-            {
-                document.getElementById("tips1").innerHTML = i + "s后再次获取验证码";
+
+        var countdown = 0;
+        function setTime() {
+            var obj = document.getElementById("btn_code");
+            if (countdown === 0) {
+                obj.removeAttribute("disabled");
+                obj.value="获取验证码";
+                document.getElementById("tips1").innerHTML = "";
+                countdown = 60;
+                return;
+            } else {
+                obj.setAttribute("disabled", true);
+                obj.value="重新发送(" + countdown + ")";
+                countdown--;
             }
+            setTimeout(function() {
+                    setTime() }
+                ,1000)
         }
 
     </script>
@@ -105,7 +115,7 @@
 </head>
 <body>
 <!--<form>-->
-    邮箱: <input type="email" id="email" name="email" placeholder="请输入邮箱"><button onclick="getCode()">发送验证码</button>
+    邮箱: <input type="email" id="email" name="email" placeholder="请输入邮箱"><input type="button" onclick="getCode()" id="btn_code" value="获取验证码">
     <div id="tips1"></div>
     验证码:<input type="text" id="checkCode" name="checkCode" placeholder="查看您的邮箱以获取验证码">
     <div id="tips2"></div>

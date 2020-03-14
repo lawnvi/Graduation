@@ -9,6 +9,15 @@ public class UserArticle {
     private Integer uid;//用户id
     private Integer aid;//期刊论文id
     private String role;//担任角色
+    private String notes;
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public Integer getId() {
         return id;

@@ -3,6 +3,7 @@ package com.buct.graduation.util.spider;
 import com.buct.graduation.model.pojo.Journal;
 import com.buct.graduation.model.spider.Periodical;
 import com.buct.graduation.model.spider.PeriodicalTable;
+import com.buct.graduation.util.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -184,6 +185,16 @@ public class SpiderLetpub {
         }
         System.out.println("size:" + size + "year:" + year + " IF:" + IF);
         return Float.parseFloat(IF);
+    }
+
+    public Journal getJournal(String keyword){
+        PeriodicalTable table = getPeriodicals(keyword);
+        for(Periodical periodical: table.getList()){
+            if(periodical.isMatch()){
+                return getJournalData(periodical.getUrl());
+            }
+        }
+        return null;
     }
 
 }

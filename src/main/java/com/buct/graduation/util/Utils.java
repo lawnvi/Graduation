@@ -6,6 +6,7 @@ import com.buct.graduation.util.spider.IpPoolUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Utils {
@@ -164,17 +165,39 @@ public class Utils {
         return temp;
     }
 
+    /**
+     * String[] -> String/String/...
+     * @param s
+     * @return
+     */
+    public static String checkboxToString(String[] s){
+        if(s.length == 0)
+            return "无";
+        StringBuffer temp = new StringBuffer();
+        for(String str: s){
+            temp.append(str+"/");
+        }
+        return temp.substring(0, temp.length()-1);
+    }
+
+    public static List<String> toCheckbox(String str){
+        if(str == null || str.equals(""))
+            return null;
+        return Arrays.asList(str.split("[/]"));
+    }
+
 
     /**
      * 计算评价分数
-     * @param reporter
+//     * @param reporter
      * @param projects
      * @param patents
      * @param articles
      * @param papers
      * @return
      */
-    public static Reporter getScore(Reporter reporter, List<Project> projects, List<Patent> patents, List<Article> articles, List<ConferencePaper> papers){
+    public static Reporter getScore(List<Project> projects, List<Patent> patents, List<Article> articles, List<ConferencePaper> papers){
+        Reporter reporter = new Reporter();
         //评价指标 resume
         //期刊论文相关指标
         int jcr = 0;//jcr分区1/2
@@ -197,6 +220,9 @@ public class Utils {
         for(ConferencePaper paper: papers){
             if(paper.getSection().toUpperCase().contains("CCF-")){
                 sciCitation += paper.getCitation();
+            }
+            if(paper.isEsi()){
+                esi++;
             }
             citation += paper.getCitation();
         }

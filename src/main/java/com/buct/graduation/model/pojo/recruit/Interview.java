@@ -5,7 +5,7 @@ package com.buct.graduation.model.pojo.recruit;
  */
 public class Interview {
     private Integer id;
-    private Integer uid;//用户
+    private Integer rid;//简历id
     private String status;//状态
     private String time;//时间
     private String place;//地点
@@ -28,12 +28,12 @@ public class Interview {
         this.id = id;
     }
 
-    public Integer getUid() {
-        return uid;
+    public Integer getRid() {
+        return rid;
     }
 
-    public void setUid(Integer uid) {
-        this.uid = uid;
+    public void setRid(Integer uid) {
+        this.rid = uid;
     }
 
     public String getStatus() {

@@ -10,21 +10,20 @@ public class Reporter {
     private String notes;
     private String education;//博士在读/博士后/已工作
     //    private String status;
-    private String title;//头衔
-    private String fund;//基金
-
+    private String title;//头衔 四青
+    private String fund;//获得基金
     private Integer jcr = 0;//jcr I/II 之和
-    private Integer sciCitation = 0;//sci他引之和?
+    private Integer sciCitation = 0;//sci他引之和
     private Integer citation = 0;//总被引
     private Integer esi = 0;//esi论文数
-    private Integer jcrScore = 0;
-    private double funds = 0;//基金
-    private double IF = 0;//影响因子
+    private Integer jcrScore = 0;//jcr分数
+    private double funds = 0;//基金金额
+    private double IF = 0;//影响因子和
 
     private Double score;//综合指标
     private String post;//定岗
 
-    private String timestamp;
+    private String timestamp;//评价时间
 
     public String getTimestamp() {
         return timestamp;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <title>基本信息填写</title>
+</head>
+<body>
+<form method="post" action="./updateBasicData.do">
+    姓名<input type="text" name="name" th:value="${user.getName()}">
+    性别
+    <label><input type="radio" name="sex" th:checked="${user.getSex().equals('男')}" value="男">男♂</label>
+    <label><input type="radio" name="sex" th:checked="${user.getSex().equals('女')}" value="女">女♀</label>
+    出生日期<input type="date" name="birthday" th:value="${user.getBirthday()}"><br>
+    电话<input type="tel" name="tel" th:value="${user.getTel()}"><br>
+<!--    邮箱<input type="email" name="email"><br>-->
+    通讯地址<input type="text" name="contactAddress" th:value="${user.getContactAddress()}"><br>
+    简介<textarea name="notes" th:text="${user.getNotes()}"></textarea><br>
+    专业<input type="text" name="major" th:value="${user.getMajor()}"><br>
+    当前状态
+    <label><input type="radio" name="education" th:checked="${user.getEducation().equals('博士在读')}" value="博士在读">博士在读</label>
+    <label><input type="radio" name="education" th:checked="${user.getEducation().equals('博士后')}" value="博士后">博士后</label>
+    <label><input type="radio" name="education" th:checked="${user.getEducation().equals('已工作')}" value="已工作">已工作</label><br>
+    头衔
+        <label><input type="checkbox" value="院士" th:checked="${title.contains('院士')}" name="title">院士</label>
+        <label><input type="checkbox" value="千人" th:checked="${title.contains('千人')}" name="title">千人</label>
+        <label><input type="checkbox" value="杰青" th:checked="${title.contains('杰青')}" name="title">杰青</label>
+        <label><input type="checkbox" value="优青" th:checked="${title.contains('优青')}" name="title">优青</label><br>
+    获得基金
+        <label><input type="checkbox" value="NSFC青年基金" th:checked="${fund.contains('NSFC青年基金')}" name="fund">NSFC青年基金</label>
+        <label><input type="checkbox" value="NSFC面上基金" th:checked="${fund.contains('NSFC面上基金')}" name="fund">NSFC面上基金</label>
+        <label><input type="checkbox" value="NSFC重点基金" th:checked="${fund.contains('NSFC重点基金')}" name="fund">NSFC重点基金</label>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

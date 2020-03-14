@@ -22,7 +22,7 @@ public class SpiderWOS {
         //keyword.add("A sequence of a plinian eruption preceded by dome destruction at Kelud volcano, Indonesia, on February 13, 2014, revealed from tephra fallout and pyroclastic density current deposits");
         SpiderWOS wos = new SpiderWOS();
         for(String s : keyword) {
-            wos.getESIandtimes(sid, s);
+            wos.getESIandtimes(s);
             System.out.println("耗时："+(System.currentTimeMillis()-tempTime)/1000+"s");
             tempTime = System.currentTimeMillis();
         }
@@ -46,15 +46,24 @@ public class SpiderWOS {
         return SID;
     }
 
+    private String initKeyword(String keyword){
+        String s = keyword.replace(" ", "+");
+        return s.replace("?", "+");
+    }
+
     /**
      * 获取论文被引次数、isESI、期刊名、发表年份
-     * @param SID
+     * @param
      * @param kw2
      * @return
      */
-    public Article getESIandtimes(String SID, String kw2){
+    public Article getESIandtimes(String kw2){
+        String SID = SpiderConfig.getSID();
+        if(SID.equals("")){
+            return null;
+        }
         HttpUtil util = new HttpUtil();
-        String kw = kw2.replace(" ", "+");
+        String kw = initKeyword(kw2);
         String url = "http://apps.webofknowledge.com/UA_GeneralSearch.do?fieldCount=1&action=search&product=UA&search_mode=GeneralSearch&SID="+SID+"&max_field_count=25&max_field_notice=%E6%B3%A8%E6%84%8F%3A+%E6%97%A0%E6%B3%95%E6%B7%BB%E5%8A%A0%E5%8F%A6%E4%B8%80%E5%AD%97%E6%AE%B5%E3%80%82&input_invalid_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E8%AF%B7%E8%BE%93%E5%85%A5%E6%A3%80%E7%B4%A2%E8%AF%8D%E3%80%82&exp_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E4%B8%93%E5%88%A9%E6%A3%80%E7%B4%A2%E8%AF%8D%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%A4%9A%E4%B8%AA%E5%AE%B6%E6%97%8F%E4%B8%AD%E6%89%BE%E5%88%B0+%28&input_invalid_notice_limits=+%3Cbr%2F%3E%E6%B3%A8%E6%84%8F%3A+%E6%BB%9A%E5%8A%A8%E6%A1%86%E4%B8%AD%E6%98%BE%E7%A4%BA%E7%9A%84%E5%AD%97%E6%AE%B5%E5%BF%85%E9%A1%BB%E8%87%B3%E5%B0%91%E4%B8%8E%E4%B8%80%E4%B8%AA%E5%85%B6%E4%BB%96%E6%A3%80%E7%B4%A2%E5%AD%97%E6%AE%B5%E7%9B%B8%E7%BB%84%E9%85%8D%E3%80%82&sa_params=UA%7C%7C6FZIMo2VMG1B4cQjRj6%7Chttp%3A%2F%2Fapps.webofknowledge.com%7C%27&formUpdated=true&value%28select1%29=TS&value%28hidInput1%29=&limitStatus=expanded&ss_lemmatization=On&ss_spellchecking=Suggest&SinceLastVisit_UTC=&SinceLastVisit_DATE=&period=Range+Selection&range=ALL&startYear=1950&endYear=2020&editions=WOS.SCI&editions=WOS.IC&editions=WOS.ISTP&editions=WOS.CCR&collections=WOS&editions=DIIDW.EDerwent&editions=DIIDW.CDerwent&editions=DIIDW.MDerwent&collections=DIIDW&editions=KJD.KJD&collections=KJD&editions=MEDLINE.MEDLINE&collections=MEDLINE&editions=RSCI.RSCI&collections=RSCI&editions=SCIELO.SCIELO&collections=SCIELO&update_back2search_link_param=yes&ssStatus=display%3Anone&ss_showsuggestions=ON&ss_query_language=auto&ss_numDefaultGeneralSearchFields=1&rs_sort_by=PY.D%3BLD.D%3BSO.A%3BVL.D%3BPG.A%3BAU.A&value%28input1%29=";
         System.out.println(kw+"\n"+kw2);
         String html = util.getHtml(url+kw);
@@ -68,6 +77,7 @@ public class SpiderWOS {
         String stage = "";
         String page = "";
         String name = kw2;
+        String CAuthor = "";
         System.out.println(kw+"搜索完成1");
         HttpUtil.writeFile(html, HttpUtil.tempPath+"/"+System.currentTimeMillis()+(new Random().nextInt(1000))+".html");
         String qid = "";
@@ -85,6 +95,7 @@ public class SpiderWOS {
                 break;
             }
         }
+        qid = d1.getElementById("qid").attr("value");
         String url2 = "http://apps.webofknowledge.com/summary.do?product=UA&parentProduct=UA&search_mode=GeneralSearch&qid="+qid+"&SID="+SID+"&&page=1&action=sort&sortBy=RS.D;PY.D;AU.A;SO.A;VL.D;PG.A&showFirstPage=1&isCRHidden=false";
         String html2 = util.getHtml(url2);
         System.out.println("搜索完成2");
@@ -116,6 +127,10 @@ public class SpiderWOS {
                         if(element.child(0).text().equals("出版年:") || element.child(0).text().equals("Published:")){
                             year = element.child(1).text();
                             System.out.println("find year"+year);
+                        }
+                        else if(element.child(0).text().equals("通讯作者地址:") || element.child(0).text().equals("Reprint Address:")){
+                            CAuthor = element.text().substring(17, element.text().length() - 16);
+                            System.out.println("find year"+CAuthor);
                             break;
                         }
                     }
@@ -149,7 +164,7 @@ public class SpiderWOS {
                         }
                     }
 
-                    List<Element> e3 = d3.select("#sidebar-column1");
+//                    List<Element> e3 = d3.select("#sidebar-column1");
                     for (Element e3e : d3.getAllElements()) {
                         if(e3e.attr("class").equals("flex-row-partition1")){
                             for(Element e3ee : e3e.getAllElements()){
@@ -187,6 +202,9 @@ public class SpiderWOS {
                     articles.setYear(year);
                     articles.setJournalName(Journal);
                     articles.setUrl(url3);
+                    articles.setCAuthor(CAuthor);
+                    author = Utils.getNames(author);
+                    articles.setAuthor(author);
                     articles.setPage(page);
                     articles.setIssue(stage);
                     articles.setVolume(volume);

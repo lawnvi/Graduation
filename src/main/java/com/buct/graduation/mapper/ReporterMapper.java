@@ -1,10 +1,7 @@
 package com.buct.graduation.mapper;
 
 import com.buct.graduation.model.pojo.Reporter;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,4 +29,6 @@ public interface ReporterMapper {
     @Select("select * from resume where status = #{status}")
     List<Reporter> findByStatus(@Param("status") String status);
 
+    @Update("update resume set name=#{name}, notes=#{notes}, education=#{education}, title=#{title}, fund=#{fund}, jcr=#{jcr}, funds=#{funds}, sciCitation=#{sciCitation}, impactFactor=#{IF}, score=#{score}, post=#{post}, jcrScore=#{jcrScore}, esi=#{esi}, timestamp=#{timestamp}, citation=#{citation} where id = #{id}")
+    int update(Reporter reporter);
 }

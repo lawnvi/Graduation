@@ -1,11 +1,11 @@
 package com.buct.graduation.model.pojo.recruit;
 
 /**
- * 面试官-面试记录
+ * 面试官-面试记录-不一定要
  */
 public class InterviewHr {
     private Integer id;
-    private Integer rid;//面试记录
+    private Integer iid;//面试记录
     private Integer hrId;//面试官
     private String notes;//面试评价
     private Integer score;//分数
@@ -19,12 +19,12 @@ public class InterviewHr {
         this.id = id;
     }
 
-    public Integer getRid() {
-        return rid;
+    public Integer getIid() {
+        return iid;
     }
 
-    public void setRid(Integer rid) {
-        this.rid = rid;
+    public void setIid(Integer rid) {
+        this.iid = rid;
     }
 
     public Integer getHrId() {

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <title>我的基本信息</title>
+</head>
+<body>
+<a href="./updateBasicData">修改基本信息</a>
+姓名<div name="name" th:text="${user.getName()}"></div>
+性别<div name="sex" th:text="${user.getSex()}"></div>
+出生日期<div name="birthday" th:text="${user.getBirthday()}"></div><br>
+电话<div name="tel" th:text="${user.getTel()}"></div><br>
+邮箱<div name="email" th:text="${user.getEmail()}"></div><br>
+通讯地址<div name="contactAddress" th:text="${user.getContactAddress()}"></div><br>
+简介<div name="notes" th:text="${user.getNotes()}"></div><br>
+专业<div name="major" th:text="${user.getMajor()}"></div><br>
+当前状态<div name="education" th:text="${user.getEducation()}"></div><br>
+头衔 <div name="title" th:text="${user.getTitle()}"></div><br>
+获得基金<div th:text="${user.getFund()}"></div>
+</body>
+</html>

@@ -1,19 +1,16 @@
 package com.buct.graduation.mapper;
 
 import com.buct.graduation.model.pojo.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("insert into user (email, psw) values(#{email}, #{psw})")
+    @Insert("insert into user (email, psw, level) values(#{email}, #{psw}, #{level})")
     int addUser(User user);
 
-    @Update("update user set name = #{name}, email = #{email}, psw = #{psw}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, postTime=#{postTime}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")
+    @Update("update user set level=#{level}, name = #{name}, email = #{email}, psw = #{psw}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")
     int updateUser(User user);
 
     @Select("select * from user where id = #{id}")
@@ -24,4 +21,7 @@ public interface UserMapper {
 
     @Select("select * from user where status = #{status}")
     List<User> findUserByStatus(String status);
+
+    @Delete("delete from user where id = #{id}")
+    void delete(int id);
 }

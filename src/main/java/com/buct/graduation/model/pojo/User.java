@@ -20,18 +20,28 @@ public class User {
     private String title;//头衔-四青
     private String fund;//基金-nsfc
 
-    private String status;//简历进度 look/post/pass/fail
-    private String postTime;//投递时间
+    private String status;//简历进度 look/register/pass/fail
+    private String registerTime;//投递时间/注册
 
     private String major;//专业
     private String sex;
     private String birthday;
     private String contactAddress;//联系地址
 
+    private String level = "";//应聘者/老师
+
     //todo 待定是否加上 还有更多
     private String nation;//民族
     private String nationality;//国籍
     private String nativePlace;//籍贯
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public String getMajor() {
         return major;
@@ -73,12 +83,12 @@ public class User {
         this.status = status;
     }
 
-    public String getPostTime() {
-        return postTime;
+    public String getRegisterTime() {
+        return registerTime;
     }
 
-    public void setPostTime(String postTime) {
-        this.postTime = postTime;
+    public void setRegisterTime(String registerTime) {
+        this.registerTime = registerTime;
     }
 
     public String getResumePath() {

@@ -13,6 +13,16 @@ public class ConferencePaper {
     private String notes;//备注
     private String role;//担任角色
 
+    private boolean isEsi;
+
+    public boolean isEsi() {
+        return isEsi;
+    }
+
+    public void setEsi(boolean esi) {
+        isEsi = esi;
+    }
+
     public String getRole() {
         return role;
     }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <script>
+            function clickTitle(obj) {
+                var thisObj = $(obj);//js对象转jquery对象
+                var that = event.currentTarget;
+                var name = that.innerHTML;
+                var year = thisObj.attr("value");
+                getJournal(name, year);
+            }
+            function searchDetail() {
+                var name = document.getElementById("input_name_2").value;
+                var year = document.getElementById("input_year_2").value;
+                getJournal(name, year);
+        }
+    function getJournal(name, year) {
+        document.body.style.cursor = "wait";
+        console.log("year:"+year+"\nname:"+name);
+        // document.getElementById("input_name_2").value = name;
+        // document.getElementById("input_year_2").value = year;
+        if(year === "") {
+            var myDate = new Date();
+            var tYear = myDate.getFullYear();
+            year = tYear - 3;
+        }
+        if(name === "") {
+            alert("请输入期刊名称");
+            return;
+        }
+        let datas = {
+            "name":name,
+            "year":year
+                };
+        $.ajax(
+            {
+                url: '../paperTools/getJournal.do',//这里是写controller中requestMapping中的路径
+                type: 'POST',//通过get或者post在发送请求
+                datatype: "json",//这是数据的格式，可以是String、json、xml等
+                async: true,//同步或异步，如果有多个ajax请求，则设成false
+                data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                success: function(data){//回调函数，如果请求成功，则会调用success方法
+                    console.log("yes");
+                    if(data != null){
+                        console.log(data);
+                        if(data["json"].indexOf("Message") > -1){
+                            document.body.style.cursor = "default";
+                            alert("参数错误");
+                        }else {
+                            document.getElementById("detail_year").innerHTML = data["year"];
+                            document.getElementById("detail_title").innerHTML = data["title"];
+                            document.getElementById("detail_abbrTitle").innerHTML = data["abbrTitle"];
+                            document.getElementById("detail_issn").innerHTML = data["issn"];
+                            document.getElementById("detail_review").innerHTML = data["review"];
+                            document.getElementById("detail_ImpactFactor").innerHTML = data["indicator"]["impactFactor"];
+                            document.getElementById("detail_IFavg").innerHTML = data["indicator"]["ifavg"];
+                            document.getElementById("detail_TotalCite").innerHTML = data["indicator"]["totalCite"];
+                            document.getElementById("detail_TotalCites").innerHTML = data["indicator"]["totalCites"];
+                            document.getElementById("detail_zky_top").innerHTML = data["zkys"][0]["TOP"];
+                            document.getElementById("detail_zky_section").innerHTML = data["zkys"][0]["section"];
+                            document.getElementById("detail_url").innerHTML = data["url"];
+                            document.body.style.cursor = "default";
+                        }
+                    }
+                },
+                error: function(){//如果失败则会调用error方法
+                    document.body.style.cursor = "default";
+                    alert("not find "+name);
+                }
+            }
+        )
+    }
+    </script>
+    <style>
+        ta{
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+<form action="../paperTools/searchPaper.do" method="post">
+    <h3>论文名:<input name="paper" type="text" th:value="${kw}"><input type="submit" value="搜索"></h3>
+</form>
+<table border="1">
+    <tr>
+        <td>题目</td>
+        <td>期刊</td>
+        <td>年份</td>
+        <td>JCR分区</td>
+        <td>Top</td>
+        <td>影响因子</td>
+        <td>他引次数</td>
+        <td>ESI高被引</td>
+        <td>WOS详情</td>
+    </tr>
+    <tr th:each="article, stat:${article}" >
+        <td th:text="${article.getName()}"/>
+        <td th:text="${article.getJournal()}"/>
+        <td th:text="${article.getYear()}"/>
+        <td th:text="${article.getJCR()}"/>
+        <td th:text="${article.getTop()}"/>
+        <td th:text="${article.getIF()}"/>
+        <td th:text="${article.getCitation()}"/>
+        <td th:text="${article.getESI()}"/>
+        <td><a th:href="${article.getUrl()}" target="_blank">论文详情</a></td>
+    </tr>
+</table>
+<form action="../paperTools/searchJournals.do" method="post">
+    <h3>期刊名:<input name="name" th:value="${name}" type="text"/>年份:<input type="text" name="year" th:value="${year}"/><input type="submit" value="搜索"></h3>
+</form>
+<table border="1">
+    <tr>
+        <td>期刊名</td>
+        <td>JCR简称</td>
+        <td>ISSN</td>
+        <td>年份</td>
+        <td>Review</td>
+        <td>是否匹配</td>
+        <td>LetPub</td>
+    </tr>
+    <tr th:each="periodical, stat:${list}">
+        <td th:text="${periodical.getTitle()}" onclick="clickTitle(this)"/>
+        <td><ta style="cursor: pointer" th:text="${periodical.getAbbrTitle()}" onclick="clickTitle(this)" th:value="${periodical.getYear()}"/></td>
+        <td><ta style="cursor: pointer" th:text="${periodical.getISSN()}" onclick="clickTitle(this)" th:value="${periodical.getYear()}"/></td>
+        <td th:text="${periodical.getYear()}"/>
+        <td th:text="${periodical.isReview()}"/>
+        <td th:text="${periodical.isMatch()}"/>
+        <td><a th:href="${periodical.getUrl()}" target="_blank">详细数据</a></td>
+    </tr>
+</table>
+<h3>期刊详情:期刊名:<input id="input_name_2" type="text"/>年份:<input type="text" id="input_year_2"/><input type="button" value="搜索" onclick="searchDetail()"></h3>
+<table border="1">
+    <tr>
+        <td>期刊名</td>
+        <td>JCR简称</td>
+        <td>ISSN</td>
+        <td>年份</td>
+        <td>Review</td>
+        <td>IF</td>
+        <td>3年平均IF</td>
+        <td>当年被引</td>
+        <td>2年被引</td>
+        <td>是否top</td>
+        <td>学科分区</td>
+        <td>LetPub</td>
+    </tr>
+    <tr th:each="detail, stat:${detail}">
+        <td id="detail_title" th:text="${detail.getTitle()}"/>
+        <td id="detail_abbrTitle" th:text="${detail.getAbbrTitle()}"/>
+        <td id="detail_issn" th:text="${detail.getISSN()}"/>
+        <td id="detail_year" th:text="${detail.getYear()}"/>
+        <td id="detail_review" th:text="${detail.isReview()}"/>
+        <td id="detail_ImpactFactor" th:text="${detail.getIndicator().getImpactFactor()}"/>
+        <td id="detail_IFavg" th:text="${detail.getIndicator().getIFavg()}"/>
+        <td id="detail_TotalCite" th:text="${detail.getIndicator().getTotalCite()}"/>
+        <td id="detail_TotalCites" th:text="${detail.getIndicator().getTotalCites()}"/>
+        <td id="detail_zky_top" th:text="${detail.getZkys().get(0).isTOP()}"/>
+        <td id="detail_zky_section" th:text="${detail.getZkys().get(0).getSection()}"/>
+        <td><a id="detail_url" th:href="${detail.getUrl()}" target="_blank">详细数据</a></td>
+    </tr>
+</table>
+</body>
+</html>

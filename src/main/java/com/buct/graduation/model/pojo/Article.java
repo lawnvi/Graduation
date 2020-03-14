@@ -17,7 +17,44 @@ public class Article {
     private String page = "";//页码
     private String issue = "";//期
 
+    private Boolean isSci = false;//sci收录
+    private String addWay = "自动";
+    private String address = "应聘";//是否学院
+    private String uploadEmail;//录入者邮箱
+
     private Journal journal;//期刊
+
+    public String getUploadEmail() {
+        return uploadEmail;
+    }
+
+    public void setUploadEmail(String uploadEmail) {
+        this.uploadEmail = uploadEmail;
+    }
+
+    public Boolean getSci() {
+        return isSci;
+    }
+
+    public void setSci(Boolean sci) {
+        isSci = sci;
+    }
+
+    public String getAddWay() {
+        return addWay;
+    }
+
+    public void setAddWay(String addWay) {
+        this.addWay = addWay;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getVolume() {
         return volume;
