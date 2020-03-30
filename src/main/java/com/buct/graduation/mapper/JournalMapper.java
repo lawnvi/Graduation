@@ -1,10 +1,9 @@
 package com.buct.graduation.mapper;
 
 import com.buct.graduation.model.pojo.Journal;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface JournalMapper {
@@ -12,9 +11,15 @@ public interface JournalMapper {
     int addJournal(Journal journal);
 
     @Select("select * from journal where id = #{id}")
+    @Results({@Result(column="impact_factor", property="IF")})
     Journal findById(int id);
 
+    @Select("select * from journal")
+    @Results({@Result(column="impact_factor", property="IF")})
+    List<Journal> findAll();
+
     @Select("select * from journal where issn = #{kw} or AbbrTitle=#{kw} or name=#{kw}")
+    @Results({@Result(column="impact_factor", property="IF")})
     Journal findByKeyword(String kw);
 
     @Update("update journal set name=#{name}, AbbrTitle=#{AbbrTitle}, issn=#{ISSN}, impact_factor=#{IF}, year=#{year}, section=#{section}, url=#{url}, notes=#{notes} where id=#{id}")

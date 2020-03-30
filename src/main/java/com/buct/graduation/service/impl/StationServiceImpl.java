@@ -32,4 +32,9 @@ public class StationServiceImpl implements StationService {
     public List<Station> findAllStations() {
         return stationMapper.findAll();
     }
+
+    @Override
+    public List<Station> findJobsWithPage(int page, int number) {
+        return stationMapper.findJobsWithPage((page-1)*number, number);
+    }
 }

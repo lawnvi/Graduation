@@ -14,6 +14,8 @@ public class GlobalName {
 
     //session name
     public static final String session_userId = "session_user_id";
+    public static final String session_user = "session_user";
+    public static final String session_admin = "session_admin";
 
     //level
     public static final String teacher = "讲师";
@@ -27,7 +29,24 @@ public class GlobalName {
     public static final String addWay_candidate = "应聘者";
     public static final String addWay_admin = "管理员";
     public static final String addWay_System = "自动";
+    public static final String addWay_missing = "待完善";
     public static final String addWay_missing_c = "应聘者待完善";
     public static final String addWay_missing_a = "管理员待完善";
+
+    /**
+     * 网站路径配置数据
+     */
+    //文件存储路径(ABSOLUTEPATH)
+    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/";
+    public static final String RELATIVE_PATH = "/import/";
+    public static final String ROOT_PATH = "import";
+    public static final String PIC_PATH = "/images/avatar-1.jpg";
+
+    /**
+     * ip 状态
+     */
+    public static final String IP_FREE = "free";
+    public static final String IP_BUSY = "busy";
+    public static final String IP_OFFLINE = "offline";
 
 }

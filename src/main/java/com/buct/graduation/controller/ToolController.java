@@ -1,0 +1,233 @@
+package com.buct.graduation.controller;
+
+import com.buct.graduation.model.pojo.Article;
+import com.buct.graduation.model.pojo.Journal;
+import com.buct.graduation.model.pojo.User;
+import com.buct.graduation.model.pojo.recruit.Hr;
+import com.buct.graduation.model.spider.Periodical;
+import com.buct.graduation.model.spider.PeriodicalTable;
+import com.buct.graduation.service.ArticleService;
+import com.buct.graduation.service.SpiderService;
+import com.buct.graduation.service.impl.JournalService;
+import com.buct.graduation.util.GlobalName;
+import com.buct.graduation.util.excel.Excel2Excel;
+import com.buct.graduation.util.spider.GetArticlesByAddress;
+import com.buct.graduation.util.spider.SpiderLetpub;
+import com.buct.graduation.util.spider.SpiderWOS;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+@RequestMapping("/tools")
+public class ToolController {
+    @Autowired
+    private JournalService journalService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private SpiderService spiderService;
+
+    private User getUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(GlobalName.session_user);
+        if (user == null) {
+            user = new User();
+            user.setName("登录");
+            user.setPicPath(GlobalName.PIC_PATH);
+        }
+        return user;
+    }
+
+    @RequestMapping("/visitor")
+    public String search(Model model, HttpServletRequest request) {
+//        model.addAttribute("isNull", "none");
+//        model.addAttribute("journal", new Journal());
+        model.addAttribute("user", getUser(request));
+        return "/tool/tool_visit";
+    }
+
+    /**
+     * 查询期刊数据
+     *
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping("/searchJournal.do")
+    @ResponseBody
+    public List<Journal> searchJournal(Model model, HttpServletRequest request) {
+        String name = request.getParameter("title");
+        Journal dbJ = journalService.findJournalByName(name);
+        List<Journal> journals = new ArrayList<>();
+        if(dbJ != null){
+            journals.add(dbJ);
+            return journals;
+        }
+        SpiderLetpub letpub = new SpiderLetpub();
+        PeriodicalTable table = letpub.getPeriodicals(name);
+        if(table == null){
+            return null;
+        }
+        Journal journalMatch = new Journal();
+        for (Periodical periodical : table.getList()) {
+            Journal journal = new Journal();
+            journal.setName(periodical.getTitle());
+            journal.setISSN(periodical.getISSN());
+            journal.setAbbrTitle(periodical.getAbbrTitle());
+            journal.setUrl(periodical.getUrl());
+            if (periodical.isMatch()) {
+                journal = letpub.getJournalData(periodical.getUrl());
+//                continue;
+            }
+            journals.add(journal);
+        }
+//        model.addAttribute("name", name);
+//        model.addAttribute("journal", journalMatch);
+//        model.addAttribute("list", journals);
+        return journals;
+    }
+
+    /**
+     * 查询期刊论文数据
+     *
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping("/searchArticle.do")
+    @ResponseBody
+    public Article searchArticle(Model model, HttpServletRequest request) {
+        String name = request.getParameter("title");
+        Article dbA = articleService.findArticleByName(name);
+        if(dbA != null){
+            dbA.setJournal(spiderService.getJournal(dbA.getJournalIssn()));
+            return dbA;
+        }
+        SpiderWOS wos = new SpiderWOS();
+        //todo 状态
+        Article article = wos.getArticleByTitle(name);
+        if (article == null) {
+            System.out.println("back");
+            return null;
+        }
+        if (!article.getName().startsWith("没有找到")) {
+            article.setJournal(new SpiderLetpub().getJournal(article.getJournalIssn()));
+        }
+//        model.addAttribute("journal", article.getJournal());
+//        model.addAttribute("isNull", "inline");
+        return article;
+    }
+
+    //todo 下载文件
+
+    @RequestMapping("/admin")
+    public String getReporter(HttpServletRequest request, Model model){
+        model.addAttribute("user", getUser(request));
+        return "/tool/tool_admin";
+    }
+
+    @RequestMapping("/getReporter.do")
+    @ResponseBody
+    public String getReporterMethod(HttpServletRequest request, HttpServletResponse response, @RequestParam("excel") MultipartFile file){
+        String way = request.getParameter("data_status");
+        System.out.println(way);
+        if (file.isEmpty()) {
+            return "请选择文件";
+        }
+        if(way == null || way.equals("")){
+            return "选择方式";
+        }
+        String fileName = file.getOriginalFilename();
+        String path = "D:\\schoolHelper\\upload\\" + fileName;
+        File dest = new File(path);
+        try {
+            file.transferTo(dest);
+            System.out.println("good");
+            try {
+                String newPath = null;
+                if(way.equals("half")){
+                    newPath = Excel2Excel.getReporter(path);
+                }else if(way.equals("all")){
+                    newPath = Excel2Excel.getReporterNoData(path);
+                }
+                else {
+                    return "error";
+                }
+                InputStream is = new FileInputStream(new File(newPath));
+                Workbook wb = WorkbookFactory.create(is);
+                is.close();
+                response.setContentType("application/vnd.ms-excel");
+                response.setHeader("Content-disposition", "attachment;filename=C0414信息学院-谢晓明-副本.xlsx");
+                OutputStream ouputStream = response.getOutputStream();
+                wb.write(ouputStream);
+                ouputStream.flush();
+                ouputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "上传成功";
+        } catch (IOException e) {
+        }
+        if(way.equals("论文数据未填写")){
+
+        }
+
+        System.out.println("bad");
+        //reporter
+        return "";
+    }
+
+    @RequestMapping("/awsl")
+    public String getArticlesByAddress(HttpServletRequest request, Model model){
+        model.addAttribute("user", getUser(request));
+        return "/tool/tool_admin_school";
+    }
+
+    @RequestMapping("/getArticlesByAddress.do")
+    @ResponseBody
+    public void getArticlesByAddressMethod(Model model, HttpServletRequest request, HttpServletResponse response){
+        int year = Integer.parseInt(request.getParameter("year"));
+        String keyword = request.getParameter("keyword");
+        //todo init
+        List<Article> list = new ArrayList<>();
+        GetArticlesByAddress op = new GetArticlesByAddress();
+        try {
+            list.addAll(op.getArticles(keyword, year));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("list", list);
+        Workbook wb = null;
+        try {
+            wb = GetArticlesByAddress.writeExcel("",year+"年", ".xls", GetArticlesByAddress.title, list);
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition", "attachment;filename="+year+".xls");
+            OutputStream ouputStream = response.getOutputStream();
+            wb.write(ouputStream);
+            ouputStream.flush();
+            ouputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        return "/admin/showArticle";
+    }
+}

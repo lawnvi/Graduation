@@ -78,7 +78,7 @@ public class Periodical {
         journal.setYear(this.Year);
         journal.setIF(this.indicator.getImpactFactor());
         journal.setTop(this.zkys.get(0).isTOP());
-        journal.setSection(this.zkys.get(0).section);
+        journal.setSection("JCR-"+this.zkys.get(0).section);
         journal.setNotes("from 中科院 API");
         journal.setUrl(this.url);
         return journal;

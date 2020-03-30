@@ -1,7 +1,7 @@
 package com.buct.graduation.model.pojo.recruit;
 
 /**
- * 简历表
+ * 就某岗位发出的简历表
  */
 public class Resume {
     private Integer id;

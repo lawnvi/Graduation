@@ -1,6 +1,7 @@
 package com.buct.graduation.service;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.vo.Apply;
 
 import java.util.List;
 
@@ -8,6 +9,8 @@ public interface UserService {
     int register(User user);
 
     User login(String email, String psw);
+
+    int changePsw(User user);
 
     User findUserById(int id);
 
@@ -17,7 +20,7 @@ public interface UserService {
 
     int updateUser(User user);
 
-    int postResume(int uid, int sid);
+    String postResume(int uid, int sid);
 
     //项目论文等
     List<Project> showProjects(int uid);
@@ -26,7 +29,7 @@ public interface UserService {
 
     List<Patent> showPatents(int uid);
 
-    List<Article> showArticles(int uid);
+    List<UserArticle> showArticles(int uid);
 
     int updateProject(Project project);
     
@@ -52,4 +55,6 @@ public interface UserService {
     int addUserArticle(Article article, UserArticle userArticle);
 
     boolean deleteUserArticle(int aid, int uid);
+
+    List<Apply> findApply(int uid);
 }

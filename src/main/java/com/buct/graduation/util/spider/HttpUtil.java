@@ -1,6 +1,8 @@
 package com.buct.graduation.util.spider;
 
 import com.buct.graduation.model.spider.IpPort;
+import com.buct.graduation.util.GlobalName;
+import com.buct.graduation.util.LogUtil;
 import com.buct.graduation.util.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -20,17 +22,21 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.*;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HttpUtil {
     public static String tempPath = "/html";
     public static void main(String[] args) throws Exception {
         HttpUtil util = new HttpUtil();
         String html = util.getHtml("https://webapi.fenqubiao.com/api/user/search?year=2015&keyword=IEEE&user=BUCT_admin&password=1204705");
+        if(html == null || html.equals(""))
+            return;
         System.out.println(html);
     }
 
@@ -94,6 +100,14 @@ public class HttpUtil {
      */
     public String getHtml(String url){
         System.out.println("start visit:"+url);
+        if(url.startsWith("http://www.letpub.com")){
+            try {
+                Random random = new Random();
+                Thread.sleep(1000*random.nextInt(3) + 3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 //        try {
 //            url = URLEncoder.encode(url, "UTF-8");
 //        } catch (UnsupportedEncodingException e) {
@@ -116,8 +130,11 @@ public class HttpUtil {
             int code = response.getStatusLine().getStatusCode();
             System.out.println("result code:" + code + "  visit:"+url);
             result = EntityUtils.toString(entry);
+            LogUtil.getInstance().addLog("log-访问"+url+"成功");
         } catch (IOException e) {
             e.printStackTrace();
+            LogUtil.getInstance().addLog("error-访问"+url+"失败");
+            return null;
         }
         HttpClientUtils.closeQuietly(response);
         HttpClientUtils.closeQuietly(httpClient);
@@ -132,17 +149,9 @@ public class HttpUtil {
 //                e.printStackTrace();
 //            }
 //        }
-        IpPort ip = new IpPort();
+        IpPort ip = IpPoolUtil.getIP();
 //        ip.setPort(81);
 //        ip.setIp("101.4.136.34");
-        while (ip.getIp().equals("")){
-            ip = Utils.ipPool.getIp();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         System.out.println("times"+ip.times+" ip"+ip.getIp()+"start visit:"+url);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         // 使用代理 IP ✔
@@ -150,7 +159,7 @@ public class HttpUtil {
         RequestConfig defaultConfig = RequestConfig.custom().
                 setCookieSpec(CookieSpecs.STANDARD)
                 .setConnectTimeout(10000) // 设置连接超时时间 10秒钟
-                .setSocketTimeout(10000) // 设置读取超时时间10秒钟
+                .setSocketTimeout(30000) // 设置读取超时时间10秒钟
                 .setProxy(proxy).build();
         HttpGet request = new HttpGet(url);
         request.setConfig(defaultConfig);
@@ -168,17 +177,25 @@ public class HttpUtil {
             HttpEntity entry = response.getEntity();
             int code = response.getStatusLine().getStatusCode();
             System.out.println("result code:" + code + "  visit:"+url);
+            if(code != 200){
+                return getHtmlWithIp(url);
+            }
             result = EntityUtils.toString(entry);
+            ip.setStatus(GlobalName.IP_FREE);
 //            System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("http not work");
+            ip.setStatus(GlobalName.IP_OFFLINE);
+            ip.notwork();//badTimes++
+            LogUtil.getInstance().addLog("error-代理ip"+ip.getIp()+":"+ip.getPort()+"访问"+url+"失败");
             return getHtmlWithIp(url);
         } finally {
-            Utils.ipPool.freeIp(ip);
+            IpPoolUtil.releaseIP(ip);
         }
         HttpClientUtils.closeQuietly(response);
         HttpClientUtils.closeQuietly(httpClient);
+        LogUtil.getInstance().addLog("logs-代理ip"+ip.getIp()+":"+ip.getPort()+"访问"+url+"成功");
         return result;
     }
 

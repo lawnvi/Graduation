@@ -12,6 +12,43 @@ public class ConferencePaper {
     private Integer citation;
     private String notes;//备注
     private String role;//担任角色
+    
+    private String AttrName;
+    private String AttrMeeting;
+
+    public String getAttrMeeting() {
+        return AttrMeeting;
+    }
+
+    public void setAttrMeeting() {
+        if(this.conference.length() > 70) {
+            int i = 69;
+            while (i < this.conference.length() && this.conference.charAt(i) == ' '){
+                i++;
+            }
+            this.AttrMeeting = conference.substring(0, i+1) + " ...";
+        }
+        else {
+            this.AttrMeeting = this.conference;
+        }
+    }
+
+    public String getAttrName() {
+        return AttrName;
+    }
+
+    public void setAttrName() {
+        if(this.name.length() > 70) {
+            int i = 69;
+            while (i < this.name.length() && this.name.charAt(i) == ' '){
+                i++;
+            }
+            this.AttrName = name.substring(0, i+1) + " ...";
+        }
+        else {
+            this.AttrName = this.name;
+        }
+    }
 
     private boolean isEsi;
 
@@ -45,6 +82,7 @@ public class ConferencePaper {
 
     public void setConference(String conference) {
         this.conference = conference;
+        setAttrMeeting();
     }
 
     public Integer getUid() {
@@ -61,6 +99,7 @@ public class ConferencePaper {
 
     public void setName(String name) {
         this.name = name;
+        setAttrName();
     }
 
     public String getSection() {

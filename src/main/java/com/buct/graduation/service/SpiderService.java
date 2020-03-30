@@ -8,7 +8,7 @@ import com.buct.graduation.model.spider.PeriodicalTable;
 import java.util.List;
 
 public interface SpiderService {
-    Article searchPaperByName(String name);
+    Article searchPaper(Article article);
 
     PeriodicalTable searchJournals(String name, int year);
 

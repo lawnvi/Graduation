@@ -1,6 +1,8 @@
 package com.buct.graduation.model.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 当前日期，时间
@@ -25,11 +27,19 @@ public class NowDate {
 
     @Override
     public String toString(){
-        return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(cal.getTimeInMillis());
+        return dateformat.format(date);
+//        return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
     }
 
     public String toDate(){
-        return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(cal.getTimeInMillis());
+        return dateformat.format(date);
+//        return year+"年"+month+"月"+day+"日 "+hour+":"+minute+":"+second;
     }
 
     public int getYear() {

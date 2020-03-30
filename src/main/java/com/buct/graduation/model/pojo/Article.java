@@ -1,15 +1,18 @@
 package com.buct.graduation.model.pojo;
 
+import com.buct.graduation.util.GlobalName;
+
 public class Article {
     private Integer id;
     private Integer jid;
     private String name;//论文名称
-    private String journalName;//期刊名称
+    //todo issn 可能没有
+    private String journalIssn = "";//期刊名称
     private Integer citation = 0;//被引次数
-    private String author;//作者
-    private String CAuthor;//通讯作者
-    private String year;//发表年份
-    private String notes;
+    private String author = "";//作者
+    private String CAuthor = "";//通讯作者
+    private String year = "";//发表年份
+    private String notes = "";
     private String url = "";
     private Boolean isESI = false;//是否高被引
     private String filePath;//存档位置
@@ -18,11 +21,30 @@ public class Article {
     private String issue = "";//期
 
     private Boolean isSci = false;//sci收录
-    private String addWay = "自动";
+    private String addWay = GlobalName.addWay_missing_c;
     private String address = "应聘";//是否学院
     private String uploadEmail;//录入者邮箱
 
-    private Journal journal;//期刊
+    private Journal journal = new Journal();//期刊
+
+    private String AttrName;
+
+    public String getAttrName() {
+        return AttrName;
+    }
+
+    public void setAttrName() {
+        if(this.name.length() > 70) {
+            int i = 69;
+            while (i < this.name.length() && this.name.charAt(i) == ' '){
+                i++;
+            }
+            this.AttrName = name.substring(0, i+1) + " ...";
+        }
+        else {
+            this.AttrName = this.name;
+        }
+    }
 
     public String getUploadEmail() {
         return uploadEmail;
@@ -127,14 +149,15 @@ public class Article {
 
     public void setName(String name) {
         this.name = name;
+        setAttrName();
     }
 
-    public String getJournalName() {
-        return journalName;
+    public String getJournalIssn() {
+        return journalIssn;
     }
 
-    public void setJournalName(String journal) {
-        this.journalName = journal;
+    public void setJournalIssn(String journal) {
+        this.journalIssn = journal;
     }
 
     public Integer getCitation() {

@@ -1,10 +1,14 @@
 package com.buct.graduation.util.spider;
 
 import com.buct.graduation.model.spider.IpPort;
+import com.buct.graduation.service.IpService;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.net.*;
 import java.util.Set;
 
@@ -12,6 +16,7 @@ import java.util.Set;
  * ip池
  * 获取可用ip
  */
+@Component
 public class IpPoolUtil {
     private static volatile int free = 0;//可用ip数
     private static volatile int busy = 0;//可用ip数
@@ -21,6 +26,7 @@ public class IpPoolUtil {
     private Set<IpPort> ipList;
     private int ops = 1;
     private static EatIP IPtimer;
+    private static IpPoolUtil ipPoolUtil;
 
 /*
     //创建 IpPoolUtil 的一个对象
@@ -34,7 +40,54 @@ public class IpPoolUtil {
         return instance;
     }
 */
-    public void init(Set<IpPort> list){
+
+    @Autowired
+    private IpService ipService;
+
+    @PostConstruct
+    public void init(){
+        ipPoolUtil = this;
+    }
+
+    public static IpPort getIP(){
+        IpPort ip = ipPoolUtil.ipService.findFreeIP();
+        if(ip == null){
+            addIps(0, 16);
+            try {
+                System.out.println("wait for ip");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getIP();
+/*            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    addIps(16, 100);
+                }
+            }).start();*/
+        }
+        return ip;
+    }
+
+    public static void releaseIP(IpPort ipPort){
+        ipPoolUtil.ipService.updateIp(ipPort);
+    }
+
+    public static int reviveIps(int t){
+        return ipPoolUtil.ipService.revive(t);
+    }
+
+    public static synchronized int addIps(int s, int e){
+        int op = ipPoolUtil.ipService.addIPs(s, e);
+        System.out.println("发现"+op+"个可用ip");
+        return op;
+    }
+
+    //下面的貌似。。。
+
+    public void initOld(Set<IpPort> list){
+
         if(!status.equals("block")){
             IPtimer = new EatIP();
             IPtimer.start();
@@ -144,6 +197,7 @@ public class IpPoolUtil {
         offline = 0;
         busy = 0;
 //        ipList.clear();
+        System.out.println("ip pool close");
         return ipList;
     }
 
@@ -198,7 +252,8 @@ public class IpPoolUtil {
     }
 
     public Set<IpPort> refreshPool(int s, int e){
-        return SpiderXiciIp.findUsefulIp(s, e);
+        SpiderXiciIp xiciIp = new SpiderXiciIp();
+        return xiciIp.findUsefulIp(s, e);
     }
 
     public static void main(String[] args){

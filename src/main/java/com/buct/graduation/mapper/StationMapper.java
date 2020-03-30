@@ -19,6 +19,9 @@ public interface StationMapper {
     @Select("select * from station")
     List<Station> findAll();
 
+    @Select("select * from (SELECT * FROM station WHERE end > now() order by start desc) as a limit #{start}, #{number}")
+    List<Station> findJobsWithPage(@Param("start") int start, @Param("number") int number);
+
     @Delete("delete from station where id =#{id}")
     void delete(int id);
 }

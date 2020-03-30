@@ -10,7 +10,16 @@ public class Interview {
     private String time;//时间
     private String place;//地点
     private Integer score;//分数
-    private String notes;//备注
+    private String notes;//备注 自己想记点什么
+    private String advice;//管理员给建议，比如带什么材料
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
 
     public Integer getScore() {
         return score;

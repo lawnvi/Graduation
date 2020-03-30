@@ -25,26 +25,30 @@ public class SpiderServiceImpl implements SpiderService {
     private ArticleMapper articleMapper;
     @Autowired
     private JournalMapper journalMapper;
-    @Autowired
-    private UserMapper userMapper;
 
+    /**
+     * from db or web
+     * @param a
+     * @return
+     */
     @Override
     @Transactional
-    public Article searchPaperByName(String name) {
-        Article article = articleMapper.findByName(name);
-        if(article != null){
-            return article;
+    public Article searchPaper(Article a) {
+        Article article = articleMapper.findByName(a.getName());
+        if(article == null || !article.getAddWay().equals(GlobalName.addWay_System) || article.getJid() == null ){
+            SpiderWOS spiderWOS = new SpiderWOS();
+            article = spiderWOS.getESIandtimes(a.getName());
         }
-        SpiderWOS spiderWOS = new SpiderWOS();
-        article = spiderWOS.getESIandtimes(name);
         if(article == null) {
-            article = new Article();
-            article.setName(name);
+            article = a;
             article.setAddWay(GlobalName.addWay_missing_c);
         }
         else {
             article.setSci(true);
-            Journal journal = getJournal(article.getJournalName());
+            article.setId(a.getId());
+        }
+        if((article.getJid() == null || article.getJid() == '\0') && !(article.getJournalIssn() == null || article.getJournalIssn().equals(""))){
+            Journal journal = getJournal(article.getJournalIssn());
             if(journal != null) {
                 article.setJournal(journal);
                 article.setJid(journal.getId());
@@ -54,7 +58,11 @@ public class SpiderServiceImpl implements SpiderService {
                 article.setAddWay(GlobalName.addWay_missing_c);
             }
         }
-//        articleMapper.insertArticle(article);
+        if(a.getId() > 0 ) {
+            article.setId(a.getId());
+            articleMapper.update(article);
+        }
+        article.setUploadEmail(a.getUploadEmail());
         return article;
     }
 

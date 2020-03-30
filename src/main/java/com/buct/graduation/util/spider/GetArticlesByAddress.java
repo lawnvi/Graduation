@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GetArticlesByAddress {
-    public String url_1 = "WOS_GeneralSearch.do?fieldCount=1&action=search&product=WOS&search_mode=GeneralSearch&max_field_count=25&max_field_notice=%E6%B3%A8%E6%84%8F%3A+%E6%97%A0%E6%B3%95%E6%B7%BB%E5%8A%A0%E5%8F%A6%E4%B8%80%E5%AD%97%E6%AE%B5%E3%80%82&input_invalid_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E8%AF%B7%E8%BE%93%E5%85%A5%E6%A3%80%E7%B4%A2%E8%AF%8D%E3%80%82&exp_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E4%B8%93%E5%88%A9%E6%A3%80%E7%B4%A2%E8%AF%8D%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%A4%9A%E4%B8%AA%E5%AE%B6%E6%97%8F%E4%B8%AD%E6%89%BE%E5%88%B0+%28&input_invalid_notice_limits=+%3Cbr%2F%3E%E6%B3%A8%E6%84%8F%3A+%E6%BB%9A%E5%8A%A8%E6%A1%86%E4%B8%AD%E6%98%BE%E7%A4%BA%E7%9A%84%E5%AD%97%E6%AE%B5%E5%BF%85%E9%A1%BB%E8%87%B3%E5%B0%91%E4%B8%8E%E4%B8%80%E4%B8%AA%E5%85%B6%E4%BB%96%E6%A3%80%E7%B4%A2%E5%AD%97%E6%AE%B5%E7%9B%B8%E7%BB%84%E9%85%8D%E3%80%82&sa_params=WOS%7C%7C5DJLtMKTUZFzkyOi7Da%7Chttp%3A%2F%2Fapps.webofknowledge.com%7C%27&formUpdated=true&value%28input1%29=Beijing+Univ+Chem+Technol%2C+Coll+Informat+Sci+%26+Technol&value%28select1%29=AD&value%28hidInput1%29=&limitStatus=collapsed&ss_lemmatization=On&ss_spellchecking=Suggest&SinceLastVisit_UTC=&SinceLastVisit_DATE=&period=Range+Selection&range=ALL&startYear=2000&endYear=2020&editions=SCI&editions=ISTP&editions=CCR&editions=IC&update_back2search_link_param=yes&ssStatus=display%3Anone&ss_showsuggestions=ON&ss_numDefaultGeneralSearchFields=1&ss_query_language=&rs_sort_by=PY.D%3BLD.D%3BSO.A%3BVL.D%3BPG.A%3BAU.A&SID=";
-    public String keyword;
+    public String keyword = "Beijing+Univ+Chem+Technol%2C+Coll+Informat+Sci+%26+Technol";
+    public String url_1 = "WOS_GeneralSearch.do?fieldCount=1&action=search&product=WOS&search_mode=GeneralSearch&max_field_count=25&max_field_notice=%E6%B3%A8%E6%84%8F%3A+%E6%97%A0%E6%B3%95%E6%B7%BB%E5%8A%A0%E5%8F%A6%E4%B8%80%E5%AD%97%E6%AE%B5%E3%80%82&input_invalid_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E8%AF%B7%E8%BE%93%E5%85%A5%E6%A3%80%E7%B4%A2%E8%AF%8D%E3%80%82&exp_notice=%E6%A3%80%E7%B4%A2%E9%94%99%E8%AF%AF%3A+%E4%B8%93%E5%88%A9%E6%A3%80%E7%B4%A2%E8%AF%8D%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%A4%9A%E4%B8%AA%E5%AE%B6%E6%97%8F%E4%B8%AD%E6%89%BE%E5%88%B0+%28&input_invalid_notice_limits=+%3Cbr%2F%3E%E6%B3%A8%E6%84%8F%3A+%E6%BB%9A%E5%8A%A8%E6%A1%86%E4%B8%AD%E6%98%BE%E7%A4%BA%E7%9A%84%E5%AD%97%E6%AE%B5%E5%BF%85%E9%A1%BB%E8%87%B3%E5%B0%91%E4%B8%8E%E4%B8%80%E4%B8%AA%E5%85%B6%E4%BB%96%E6%A3%80%E7%B4%A2%E5%AD%97%E6%AE%B5%E7%9B%B8%E7%BB%84%E9%85%8D%E3%80%82&sa_params=WOS%7C%7C5DJLtMKTUZFzkyOi7Da%7Chttp%3A%2F%2Fapps.webofknowledge.com%7C%27&formUpdated=true&value%28input1%29="+ keyword +"&value%28select1%29=AD&value%28hidInput1%29=&limitStatus=collapsed&ss_lemmatization=On&ss_spellchecking=Suggest&SinceLastVisit_UTC=&SinceLastVisit_DATE=&period=Range+Selection&range=ALL&startYear=2000&endYear=2020&editions=SCI&editions=ISTP&editions=CCR&editions=IC&update_back2search_link_param=yes&ssStatus=display%3Anone&ss_showsuggestions=ON&ss_numDefaultGeneralSearchFields=1&ss_query_language=&rs_sort_by=PY.D%3BLD.D%3BSO.A%3BVL.D%3BPG.A%3BAU.A&SID=";
     public String wosUrl = "http://apps.webofknowledge.com/";
     public static String path = "/image/";
     public volatile static int ops = 0;
@@ -113,12 +113,15 @@ public class GetArticlesByAddress {
     }
 
     //todo add threadPool & listPool 待定
-    public List<Article> getArticles(String url, int year){
+    public List<Article> getArticles(String keyword, int year){
+        this.keyword = keyword;
         ops=0;
         List<Article> articles = new ArrayList<>();
-        String SID = SpiderConfig.initSID();
+        String SID = SpiderConfig.getSID();
         HttpUtil httpUtil = new HttpUtil();
-        String html_1 = httpUtil.getHtml(wosUrl + url + SID);
+        String html_1 = httpUtil.getHtml(wosUrl + url_1 + SID);
+        if(html_1 == null || html_1.equals(""))
+            return null;
 //        DocumentType_1
         Document d1 = Jsoup.parse(html_1);// 转换为Dom树
         String qid = "";
@@ -139,6 +142,8 @@ public class GetArticlesByAddress {
         //年份 文献类型
         String url_2 = wosUrl+"Refine.do?update_back2search_link_param=yes&parentQid="+qid+"&SID="+SID+"&product=WOS&databaseId=WOS&colName=WOS&service_mode=Refine&search_mode=GeneralSearch&action=search&clickRaMore=%E5%A6%82%E6%9E%9C%E7%BB%A7%E7%BB%AD%E4%BD%BF%E7%94%A8+&openCheckboxes=%E5%A6%82%E6%9E%9C%E9%9A%90%E8%97%8F%E5%B7%A6%E4%BE%A7%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%88%99%E5%85%B6%E4%B8%AD%E7%9A%84%E7%B2%BE%E7%82%BC%E9%80%89%E6%8B%A9%E5%B0%86%E4%B8%8D%E4%BC%9A%E4%BF%9D%E5%AD%98%E3%80%82&refineSelectAtLeastOneCheckbox=%E8%AF%B7%E8%87%B3%E5%B0%91%E9%80%89%E4%B8%AD%E4%B8%80%E4%B8%AA%E5%A4%8D%E9%80%89%E6%A1%86%E6%9D%A5%E7%B2%BE%E7%82%BC%E6%A3%80%E7%B4%A2%E7%BB%93%E6%9E%9C%E3%80%82&queryOption%28sortBy%29=PY.D%3BLD.D%3BSO.A%3BVL.D%3BPG.A%3BAU.A&queryOption%28ss_query_language%29=auto&sws=&defaultsws=%E5%9C%A8%E5%A6%82%E4%B8%8B%E7%BB%93%E6%9E%9C%E9%9B%86%E5%86%85%E6%A3%80%E7%B4%A2...&swsFields=TS&swsHidden=%E5%9C%A8%E5%89%8D+100%2C000+%E6%9D%A1%E7%BB%93%E6%9E%9C%E5%86%85%3Cbr%3E%E6%A3%80%E7%B4%A2&exclude=&exclude=&exclude=&refineSelection=PublicationYear_"+year+"&exclude=&exclude=&refineSelection=DocumentType_ARTICLE&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&exclude=&mode=refine";
         String html_2 = httpUtil.getHtml(url_2);
+        if(html_2 == null || html_2.equals(""))
+            return null;
 //        refine_form
         Document d2 = Jsoup.parse(html_2);// 转换为Dom树
         Element parentIdForm = d2.getElementById("refine_form");
@@ -170,6 +175,8 @@ public class GetArticlesByAddress {
         for(int page = 1; ; page++) {
             String url_page = wosUrl + "summary.do?product=WOS&parentProduct=WOS&search_mode=GeneralSearch&parentQid="+parentQid+"&qid=" + qid2 + "&SID=" + SID + "&colName=WOS&&&update_back2search_link_param=yes&page=" + page;
             String pageHtml = httpUtil.getHtml(url_page);
+            if(pageHtml == null || pageHtml.equals(""))
+                return null;
             Document d3 = Jsoup.parse(pageHtml);// 转换为Dom树
             List<Element> e3 = d3.getElementsByClass("smallV110 snowplow-full-record");
             System.out.println("pageSize:" + e3.size());
@@ -234,7 +241,9 @@ public class GetArticlesByAddress {
         HttpUtil util = new HttpUtil();
         List<Article> articles = new ArrayList<>();
         for (String url: urls) {
-            String html3 = util.getHtml(url);
+/*            String html3 = util.getHtml(url);
+            if(html3 == null || html3.equals(""))
+                return;
             int number = 0;
             boolean isESI = false;
             String year = "";
@@ -307,17 +316,20 @@ public class GetArticlesByAddress {
             article.setCAuthor(CAuthor);
             author = Utils.getNames(author);
             article.setAuthor(author);
-            article.setJournalName(Journal);
-            article.setUrl(url);
+            article.setJournalIssn(Journal);
+            article.setUrl(url);*/
 
-            if(!journal10.contains(Journal.toUpperCase())){
-                addPaper();
-                System.out.println("not jour10");
-                continue;
-            }
+//            if(!journal10.contains(Journal.toUpperCase())){
+//                addPaper();
+//                System.out.println("not jour10");
+//                continue;
+//            }
+            SpiderWOS wos = new SpiderWOS();
+            Article article = wos.getArticle(url);
             SpiderAPI api = new SpiderAPI();
             SpiderLetpub letpub = new SpiderLetpub();
-            PeriodicalTable table = letpub.getPeriodicals(Journal);
+            article.setJournal(letpub.getJournal(article.getJournalIssn()));
+            /*PeriodicalTable table = letpub.getPeriodicals(Journal);
             if(table.getNumber() == 0){
                 System.out.println("not find journal "+ article.getName()+"\n论文"+article.getJournal().getName());
             }
@@ -333,11 +345,11 @@ public class GetArticlesByAddress {
 //                    article.setSection(journal.getSection());
 //                    article.setNotes(journal.getNotes());
                 }
-            }
-            System.out.println("year:"+year+"被引次数:"+number+"Top:"+article.getJournal().getTop()+"IF:"+article.getJournal().getIF()+"T:"+name+"J:"+Journal);
+            }*/
+//            System.out.println("year:"+year+"被引次数:"+number+"Top:"+article.getJournal().getTop()+"IF:"+article.getJournal().getIF()+"T:"+name+"J:"+Journal);
             articles.add(article);
             addPaper();
-            System.out.println("in jour10");
+//            System.out.println("in jour10");
             articleList.add(article);
         }
 //        return articles;
@@ -398,7 +410,7 @@ public class GetArticlesByAddress {
                         cell.setCellValue(aArticle.getName());
                         break;
                     case 1 :
-                        cell.setCellValue(aArticle.getJournalName());
+                        cell.setCellValue(aArticle.getJournalIssn());
                         break;
                     case 2 :
                         cell.setCellValue(aArticle.getJournal().getTop());

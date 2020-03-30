@@ -10,8 +10,11 @@ public interface UserMapper {
     @Insert("insert into user (email, psw, level) values(#{email}, #{psw}, #{level})")
     int addUser(User user);
 
-    @Update("update user set level=#{level}, name = #{name}, email = #{email}, psw = #{psw}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")
+    @Update("update user set level=#{level}, name = #{name}, email = #{email}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")
     int updateUser(User user);
+
+    @Update("update user set psw = #{psw} where email = #{email} and id = #{id}")
+    int changePsw(User user);
 
     @Select("select * from user where id = #{id}")
     User findUserById(int id);

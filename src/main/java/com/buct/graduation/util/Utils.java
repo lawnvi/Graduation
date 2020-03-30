@@ -2,17 +2,19 @@ package com.buct.graduation.util;
 
 import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.util.NowDate;
-import com.buct.graduation.util.spider.IpPoolUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Array;
+import java.io.File;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 public class Utils {
 
     //ip池
-    public static IpPoolUtil ipPool = new IpPoolUtil();
+//    public static IpPoolUtil ipPool = new IpPoolUtil();
+    //线程池
 
     /**
      * 当前年份
@@ -28,7 +30,7 @@ public class Utils {
      * @return
      */
     public static String getNames(String str){
-        if(str.equals(""))
+        if(str.equals("") || !str.contains("("))
             return str;
         StringBuffer s = new StringBuffer();
         boolean temp = false;
@@ -77,7 +79,7 @@ public class Utils {
         List<String> list = new ArrayList<>();
         int temp = 0;
         for(int i = 0; i < s.length(); i++){
-            if(s.charAt(i) == ' '){
+            if(s.charAt(i) == ' ' || s.charAt(i) == '-'){
                 list.add(s.substring(temp, i));
                 temp = i + 1;
             }else if(i == s.length() - 1){
@@ -89,7 +91,7 @@ public class Utils {
             System.out.println(str);
             switch (str.length()){
                 case 4: year = str; break;
-                case 3: month = map.get(str); break;
+                case 3: month = map.get(str.toUpperCase()); break;
                 case 2:
                 case 1:
                     day = str; break;
@@ -158,11 +160,9 @@ public class Utils {
         return (String)session.getAttribute(name);
     }
 
-    public static String removeSession(HttpServletRequest request, String name){
+    public static void removeSession(HttpServletRequest request, String name){
         HttpSession session = request.getSession();
-        String temp = (String)session.getAttribute(name);
         session.removeAttribute(name);
-        return temp;
     }
 
     /**
@@ -171,7 +171,7 @@ public class Utils {
      * @return
      */
     public static String checkboxToString(String[] s){
-        if(s.length == 0)
+        if(s == null || s.length == 0)
             return "无";
         StringBuffer temp = new StringBuffer();
         for(String str: s){
@@ -196,9 +196,10 @@ public class Utils {
      * @param papers
      * @return
      */
-    public static Reporter getScore(List<Project> projects, List<Patent> patents, List<Article> articles, List<ConferencePaper> papers){
-        Reporter reporter = new Reporter();
+    public static Reporter getScore(Reporter reporter, List<Project> projects, List<Patent> patents, List<Article> articles, List<ConferencePaper> papers){
+//        Reporter reporter = new Reporter();
         //评价指标 resume
+        System.out.println(reporter.getEducation());
         //期刊论文相关指标
         int jcr = 0;//jcr分区1/2
         int sciCitation = 0;//sci被引次数
@@ -206,14 +207,17 @@ public class Utils {
         int esi = 0;//esi论文数量
         double IF = 0;//影响因子
         for(Article article: articles){
-            if(article.getJournal().getSection() == 1 || article.getJournal().getSection() == 2){
-                jcr++;
-            }
+//            System.out.println(article.getName());
             sciCitation += article.getCitation();
-            IF += article.getJournal().getIF();
             if(article.getESI()){
                 esi++;
             }
+            if(article.getJournal() == null)
+                continue;
+            if(article.getJournal().getSection().equals("JCR-1") || article.getJournal().getSection().equals("JCR-2")){
+                jcr++;
+            }
+            IF += article.getJournal().getIF();
         }
         citation = sciCitation;
         //会议论文
@@ -233,6 +237,8 @@ public class Utils {
         for(Project project : projects){
             money += project.getFunds();
         }
+//        citation = 274;
+//        sciCitation = 274;
         int jcrScore = getJCRScore(articles, patents, papers);
         double score = jcrScore + Math.log(IF+1) + Math.log(citation+1);
         reporter.setCitation(citation);
@@ -282,8 +288,12 @@ public class Utils {
         int section_c = 0;
 
         for (Article article: articles){
+            // todo isOk?
+            if(article.getJournal() == null){
+                continue;
+            }
             switch (article.getJournal().getSection()){
-                case 1:{
+                case "JCR-1":{
                     if(article.getESI()){
                         esi_1++;
                     }
@@ -294,7 +304,7 @@ public class Utils {
                     }
                     break;
                 }
-                case 2:{
+                case "JCR-2":{
                     if(article.getESI()){
                         esi_2++;
                     }
@@ -305,25 +315,65 @@ public class Utils {
                     }
                     break;
                 }
-                case 3:{
+                case "JCR-3":{
                     if(article.getESI()){
                         esi_3++;
                     }
                     section_3++;
                     break;
                 }
-                case 4:{
+                case "JCR-4":{
                     section_4++;
                     break;
                 }
+                case "CCF-A":{
+                    section_a++;
+                    if(article.getESI()){
+                        esi_1++;
+                    }
+                    break;
+                }
+                case "CCF-B":{
+                    section_b++;
+                    if(article.getESI()){
+                        esi_2++;
+                    }
+                    break;
+                }
+                case "CCF-C":{
+                    section_c++;
+                    if(article.getESI()){
+                        esi_3++;
+                    }
+                    break;
+                }
+                default:break;
             }
         }
 
         for(ConferencePaper paper: papers){
             switch (paper.getSection().toUpperCase()){
-                case "CCF-A": section_a++;break;
-                case "CCF-B": section_b++;break;
-                case "CCF-C": section_c++;break;
+                case "CCF-A":{
+                    section_a++;
+                    if(paper.isEsi()){
+                        esi_1++;
+                    }
+                    break;
+                }
+                case "CCF-B":{
+                    section_b++;
+                    if(paper.isEsi()){
+                        esi_2++;
+                    }
+                    break;
+                }
+                case "CCF-C":{
+                    section_c++;
+                    if(paper.isEsi()){
+                        esi_3++;
+                    }
+                    break;
+                }
                 default:break;
             }
         }
@@ -336,7 +386,8 @@ public class Utils {
 
     public static String getPost(Reporter reporter){
         //教授
-        if(!reporter.getTitle().equals("") || reporter.getEsi() > 0 || reporter.getFunds() >= 3000000){
+        if((!reporter.getTitle().equals("") && !reporter.getTitle().equals("无")) || reporter.getEsi() > 0 || reporter.getFunds() >= 300){
+            System.out.println(reporter.getTitle()+" "+reporter.getEsi()+" "+reporter.getFunds());
             return "教授";
         }
         int professor = 0;//教授
@@ -345,25 +396,66 @@ public class Utils {
         int apProfessor = 0;//见习副教授
         int teacher = 0;//讲师
 
+        System.out.println("基金："+reporter.getFund());
+
         int jcr = reporter.getJcr();
         double score = reporter.getScore();
         int citation = reporter.getSciCitation();
         String fund = reporter.getFund();
-        if(jcr >= 1 || score >= 5 || citation >= 7){
+        System.out.println(jcr+" "+score+" "+citation+" "+fund);
+        if(jcr >= 1)
+            teacher++;
+        if(score >= 5)
+            teacher++;
+        if(citation >= 7){
             teacher++;
         }
-        if(jcr >= 2 || score >= 20 || citation >= 20 || fund.contains("NSFC青年基金")){
+
+        if(jcr >= 2)
+            apProfessor++;
+        if(score >= 20)
+            apProfessor++;
+        if(citation >= 20){
             apProfessor++;
         }
-        if(jcr >= 3 || score >= 30 || citation >= 30 || fund.contains("NSFC面上基金")){
+        if(fund.contains("NSFC青年基金")){
+            apProfessor++;
+        }
+
+        if(jcr >= 3)
+            aProfessor++;
+        if(score >= 30)
+            aProfessor++;
+        if(citation >= 30){
             aProfessor++;
         }
-        if(jcr >= 4 || score >= 40 || citation >= 40 || fund.contains("NSFC重点基金")){
+        if(fund.contains("NSFC面上基金")){
+            aProfessor++;
+        }
+
+        if(jcr >= 4)
+            pProfessor++;
+        if(score >= 40)
+            pProfessor++;
+        if(citation >= 40){
             pProfessor++;
         }
-        if(jcr >= 5 || score >= 50 || citation >= 50 || fund.contains("NSFC重点基金")){
+        if(fund.contains("NSFC重点基金")){
+            pProfessor++;
+        }
+
+        if(jcr >= 5)
+            professor++;
+        if(score >= 50)
+            professor++;
+        if(citation >= 50){
             professor++;
         }
+        if(fund.contains("NSFC重点基金")){
+            professor++;
+        }
+
+        System.out.println(teacher+" "+pProfessor+" "+aProfessor+" "+apProfessor+" "+professor);
 
         if(professor >= 2)
             return "教授";
@@ -379,4 +471,33 @@ public class Utils {
     }
 
 
+    /**
+     * savefile
+     * @param file
+     * @param path
+     * @return
+     */
+    public static String saveFile(MultipartFile file, String path){
+        if(!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();  // 文件名
+            //fileName = UUID.randomUUID() + suffixName; // 新文件名
+            String newName= Utils.getCode()+"-" +Utils.getCode() + fileName.substring(fileName.lastIndexOf(".")); // 新文件名
+
+            File file2 = new File(GlobalName.ABSOLUTE_PATH+path);
+            if(!file2.isDirectory()) {
+                //递归生成文件夹
+                file2.mkdirs();
+            }
+            try {
+                //构建真实的文件路径
+                File newFile = new File(file2.getAbsolutePath() + File.separator + newName);
+                //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+                file.transferTo(newFile);
+                return "/"+GlobalName.ROOT_PATH+path+File.separator+newName;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 }

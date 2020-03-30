@@ -20,11 +20,11 @@ public class User {
     private String title;//头衔-四青
     private String fund;//基金-nsfc
 
-    private String status;//简历进度 look/register/pass/fail
+    private String status;//博士在读/博士后/已工作
     private String registerTime;//投递时间/注册
 
     private String major;//专业
-    private String sex;
+    private String sex = "男";
     private String birthday;
     private String contactAddress;//联系地址
 
@@ -34,6 +34,27 @@ public class User {
     private String nation;//民族
     private String nationality;//国籍
     private String nativePlace;//籍贯
+
+    public User() {
+        this.name = "";
+        this.tel = "";
+        this.picPath = "";
+        this.notes = "";
+        this.resumePath = "";
+        this.education = "";
+        this.title = "无";
+        this.fund = "无";
+        this.status = "";
+        this.registerTime = "";
+        this.major = "";
+        this.sex = "";
+        this.birthday = "";
+        this.contactAddress = "";
+        this.level = "";
+        this.nation = "";
+        this.nationality = "";
+        this.nativePlace = "";
+    }
 
     public String getLevel() {
         return level;

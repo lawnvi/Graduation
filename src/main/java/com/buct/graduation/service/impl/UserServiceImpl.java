@@ -3,6 +3,7 @@ package com.buct.graduation.service.impl;
 import com.buct.graduation.mapper.*;
 import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.recruit.Resume;
+import com.buct.graduation.model.vo.Apply;
 import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.rmi.CORBA.Util;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private JournalMapper journalMapper;
     @Autowired
     private ReporterMapper reporterMapper;
+    @Autowired
+    private InterviewMapper interviewMapper;
 
     @Override
     public int register(User user) {
@@ -52,6 +56,11 @@ public class UserServiceImpl implements UserService {
         if(psw.equals(user.getPsw()))
             return user;
         return null;
+    }
+
+    @Override
+    public int changePsw(User user) {
+        return userMapper.changePsw(user);
     }
 
     @Override
@@ -75,8 +84,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional//事务？
-    public int postResume(int uid, int sid) {
+    @Transactional//事务
+    public String postResume(int uid, int sid) {
+        if(resumeMapper.findByUid_Sid(uid, sid) != null){
+            return "exist";
+        }
         User user = userMapper.findUserById(uid);
         //todo 评价获得reporter id
         List<ConferencePaper> papers = conferencePaperMapper.findByUid(uid);
@@ -86,16 +98,19 @@ public class UserServiceImpl implements UserService {
         for(Article article: articles){
             article.setJournal(journalMapper.findById(article.getJid()));
         }
-        Reporter reporter = Utils.getScore(projects, patents, articles, papers);
-        int rid = reporterMapper.insert(reporter);
-System.out.println("rid"+rid);
+        Reporter reporter = Utils.getScore(new Reporter(), projects, patents, articles, papers);
+        reporter.setUid(uid);
+        reporter.setTimestamp(Utils.getDate().toString());
+        reporterMapper.insert(reporter);
+//System.out.println("rid"+reporter.getId());
         Resume resume = new Resume();
         resume.setUid(uid);
         resume.setSid(sid);
-        resume.setRid(rid);
+        resume.setRid(reporter.getId());
         resume.setResumePath(user.getResumePath());
         resume.setStatus("new");
-        return resumeMapper.addResume(resume);
+
+        return resumeMapper.addResume(resume) > 0 ? GlobalName.success : GlobalName.fail;
     }
 
     @Override
@@ -114,12 +129,21 @@ System.out.println("rid"+rid);
     }
 
     @Override
-    public List<Article> showArticles(int uid) {
+    @Transactional
+    public List<UserArticle> showArticles(int uid) {
         List<Article> articles = articleMapper.findByIds(uid);
+        List<UserArticle> list = new ArrayList<>();
         for(Article article: articles){
-            article.setJournal(journalMapper.findById(article.getJid()));
+            if(article.getJid() != null) {
+                article.setJournal(journalMapper.findById(article.getJid()));
+            }else {
+                article.setJournal(new Journal());
+            }
+            UserArticle a = userArticleMapper.findById(article.getId(), uid);
+            a.setArticle(article);
+            list.add(a);
         }
-        return articles;
+        return list;
     }
 
     @Override
@@ -149,8 +173,10 @@ System.out.println("rid"+rid);
     public int addConferencePaper(ConferencePaper conferencePaper) {
         SpiderWOS wos = new SpiderWOS();
         Article article = wos.getESIandtimes(conferencePaper.getName());
-        conferencePaper.setCitation(article.getCitation());
-        conferencePaper.setEsi(article.getESI());
+        if (article != null) {
+            conferencePaper.setCitation(article.getCitation());
+            conferencePaper.setEsi(article.getESI());
+        }
         return conferencePaperMapper.addPaper(conferencePaper);
     }
 
@@ -182,9 +208,7 @@ System.out.println("rid"+rid);
 
     @Override
     public int updateUserArticle(Article article, UserArticle userArticle) {
-        if(userArticleMapper.update(userArticle) == 0)
-            return 0;
-        return articleMapper.update(article);
+        return userArticleMapper.update(userArticle);
     }
 
     @Override
@@ -202,9 +226,26 @@ System.out.println("rid"+rid);
 
     @Override
     public boolean deleteUserArticle(int aid, int uid) {
-        if(userArticleMapper.findById(aid, uid) == null)
+        if(userArticleMapper.findById(aid, uid) == null) {
             return false;
+        }
         userArticleMapper.delete(uid, aid);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public List<Apply> findApply(int uid) {
+        List<Resume> resumes = resumeMapper.findResumeByUid(uid);
+        List<Apply> applies = new ArrayList<>();
+        for(Resume resume: resumes){
+            Apply apply = new Apply();
+            apply.setResume(resume);
+            apply.setStation(stationMapper.findById(resume.getSid()));
+            apply.setReporter(reporterMapper.findById(resume.getRid()));
+            apply.setInterviews(interviewMapper.findByRid(resume.getId()));
+            applies.add(apply);
+        }
+        return applies;
     }
 }

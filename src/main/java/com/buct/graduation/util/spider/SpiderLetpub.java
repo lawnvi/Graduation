@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * letPub 使用Journal保存数据
@@ -27,8 +29,18 @@ public class SpiderLetpub {
 //        String url = "http://www.letpub.com.cn/index.php?journalid=10017&page=journalapp&view=detail";
 //        String url = "http://www.letpub.com.cn/index.php?journalid=6658&page=journalapp&view=detail";
         String url = "http://www.letpub.com.cn/index.php?journalid=3329&page=journalapp&view=detail";
-//        getJournalData(url);
-
+        letpub.getJournal("0378-4371");
+        List<String> kw = new ArrayList<>();
+        kw.add("0378-4371");
+        kw.add("FOREST ECOLOGY AND MANAGEMENT");
+        for(String keyword: kw){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    letpub.getJournal(keyword);
+                }
+            }).start();
+        }
     }
 
     public static String urlSearch = "http://www.letpub.com.cn/index.php?page=journalapp&view=search&searchissn=&searchfield=&searchimpactlow=&searchimpacthigh=&searchscitype=&view=search&searchcategory1=&searchcategory2=&searchjcrkind=&searchopenaccess=&searchsort=relevance&searchname=";
@@ -46,7 +58,7 @@ public class SpiderLetpub {
         String url2 = urlSearchISSN + keyword;
         String url1 = urlSearch + kw;
         table = searchPeriodical(url1, keyword);
-        if(table.getNumber() == 0 && keyword.length() == 9 && keyword.charAt(4) == '-'){
+        if((table == null || table.getList().size() == 0) && keyword.length() == 9 && keyword.charAt(4) == '-'){
             table = searchPeriodical(url2, keyword);
         }
         return table;
@@ -55,7 +67,12 @@ public class SpiderLetpub {
     private PeriodicalTable searchPeriodical(String u, String keyword) {
         PeriodicalTable table = new PeriodicalTable();
         HttpUtil util = new HttpUtil();
+        //todo 测试
         String html = util.getHtmlWithIp(u);
+
+//        String html = util.getHtml(u);
+        if(html == null || html.equals(""))
+            return null;
         Document d1 = Jsoup.parse(html);// 转换为Dom树
 //        List<Element> et = d1.select("#border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;");
         int i = 0;
@@ -63,6 +80,12 @@ public class SpiderLetpub {
         String url = "";
         String title1 = "";
         String title2 = "";
+//        Elements tr = d1.select("#yxyz_content > table.table_yjfx > tbody>tr");
+        if(d1.select("#yxyz_content > table.table_yjfx > tbody > tr:nth-child(3) > td").text().startsWith("暂无匹配结果")){
+            System.out.println("no match");
+            return table;
+        }
+//        title1 = tr
         for (Element e : d1.getAllElements()) {
             if (e.attr("style").equals("border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;")) {
                 if (i % 12 == 0) {
@@ -70,7 +93,8 @@ public class SpiderLetpub {
                     issn = e.text();//issn
                 } else if (i % 12 == 1) {
                     for (Element element : e.getAllElements()) {
-                        if (element.attr("style").equals("color:#0099FF; font-size:12px; font-weight:bold; text-decoration:underline;")) {
+                        //color:#0099FF; font-size:12px; font-weight:bold; text-decoration:line-through;
+                        if (element.attr("style").equals("color:#0099FF; font-size:12px; font-weight:bold; text-decoration:line-through;") || element.attr("style").equals("color:#0099FF; font-size:12px; font-weight:bold; text-decoration:underline;")) {
                             System.out.println(element.text());
                             url = urlIndex + element.attr("href");
                             title1 = element.text();
@@ -89,9 +113,8 @@ public class SpiderLetpub {
                     periodical.setTitle(title1);
                     periodical.setAbbrTitle(title2);
 
-                    if(issn.equals(keyword) || title1.equalsIgnoreCase(keyword) || title2.equalsIgnoreCase(keyword)){
+                    if(issn.toUpperCase().equals(keyword.toUpperCase()) || title1.equalsIgnoreCase(keyword) || title2.equalsIgnoreCase(keyword)){
                         periodical.setMatch(true);
-
                     }else {
                         periodical.setMatch(false);
                     }
@@ -121,7 +144,14 @@ public class SpiderLetpub {
         Journal journal = new Journal();
         journal.setUrl(url);
         HttpUtil util = new HttpUtil();
+        //todo test
         String html = util.getHtmlWithIp(url);
+//        String html = util.getHtml(url);
+
+        if(html == null || html.equals("")){
+            System.out.println("get joural data failing "+url);
+            return getJournal(url);
+        }
         Document document = Jsoup.parse(html);// 转换为Dom树
         Elements tr = document.select("#yxyz_content > table:nth-child(12) > tbody > tr");
         for (Element element : tr) {
@@ -144,6 +174,7 @@ public class SpiderLetpub {
                 String isNull = element.select("td:nth-child(2)").text();
                 if(isNull.contains("（没有被最新的JCR基础版收录，仅供参考）")){
                     journal.setNotes(journal.getNotes()+isNull);
+                    journal.setSection("not-JCR");
                 }
                 else {
                     String year = text.substring(13, 17);
@@ -152,7 +183,7 @@ public class SpiderLetpub {
                     if(!section.equals("")){
                         journal.setNotes(text.substring(0, 27));
                         journal.setYear(Integer.parseInt(year));
-                        journal.setSection(Integer.parseInt(section.substring(0, section.length()-1)));
+                        journal.setSection("JCR-"+Integer.parseInt(section.substring(0, section.length()-1)));
                         journal.setTop(isTop.equals("是"));
 //                        System.out.println("s:" + journal.getYear() + " 分区：" + journal.getSection() + "istop:" + journal.getTop());
                     }
@@ -163,7 +194,7 @@ public class SpiderLetpub {
     }
 
     /**
-     * 获取最新IF
+     * 通过issn获取最新IF
      *
      * @param issn
      * @return
@@ -174,6 +205,8 @@ public class SpiderLetpub {
         String year = "";
         HttpUtil httpUtil = new HttpUtil();
         String html = httpUtil.getHtml(url);
+        if(html == null || html.equals(""))
+            return 0;
         Document document = Jsoup.parse(html);// 转换为Dom树
         Element element = document.select("table.result-table-data").first();
         Elements th = element.select("tr>th");
@@ -187,13 +220,20 @@ public class SpiderLetpub {
         return Float.parseFloat(IF);
     }
 
+    /**
+     * 通过刊名/简称/ISSN获取期刊详情
+     * @param keyword
+     * @return
+     */
     public Journal getJournal(String keyword){
+        System.out.println("this is journal:"+keyword);
         PeriodicalTable table = getPeriodicals(keyword);
         for(Periodical periodical: table.getList()){
             if(periodical.isMatch()){
                 return getJournalData(periodical.getUrl());
             }
         }
+        System.out.println("not compare "+keyword);
         return null;
     }
 

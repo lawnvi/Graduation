@@ -223,9 +223,6 @@ public class ExcelUtils {
         for (int numSheet = 0; numSheet < excel.getNumberOfSheets(); numSheet++) {
             Sheet sheet = excel.getSheetAt(numSheet);
             System.out.println(sheet.getSheetName()); //输出该表格的名称
-            if (sheet == null) {
-                continue;
-            }
             //遍历所有行
             for (int rowNum = 2; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 Row row = sheet.getRow(rowNum);

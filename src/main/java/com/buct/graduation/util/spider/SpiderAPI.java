@@ -21,6 +21,8 @@ public class SpiderAPI {
         HttpUtil util = new HttpUtil();
         keyword = keyword.replace(" ", "%20");
         String html = util.getHtml("https://webapi.fenqubiao.com/api/user/search?year="+year+"&keyword="+keyword+"&user=BUCT_admin&password=1204705");
+        if(html == null || html.equals(""))
+            return null;
         PeriodicalTable table = new PeriodicalTable(html);
         System.out.println("匹配的期刊数:"+ table.getNumber());
 
@@ -53,6 +55,8 @@ public class SpiderAPI {
         String keyword = kw.replace(" ", "%20");
         HttpUtil util = new HttpUtil();
         String html = util.getHtml("https://webapi.fenqubiao.com/api/user/get?year="+year+"&keyword="+keyword+"&user=BUCT_admin&password=1204705");
+        if(html == null || html.equals(""))
+            return null;
         System.out.println("分区详细信息：");
         if(html.contains("Message") || html.equals("[]")){
             System.out.println("出现错误");

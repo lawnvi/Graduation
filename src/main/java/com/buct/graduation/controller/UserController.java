@@ -1,18 +1,23 @@
 package com.buct.graduation.controller;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.vo.Apply;
 import com.buct.graduation.service.IpService;
 import com.buct.graduation.service.SpiderService;
 import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.EmailUtil;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,7 +33,13 @@ public class UserController {
     private IpService ipService;
 
     private int getThisId(HttpServletRequest request){
-        return Integer.parseInt(Utils.getSession(request, GlobalName.session_userId));
+        HttpSession session = request.getSession();
+        return ((User)session.getAttribute(GlobalName.session_user)).getId();
+    }
+
+    private User getUser(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (User)session.getAttribute(GlobalName.session_user);
     }
 
     /**
@@ -72,6 +83,47 @@ public class UserController {
         return GlobalName.success;
     }
 
+    /**
+     * 密码找回
+     */
+    @RequestMapping("/resetPsw")
+    public String resetPsw(){
+        return "/user/recovery_password";
+    }
+    //验证码
+    @RequestMapping("/resetPsw.code")
+    @ResponseBody
+    public String getCode2ResetPsw(HttpServletRequest request){
+        String email = request.getParameter("email");
+        if(userService.findUserByEmail(email) == null){
+            return "!existed";
+        }
+        String code = Utils.getCode();
+        if(EmailUtil.sendMail(email, EmailUtil.resetPsw(code))){
+            Utils.saveSession(email, code, request);
+            return GlobalName.success;
+        }
+        return GlobalName.fail;
+    }
+    @RequestMapping("/resetPsw.do")
+    @ResponseBody
+    public String resetPswMethod(HttpServletRequest request){
+        String code = request.getParameter("checkCode");
+        String email = request.getParameter("email");
+        String psw = request.getParameter("psw");
+        //验证码检验
+        if(!code.equals(Utils.getSession(request, email))){
+            return GlobalName.fail;
+        }
+        if(psw.length() < 6){
+            return GlobalName.fail;
+        }
+        User user = userService.findUserByEmail(email);
+        user.setPsw(psw);
+        userService.changePsw(user);
+        Utils.removeSession(request, email);
+        return GlobalName.success;
+    }
 
     /**
      * 登录相关
@@ -86,24 +138,39 @@ public class UserController {
     public String loginMethod(HttpServletRequest request){
         String email = request.getParameter("email");
         String psw = request.getParameter("psw");
+        if(email == null || email.equals("") || psw == null || psw.equals("")){
+            return GlobalName.fail;
+        }
         User user = userService.login(email, psw);
         if(user == null){
             return GlobalName.fail;
         }
-        Utils.saveSession(GlobalName.session_userId, user.getId()+"", request);
+        //Utils.saveSession(GlobalName.session_userId, user.getId()+"", request);
+        HttpSession session = request.getSession();
+        user.setPsw("");
+        session.setAttribute(GlobalName.session_user, user);
+        //时限600s
+        session.setMaxInactiveInterval(600);
         return GlobalName.success;
+    }
+
+    @RequestMapping("/logout")
+    public String logoutMethod(HttpServletRequest request){
+        Utils.removeSession(request, GlobalName.session_user);
+        //todo 去首页
+        return "redirect: ../../index";
     }
 
     /**
      * 信息展示，填写
      */
     //基本信息
-    @RequestMapping("/myBasicData")
+    @RequestMapping("/information")
     public String showBasicData(Model model, HttpServletRequest request){
         int id = getThisId(request);
         User user = userService.findUserById(id);
         model.addAttribute("user", user);
-        return "/user/data/myBasic";
+        return "/user/data/basicInfo";
     }
 
     @RequestMapping("/updateBasicData")
@@ -128,7 +195,7 @@ public class UserController {
         model.addAttribute("user", user);
         return "/user/data/updateBasic";
     }
-    @RequestMapping("/updateBasicData.do")
+    @RequestMapping("/updateBasicInfo.do")
     public String fillBasicDataMethod(HttpServletRequest request, Model model){
         int id = getThisId(request);
         User user = userService.findUserById(id);
@@ -138,16 +205,17 @@ public class UserController {
         user.setContactAddress(request.getParameter("contactAddress"));
         user.setMajor(request.getParameter("major"));
         user.setNotes(request.getParameter("notes"));
+        user.setStatus(request.getParameter("status"));
         user.setTel(request.getParameter("tel"));
         user.setEducation(request.getParameter("education"));
-        String[] titles = request.getParameterValues("title");
+        String[] titles = request.getParameterValues("titles[]");
         user.setTitle(Utils.checkboxToString(titles));
-        String[] funds = request.getParameterValues("fund");
+        String[] funds = request.getParameterValues("funds[]");
         user.setFund(Utils.checkboxToString(funds));
         userService.updateUser(user);
         User user2 = userService.findUserById(id);
         model.addAttribute("user", user2);
-        return "/user/data/myBasic";
+        return "/user/data/basicInfo";
     }
 
     //主持的项目
@@ -161,12 +229,13 @@ public class UserController {
         return project;
     }
 
-    @RequestMapping("/myProjects")
+    @RequestMapping("/projects")
     public String myProjects(Model model, HttpServletRequest request){
         int id = getThisId(request);
         List<Project> list = userService.showProjects(id);
         model.addAttribute("projects", list);
-        return "";
+        model.addAttribute("user", getUser(request));
+        return "/user/data/projects";
     }
     //添加
     @RequestMapping("/addProject")
@@ -182,27 +251,35 @@ public class UserController {
     @ResponseBody
     public String updateProject(HttpServletRequest request){
         Project project = getProject(request);
+        project.setId(Integer.parseInt(request.getParameter("id")));
         if(userService.updateProject(project) > 0)
             return GlobalName.success;
         return GlobalName.fail;
     }
     //删除
-    @RequestMapping("/deleteProject")
+    @RequestMapping("/deleteProjects")
     @ResponseBody
     public String deleteProject(HttpServletRequest request){
-        int pid = Integer.parseInt(request.getParameter("pid"));
-        if(userService.deleteProject(pid, getThisId(request)))
-            return GlobalName.success;
-        return GlobalName.fail; 
+        String[] str = request.getParameterValues("id[]");
+        if(str == null ||str.length == 0)
+            return GlobalName.fail;
+        for(String s: str){
+            System.out.println(s);
+            if(!userService.deleteProject(Integer.parseInt(s), getThisId(request))){
+                return GlobalName.fail;
+            }
+        }
+        return GlobalName.success;
     }
 
     //期刊论文
-    @RequestMapping("/myArticle")
+    @RequestMapping("/articles")
     public String myArticle(Model model, HttpServletRequest request){
         int id = getThisId(request);
-        List<Article> list = userService.showArticles(id);
-        model.addAttribute("articles", list);
-        return "";
+        List<UserArticle> list = userService.showArticles(id);
+        model.addAttribute("myArticles", list);
+        model.addAttribute("user", getUser(request));
+        return "/user/data/articles";
     }
 
     private static int ops = 0;
@@ -212,13 +289,14 @@ public class UserController {
     @RequestMapping("/addArticle")
     @ResponseBody
     public String addArticles(Model model, HttpServletRequest request){
-        Utils.ipPool.init(ipService.findIpByStatus("free"));
         int uid = getThisId(request);
         String notes = request.getParameter("notes");
         String role = request.getParameter("role");
         String title = request.getParameter("title");
-        Article article = spiderService.searchPaperByName(title);
-
+        Article a = new Article();
+        a.setName(title);
+        a.setId(-1);
+        Article article = spiderService.searchPaper(a);
         UserArticle userArticle = new UserArticle();
         userArticle.setUid(uid);
         userArticle.setNotes(notes);
@@ -226,19 +304,92 @@ public class UserController {
         if(userService.addUserArticle(article, userArticle) > 0){
             return GlobalName.success;
         }
-        Utils.ipPool.closeIpPool();
         return GlobalName.fail;
     }
 
-    @RequestMapping("/deleteUserArticle")
-    @ResponseBody
-    public String deleteUserArticle(HttpServletRequest request){
-        int id = Integer.parseInt(request.getParameter("id"));
-        if(userService.deleteUserArticle(id, getThisId(request)))
+    //手动录入 管理员检查 手动就不必了
+//    @RequestMapping("/addArticleByHand")
+//    @ResponseBody
+    public String addArticleWithHand(Model model, HttpServletRequest request){
+        int uid = getThisId(request);
+        String notes = request.getParameter("notes");
+        String role = request.getParameter("role");
+        String title = request.getParameter("title");
+        boolean isEsi = request.getParameter("isEsi").equalsIgnoreCase("true");
+        int citation = Integer.parseInt(request.getParameter("citation"));
+        String journal = request.getParameter("journal");
+        Article a = new Article();
+        a.setName(title);
+        a.setNotes(notes);
+        a.setJournalIssn(journal);
+        a.setCitation(citation);
+        a.setESI(isEsi);
+        Article article = spiderService.searchPaper(a);
+        UserArticle userArticle = new UserArticle();
+        userArticle.setUid(uid);
+        userArticle.setNotes(notes);
+        userArticle.setRole(role);
+        if(userService.addUserArticle(article, userArticle) > 0){
             return GlobalName.success;
+        }
         return GlobalName.fail;
     }
+
+    @RequestMapping("/deleteUserArticles")
+    @ResponseBody
+    public String deleteUserArticle(HttpServletRequest request){
+        String[] str = request.getParameterValues("id[]");
+        if(str == null ||str.length == 0)
+            return GlobalName.fail;
+        for(String s: str){
+            System.out.println(s);
+            if(!userService.deleteUserArticle(Integer.parseInt(s), getThisId(request))){
+                return GlobalName.fail;
+            }
+        }
+        return GlobalName.success;
+    }
     //todo 手动添加/修改
+    @RequestMapping("/updateArticle")
+    @ResponseBody
+    public String updateArticles(Model model, HttpServletRequest request){
+        int uid = getThisId(request);
+        String notes = request.getParameter("notes");
+        String role = request.getParameter("role");
+        String title = request.getParameter("title");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String journal = request.getParameter("journal");
+        Article a = new Article();
+        a.setName(title);
+        a.setId(id);
+        a.setJournalIssn(journal);
+        System.out.println(uid+" "+title);
+        Article article = spiderService.searchPaper(a);
+        System.out.println(article.getJid()+ " "+article.getId());
+        if(!article.getAddWay().equals(GlobalName.addWay_System)){
+            article.setJournalIssn(journal);
+            Journal journal1 = spiderService.getJournal(journal);
+            if(journal != null) {
+                article.setJournal(journal1);
+                article.setJid(journal1.getId());
+            }
+        }
+
+        if(article.getId() == null){
+            //论文名也能拿到id
+            article.setId(id);
+        }
+        UserArticle userArticle = new UserArticle();
+        userArticle.setUid(uid);
+        userArticle.setNotes(notes);
+        userArticle.setRole(role);
+        userArticle.setAid(article.getId());
+
+        if(userService.updateUserArticle(article, userArticle) > 0){
+            return GlobalName.success;
+        }
+        return GlobalName.fail;
+    }
     
     //专利
     private Patent getPatent(HttpServletRequest request){
@@ -250,12 +401,13 @@ public class UserController {
         patent.setRole(request.getParameter("role"));
         return patent;
     }
-    @RequestMapping("/myPatents")
+    @RequestMapping("/patents")
     public String myPatents(Model model, HttpServletRequest request){
         int id = getThisId(request);
-        List<Project> list = userService.showProjects(id);
+        List<Patent> list = userService.showPatents(id);
         model.addAttribute("patents", list);
-        return "";
+        model.addAttribute("user", getUser(request));
+        return "/user/data/patents";
     }
 
     @RequestMapping("/addPatent")
@@ -271,18 +423,25 @@ public class UserController {
     @ResponseBody
     public String updatePatent(HttpServletRequest request){
         Patent patent = getPatent(request);
+        patent.setId(Integer.parseInt(request.getParameter("id")));
         if(userService.updatePatent(patent) > 0)
             return GlobalName.success;
         return GlobalName.fail;
     }
 
-    @RequestMapping("/deletePatent")
+    @RequestMapping("/deletePatents")
     @ResponseBody
     public String deletePatent(HttpServletRequest request){
-        int id = Integer.parseInt(request.getParameter("id"));
-        if(userService.deletePatent(id, getThisId(request)))
-            return GlobalName.success;
-        return GlobalName.fail;
+        String[] str = request.getParameterValues("id[]");
+        if(str == null ||str.length == 0)
+            return GlobalName.fail;
+        for(String s: str){
+            System.out.println(s);
+            if(!userService.deletePatent(Integer.parseInt(s), getThisId(request))){
+                return GlobalName.fail;
+            }
+        }
+        return GlobalName.success;
     }
     
     //会议论文
@@ -294,16 +453,18 @@ public class UserController {
         paper.setNotes(request.getParameter("notes"));
         paper.setRole(request.getParameter("role"));
         paper.setSection(request.getParameter("section"));
+        paper.setEsi(request.getParameter("isEsi").equalsIgnoreCase("true"));
         paper.setUid(getThisId(request));
         return paper;
     }
 
-    @RequestMapping("/myConferencePapers")
+    @RequestMapping("/papers")
     public String myConferencePapers(Model model, HttpServletRequest request){
         int id = getThisId(request);
         List<ConferencePaper> list = userService.showConferencePapers(id);
-        model.addAttribute("ConferencePapers", list);
-        return "";
+        model.addAttribute("papers", list);
+        model.addAttribute("user", getUser(request));
+        return "/user/data/papers";
     }
 
     @RequestMapping("/addConferencePaper")
@@ -319,6 +480,7 @@ public class UserController {
     @ResponseBody
     public String updateConferencePaper(HttpServletRequest request){
         ConferencePaper patent = getConferencePaper(request);
+        patent.setId(Integer.parseInt(request.getParameter("id")));
         if(userService.updateConferencePaper(patent) > 0)
             return GlobalName.success;
         return GlobalName.fail;
@@ -327,10 +489,16 @@ public class UserController {
     @RequestMapping("/deleteConferencePaper")
     @ResponseBody
     public String deleteConferencePaper(HttpServletRequest request){
-        int id = Integer.parseInt(request.getParameter("id"));
-        if(userService.deleteConferencePaper(id, getThisId(request)))
-            return GlobalName.success;
-        return GlobalName.fail;
+        String[] str = request.getParameterValues("id[]");
+        if(str == null ||str.length == 0)
+            return GlobalName.fail;
+        for(String s: str){
+            System.out.println(s);
+            if(!userService.deleteConferencePaper(Integer.parseInt(s), getThisId(request))){
+                return GlobalName.fail;
+            }
+        }
+        return GlobalName.success;
     }
 
     /**
@@ -339,10 +507,29 @@ public class UserController {
     @RequestMapping("/postResume.do")
     @ResponseBody
     public String postResumeMethod(HttpServletRequest request){
+        if(getUser(request) == null){
+            return "login";
+        }
         int id = getThisId(request);
         int sid = Integer.parseInt(request.getParameter("sid"));//岗位id
-        if(userService.postResume(id, sid) > 0)
-            return GlobalName.success;
-        return GlobalName.fail;
+        return userService.postResume(id, sid);
+    }
+
+    @RequestMapping("/interview.coming")
+    public String getInterviewComing(HttpServletRequest request){
+        return "/errorPage";
+    }
+
+    @RequestMapping("/interviewLog")
+    public String getInterviewLog(HttpServletRequest request){
+        return "/errorPage";
+    }
+
+    @RequestMapping("/apply")
+    public String getApply(HttpServletRequest request, Model model){
+        List<Apply> applies = userService.findApply(getThisId(request));
+        model.addAttribute("applies", applies);
+        model.addAttribute("user", getUser(request));
+        return "/user/apply";
     }
 }

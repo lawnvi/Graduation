@@ -12,9 +12,21 @@ public class Journal {
     private Boolean isTop;//是否TOP
     private Float IF;//影响因子
     private Integer year;//数据年份
-    private Integer section;//jcr分区1/2/3/4
+    private String section = "JCR-";//jcr分区1/2/3/4
     private String url = "";//letPub网址
     private String notes;//备注
+
+    public Journal() {
+        this.name = "404";
+        AbbrTitle = "404";
+        this.ISSN = "";
+        this.isTop = false;
+        this.IF = Float.parseFloat("0");
+        this.year = 0;
+        this.section = "未知";
+        this.url = "not find";
+        this.notes = "404";
+    }
 
     public String getAbbrTitle() {
         return AbbrTitle;
@@ -72,11 +84,11 @@ public class Journal {
         this.year = year;
     }
 
-    public Integer getSection() {
+    public String getSection() {
         return section;
     }
 
-    public void setSection(Integer section) {
+    public void setSection(String section) {
         this.section = section;
     }
 

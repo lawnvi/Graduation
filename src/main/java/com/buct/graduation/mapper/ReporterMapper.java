@@ -20,15 +20,17 @@ private Integer uid;
  */
 @Mapper
 public interface ReporterMapper {
-    @Insert("insert into resume (uid, name, notes, education, title, fund, jcr, funds, sciCitation, impactFactor, score, post, jcrScore, esi, timestamp, citations) values(#{uid}, #{name}, #{notes}, #{education}, #{title}, #{fund}, #{jcr}, #{funds}, #{sciCitation}, #{IF}, #{score}, #{post}, #{jcrScore}, #{esi}, #{timestamp}, #{citation})")
+    @Insert("insert into reporter (uid, name, notes, education, title, fund, jcr, funds, sciCitation, impactFactor, score, post, jcrScore, esi, timestamp, citations) values(#{uid}, #{name}, #{notes}, #{education}, #{title}, #{fund}, #{jcr}, #{funds}, #{sciCitation}, #{IF}, #{score}, #{post}, #{jcrScore}, #{esi}, #{timestamp}, #{citation})")
+//    @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
+    @Options(useGeneratedKeys=true, keyProperty = "id")
     int insert(Reporter reporter);
 
-    @Select("select * from resume where id = #{id}")
+    @Select("select * from reporter where id = #{id}")
     Reporter findById(@Param("id") int id);
 
-    @Select("select * from resume where status = #{status}")
+    @Select("select * from reporter where status = #{status}")
     List<Reporter> findByStatus(@Param("status") String status);
 
-    @Update("update resume set name=#{name}, notes=#{notes}, education=#{education}, title=#{title}, fund=#{fund}, jcr=#{jcr}, funds=#{funds}, sciCitation=#{sciCitation}, impactFactor=#{IF}, score=#{score}, post=#{post}, jcrScore=#{jcrScore}, esi=#{esi}, timestamp=#{timestamp}, citation=#{citation} where id = #{id}")
+    @Update("update reporter set name=#{name}, notes=#{notes}, education=#{education}, title=#{title}, fund=#{fund}, jcr=#{jcr}, funds=#{funds}, sciCitation=#{sciCitation}, impactFactor=#{IF}, score=#{score}, post=#{post}, jcrScore=#{jcrScore}, esi=#{esi}, timestamp=#{timestamp}, citation=#{citation} where id = #{id}")
     int update(Reporter reporter);
 }

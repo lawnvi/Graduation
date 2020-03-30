@@ -140,4 +140,15 @@ public class EmailUtil {
                     "\n北京化工大学XX学院人事部";
             //todo 学院信息
         }
+
+    public static String resetPsw(String code){
+        return "您好:\n"+
+                "\t我是BuctHelper！小助手提醒你请在10分钟内完成重置密码额！\n" +
+                "快用验证码："+code+"验证吧-->> " +
+                "<a href='"+"www.baidu.com"+ "'>BUCTHelper</a>"+
+                "\n祝好!"+
+                "\n"+Utils.getDate().toString()+
+                "\n北京化工大学XX学院人事部";
+        //todo 学院信息
+    }
 }

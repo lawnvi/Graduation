@@ -27,13 +27,13 @@ public class Test {
         List<Article> articles = new ArrayList<>();
         Article article = new Article();
         article.setName("testName");
-        article.setJournalName("j");
+        article.setJournalIssn("j");
         article.setAuthor("author");
         article.setCitation(12);
         article.setCAuthor("cauthor");
         Article article2 = new Article();
         article2.setName("testName");
-        article2.setJournalName("j");
+        article2.setJournalIssn("j");
         article2.setAuthor("author");
         article2.setCitation(12);
         article2.setCAuthor("cauthor");

@@ -14,4 +14,7 @@ public interface StationService {
     Station findStationById(int id);
 
     List<Station> findAllStations();
+
+    List<Station> findJobsWithPage(int page, int number);
+
 }

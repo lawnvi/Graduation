@@ -20,7 +20,7 @@ public interface ProjectMapper {
     List<Project> findByUid(@Param("uid") int uid);
 
     @Select("select * from project where id = #{id}")
-    Project findById(@Param("uid") int id);
+    Project findById(@Param("id") int id);
 
     @Select("select IFNULL(sum(funds),0) from project where uid = #{uid}")
     double countFunds(@Param("uid") int uid);

@@ -10,6 +10,15 @@ public class UserArticle {
     private Integer aid;//期刊论文id
     private String role;//担任角色
     private String notes;
+    private Article article;
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
 
     public String getNotes() {
         return notes;

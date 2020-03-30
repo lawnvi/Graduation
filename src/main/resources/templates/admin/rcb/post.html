@@ -17,7 +17,7 @@
         </select><br>
     最高年龄:<input type="number" name="maxAge" th:value="${station.getMaxAge()}">
     专业要求:<input type="text" name="major" th:value="${station.getMajor()}">
-    学位要求:<select name="education">
+    学位要求:<select name="education" th:value="${station.getEducation()}">
                 <option value="博士后" th:selected="${station.getEducation().equals('博士后')}">博士后</option>
                 <option value="博士" th:selected="${station.getEducation().equals('博士')}">博士</option>
                 <option value="硕士" th:selected="${station.getEducation().equals('硕士')}">硕士</option>

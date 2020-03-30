@@ -10,7 +10,7 @@ public interface ConferencePaperMapper {
     @Insert("insert into conferencepaper (uid, name, conference, section, citation, notes, role, isEsi) values(#{uid}, #{name}, #{conference}, #{section}, #{citation}, #{notes}, #{role}, #{isEsi})")
     int addPaper(ConferencePaper paper);
 
-    @Update("update conferencepaper set name=#{name}, conference=#{conference}, section=#{section}, citation=#{citation}, notes=#{notes}, role=#{role}, isEsi=#{isEsi} where id = #{id})")
+    @Update("update conferencepaper set name=#{name}, conference=#{conference}, section=#{section}, citation=#{citation}, notes=#{notes}, role=#{role}, isEsi=#{isEsi} where id = #{id}")
     int update(ConferencePaper paper);
 
     @Delete("delete from conferencepaper where id = #{id}")
