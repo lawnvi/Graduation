@@ -1,4 +1,4 @@
-package com.buct.graduation.service.impl;
+package com.buct.graduation.service;
 
 import com.buct.graduation.model.pojo.Journal;
 

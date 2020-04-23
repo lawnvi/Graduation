@@ -1,5 +1,8 @@
 package com.buct.graduation.model.pojo.recruit;
 
+import com.buct.graduation.model.pojo.Reporter;
+import com.buct.graduation.model.pojo.User;
+
 /**
  * 就某岗位发出的简历表
  */
@@ -12,6 +15,34 @@ public class Resume {
     private String notes;//备注
     private String resumePath;//简历路径
     private String time;
+
+    private User user;
+    private Reporter reporter;
+    private Station station;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Reporter getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(Reporter reporter) {
+        this.reporter = reporter;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
 
     public String getTime() {
         return time;

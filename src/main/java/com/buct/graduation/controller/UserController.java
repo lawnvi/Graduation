@@ -158,7 +158,7 @@ public class UserController {
     public String logoutMethod(HttpServletRequest request){
         Utils.removeSession(request, GlobalName.session_user);
         //todo 去首页
-        return "redirect: ../../index";
+        return "redirect: ../index";
     }
 
     /**

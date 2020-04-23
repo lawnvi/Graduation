@@ -46,6 +46,10 @@ public class IpServiceImpl implements IpService {
         ipMapper.deleteIPByStatus(status);
     }
 
+    /**
+     * 获取可用ip
+     * @return
+     */
     @Override
     public synchronized IpPort findFreeIP() {
         IpPort ipPort = new IpPort();
@@ -85,6 +89,11 @@ public class IpServiceImpl implements IpService {
         return set.size();
     }
 
+    /**
+     * 复活ip，10次无效则删除
+     * @param i
+     * @return
+     */
     @Override
     @Transactional
     public int revive(int i){

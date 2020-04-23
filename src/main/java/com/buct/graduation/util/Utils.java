@@ -118,6 +118,24 @@ public class Utils {
         return sb.toString();//toString() : 返回此序列中数据的字符串表示形式   ==》即返回一个String类型的数据
     }
 
+    /**
+     * 返回 YYYY/MM/DD/ 路径
+     * @return
+     */
+    public static String getTodayPath(){
+        NowDate date = new NowDate();
+        return date.getYear()+"/"+date.getMonth()+"/"+date.getDay()+"/";
+    }
+
+    /**
+     * 返回 HHMMSS + 随机码（6位）
+     * @return
+     */
+    public static String getNowName(){
+        NowDate date = new NowDate();
+        return date.getHour()+""+date.getMinute()+""+date.getSecond() + getCode();
+    }
+
     /*
     public static String saveFile(MultipartFile file, String path){
         if(!file.isEmpty()) {
@@ -163,6 +181,16 @@ public class Utils {
     public static void removeSession(HttpServletRequest request, String name){
         HttpSession session = request.getSession();
         session.removeAttribute(name);
+    }
+
+    public static Admin getAdmin(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (Admin)session.getAttribute(GlobalName.session_admin);
+    }
+
+    public static User getUser(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (User)session.getAttribute(GlobalName.session_user);
     }
 
     /**
@@ -212,8 +240,13 @@ public class Utils {
             if(article.getESI()){
                 esi++;
             }
-            if(article.getJournal() == null)
+            if(article.getJournal() == null) {
+                reporter.setNotes("article");
                 continue;
+            }
+            if(!article.getAddWay().equals(GlobalName.addWay_System)){
+                reporter.setNotes("article");
+            }
             if(article.getJournal().getSection().equals("JCR-1") || article.getJournal().getSection().equals("JCR-2")){
                 jcr++;
             }
@@ -481,7 +514,7 @@ public class Utils {
         if(!file.isEmpty()) {
             String fileName = file.getOriginalFilename();  // 文件名
             //fileName = UUID.randomUUID() + suffixName; // 新文件名
-            String newName= Utils.getCode()+"-" +Utils.getCode() + fileName.substring(fileName.lastIndexOf(".")); // 新文件名
+            String newName= Utils.getNowName()+"-" +Utils.getCode() + fileName.substring(fileName.lastIndexOf(".")); // 新文件名
 
             File file2 = new File(GlobalName.ABSOLUTE_PATH+path);
             if(!file2.isDirectory()) {
@@ -493,7 +526,7 @@ public class Utils {
                 File newFile = new File(file2.getAbsolutePath() + File.separator + newName);
                 //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
                 file.transferTo(newFile);
-                return "/"+GlobalName.ROOT_PATH+path+File.separator+newName;
+                return GlobalName.ABSOLUTE_PATH+path+File.separator+newName;
             } catch (Exception e) {
                 e.printStackTrace();
             }

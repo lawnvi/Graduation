@@ -137,8 +137,8 @@ function updateArticles() {
     else {
         url = './addArticleByHand';
         $("#isAutoFill").val(true);
-        $("#isEsiGroup").setAttribute('hidden', 'true');
-        $("#citationGroup").setAttribute('hidden', 'true');
+        // $("#isEsiGroup").setAttribute('hidden', 'true');
+        // $("#citationGroup").setAttribute('hidden', 'true');
     }
     if(id === "" && isAutoFill){
         alert("逻辑错误");

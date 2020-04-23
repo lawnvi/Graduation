@@ -8,6 +8,8 @@ import java.util.*;
 import javax.swing.*;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.util.GlobalName;
+import com.buct.graduation.util.Utils;
 import javafx.scene.Parent;
 import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -71,6 +73,7 @@ public class XLSTransformerExport {
     public static String exportData(Excel2Excel excel2Excel){
         //模板路径，如果用的模板是xlsx，则生成的文件类型也必须为xlsx类型，否则由于格式不对，会打不开文件
         String temppath = "D:\\temp\\reporter\\综合评价结果模板.xlsx";
+        temppath = GlobalName.ABSOLUTE_PATH+GlobalName.EXCEL_PATH+GlobalName.EXCEL_MODEL_REPORTER;
         //组织数据
         Reporter reporter = excel2Excel.getReporter();
         List<Project> projects = excel2Excel.getProjects();
@@ -113,6 +116,7 @@ public class XLSTransformerExport {
         //输出文件路径，以及路径名称
         //String exportPath = getDirPath(reporter.getName()+".xlsx", new File("D:\\temp\\reporter\\"));
         String exportPath = "D:\\temp\\"+reporter.getName()+".xlsx";
+        exportPath = GlobalName.ABSOLUTE_PATH+GlobalName.EXCEL_PATH+GlobalName.EXCEL_BUFFER + Utils.getTodayPath()+Utils.getNowName()+reporter.getName()+".xlsx";
         System.out.println(exportPath);
         try {
             //利用transformXLS来输出文件

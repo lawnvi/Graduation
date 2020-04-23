@@ -8,28 +8,28 @@ import java.util.Set;
 @Mapper
 public interface IpMapper {
 
-    @Insert("insert into ipPool (ip, port, type) values(#{ip}, #{port}, #{type})")
+    @Insert("insert into ippool (ip, port, type) values(#{ip}, #{port}, #{type})")
     int addIP(IpPort ip);
 
-    @Select("select * from ipPool where ip = #{ip}")
+    @Select("select * from ippool where ip = #{ip}")
     IpPort findIPsByIp(String ip);
 
-    @Select("select * from ipPool where status = #{status}")
+    @Select("select * from ippool where status = #{status}")
     Set<IpPort> findIPsByStatus(String status);
 
-    @Update("update ipPool set status = #{status}, useTimes=#{useTimes}, badTimes=#{badTimes} where id = #{id}")
+    @Update("update ippool set status = #{status}, useTimes=#{useTimes}, badTimes=#{badTimes} where id = #{id}")
     int update(IpPort ip);
 
-    @Update("update ipPool set status = #{status} where id = #{id}")
+    @Update("update ippool set status = #{status} where id = #{id}")
     int updateStatusById(IpPort ip);
 
-    @Update("update ipPool set status = #{status} where id = #{newStatus}")
+    @Update("update ippool set status = #{status} where id = #{newStatus}")
     int updateStatusByStatus(@Param("status") String status, @Param("newStatus") String newStatus);
 
-    @Delete("delete from ipPool where status like #{status}")
+    @Delete("delete from ippool where status like #{status}")
     void deleteIPByStatus(String status);
 
-    @Delete("delete from ipPool where id = #{id}")
+    @Delete("delete from ippool where id = #{id}")
     void deleteIP(IpPort ip);
 
     @Select("SELECT * FROM `ippool` WHERE status = #{status} AND useTimes = (SELECT MIN(useTimes) FROM ippool WHERE status = #{status}) limit 0, 1")

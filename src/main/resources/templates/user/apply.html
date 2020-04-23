@@ -183,8 +183,8 @@
                                                             <th>时间</th>
                                                             <th>地点</th>
                                                             <th>状态</th>
-                                                            <th>备注</th>
-                                                            <th>操作</th>
+                                                            <th>提示</th>
+<!--                                                            <th>操作</th>-->
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -192,8 +192,8 @@
                                                             <td th:text="${interview.getTime()}"></td>
                                                             <td th:text="${interview.getPlace()}"></td>
                                                             <td th:text="${interview.getStatus()}"></td>
-                                                            <td th:text="${interview.getNotes()}"></td>
-                                                            <td><button type="button" class="btn btn-primary">编辑备注</button></td>
+                                                            <td th:text="${interview.getAdvice()}"></td>
+<!--                                                            <td><button type="button" class="btn btn-primary">编辑备注</button></td>-->
                                                         </tr>
                                                         </tbody>
                                                     </table>

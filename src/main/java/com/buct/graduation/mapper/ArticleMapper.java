@@ -2,6 +2,7 @@ package com.buct.graduation.mapper;
 
 import com.buct.graduation.model.pojo.Article;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -23,6 +24,24 @@ public interface ArticleMapper {
     Article findByName(String name);
 
     //todo don't known is right
-    @Select("select * from article where id in (select aid from userArticle where uid = #{uid} and role <> '参与')")
+    @Select("select * from article where id in (select aid from userarticle where uid = #{uid} and role <> '参与')")
+    @Results(id = "findByUidMap",value = {
+            @Result(id = true,column = "id",property = "id"),
+            @Result(property = "journal", column = "jid" ,one = @One(select = "com.buct.graduation.mapper.JournalMapper.findById",fetchType = FetchType.EAGER))
+    })
     List<Article> findByIds(int uid);
+
+    @Select("select * from article where addway = #{addway} and id in (select aid from userarticle where uid = #{uid} and role <> '参与')")
+    @Results(id = "findByUidStatusMap",value = {
+            @Result(id = true,column = "id",property = "id"),
+            @Result(property = "journal", column = "jid" ,one = @One(select = "com.buct.graduation.mapper.JournalMapper.findById",fetchType = FetchType.EAGER))
+    })
+    List<Article> findByStatusUid(@Param("uid") int uid, @Param("addway") String addway);
+
+    @Select("select * from article where address = #{address}")
+    @Results(id = "findByBelongMap",value = {
+            @Result(id = true,column = "id",property = "id"),
+            @Result(property = "journal", column = "jid" ,one = @One(select = "com.buct.graduation.mapper.JournalMapper.findById",fetchType = FetchType.EAGER))
+    })
+    List<Article> findByAddress(String address);
 }

@@ -1,5 +1,7 @@
 package com.buct.graduation.model.pojo;
 
+import com.buct.graduation.util.GlobalName;
+
 /**
  * 项目
  */
@@ -10,6 +12,53 @@ public class Project {
     private Double funds;//单位:万元
     private String notes;//备注
     private String role;//担任角色
+
+    private String number;//项目编号
+    private String fund;//基金
+    private String charge;//负责人
+    private Boolean isChecked = false;//是否已检查
+
+    private String belong = GlobalName.belongApply;//所属
+
+    public String getBelong() {
+        return belong;
+    }
+
+    public void setBelong(String belong) {
+        this.belong = belong;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
+    public String getFund() {
+        return fund;
+    }
+
+    public void setFund(String fund) {
+        this.fund = fund;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String getRole() {
         return role;

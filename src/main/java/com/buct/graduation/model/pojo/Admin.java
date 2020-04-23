@@ -8,8 +8,26 @@ public class Admin {
     private String name;
     private String tel;
     private String email;
-    private String account;
     private String unit;//所属单位表某学院
+    private String psw;
+//    private String level;
+    private String picPath;
+
+    public String getPicPath() {
+        return picPath;
+    }
+
+    public void setPicPath(String picPath) {
+        this.picPath = picPath;
+    }
+
+    public String getPsw() {
+        return psw;
+    }
+
+    public void setPsw(String psw) {
+        this.psw = psw;
+    }
 
     public String getUnit() {
         return unit;
@@ -49,13 +67,5 @@ public class Admin {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 }

@@ -104,7 +104,8 @@ public class Excel2Excel {
 /*            System.out.println("article1:"+article.getId());
             SpiderWOS wos = new SpiderWOS();
             Article a = wos.getArticleByTitle(article.getName());
-            //todo find bug FORGET ID_NUMBER
+            //todo find bug FORGET ID_NUMBER fixed
+
             if(a != null){
                 a.setId(article.getId());
                 int index = excel.articles.indexOf(article);
@@ -335,7 +336,9 @@ public class Excel2Excel {
                             stu.setEsi("是".equals(cell5.getStringCellValue()));
                         }
                         Cell cell6 = row.getCell(6);
-                        stu.setNotes(cell6.getStringCellValue());
+                        if(cell5 != null) {
+                            stu.setNotes(cell6.getStringCellValue());
+                        }
 
                         excelObj.papers.add(stu);
                     }
@@ -387,7 +390,11 @@ public class Excel2Excel {
                         Cell cell1 = row.getCell(1);
                         stu.setName(cell1.getStringCellValue());
                         Cell cell2 = row.getCell(2);
-                        stu.setFunds(cell2.getNumericCellValue());
+                        if(cell2 != null) {
+                            stu.setFunds(cell2.getNumericCellValue());
+                        }else {
+                            stu.setFunds(Double.parseDouble("0"));
+                        }
                         excelObj.projects.add(stu);
                     }
                     //System.out.println("项目"+excelObj.projects.size());
@@ -515,7 +522,9 @@ public class Excel2Excel {
                             stu.setEsi("是".equals(cell5.getStringCellValue()));
                         }
                         Cell cell6 = row.getCell(6);
-                        stu.setNotes(cell6.getStringCellValue());
+                        if(cell5 != null) {
+                            stu.setNotes(cell6.getStringCellValue());
+                        }
 
                         excelObj.papers.add(stu);
                     }

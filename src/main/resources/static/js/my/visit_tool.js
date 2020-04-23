@@ -101,7 +101,7 @@ function fillJournals(data) {
     //match
     // $("#journal_name").setAttribute('title', data[i]['name']);
 
-    var html;
+    var html = "";
     for(var i = 0; i < data.length; i++){
         if(data[i]['notes'] !== '404'){
             console.log('find');

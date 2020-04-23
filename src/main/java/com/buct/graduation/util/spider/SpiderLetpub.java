@@ -153,7 +153,10 @@ public class SpiderLetpub {
             return getJournal(url);
         }
         Document document = Jsoup.parse(html);// 转换为Dom树
-        Elements tr = document.select("#yxyz_content > table:nth-child(12) > tbody > tr");
+        Elements tr = document.select(" #yxyz_content > table.table_yjfx > tbody > tr");
+//        if(tr == null){
+//            tr = document.select("#yxyz_content > table.table_yjfx > tbody > tr");
+//        }
         for (Element element : tr) {
             String text = element.select("td:nth-child(1)").text();
             if(text.equals("期刊名字")){
@@ -211,10 +214,12 @@ public class SpiderLetpub {
         Element element = document.select("table.result-table-data").first();
         Elements th = element.select("tr>th");
         Elements td = element.select("tr>td");
-        int size = th.size();
+        int size = td.size();
         if (size > 2) {
             year = th.get(size - 1).text();
             IF = td.get(size - 1).text();
+        }else {
+            return 0;
         }
         System.out.println("size:" + size + "year:" + year + " IF:" + IF);
         return Float.parseFloat(IF);
@@ -228,13 +233,30 @@ public class SpiderLetpub {
     public Journal getJournal(String keyword){
         System.out.println("this is journal:"+keyword);
         PeriodicalTable table = getPeriodicals(keyword);
+        if(table == null){
+            return null;
+        }
+        Journal journal = new Journal();
+        int match = 0;
         for(Periodical periodical: table.getList()){
             if(periodical.isMatch()){
-                return getJournalData(periodical.getUrl());
+                match++;
+                journal = getJournalData(periodical.getUrl());
             }
         }
-        System.out.println("not compare "+keyword);
-        return null;
+        if(match == 0) {
+            System.out.println("not compare " + keyword);
+            return null;
+        }
+        if(match > 1){
+            journal.setNotes("发现多个匹配结果, 建议手动确认, "+journal.getNotes());
+        }
+        return journal;
     }
+
+    /**
+     * 抓取项目数据
+     */
+
 
 }

@@ -25,6 +25,8 @@ public interface UserService {
     //项目论文等
     List<Project> showProjects(int uid);
 
+    List<Project> showProjectsByStatus(int uid, boolean isChecked);
+
     List<ConferencePaper> showConferencePapers(int uid);
 
     List<Patent> showPatents(int uid);

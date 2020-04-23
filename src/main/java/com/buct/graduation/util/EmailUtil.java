@@ -1,5 +1,8 @@
 package com.buct.graduation.util;
 
+import com.buct.graduation.model.pojo.User;
+import com.buct.graduation.model.pojo.recruit.Station;
+
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -149,6 +152,26 @@ public class EmailUtil {
                 "\n祝好!"+
                 "\n"+Utils.getDate().toString()+
                 "\n北京化工大学XX学院人事部";
+        //todo 学院信息
+    }
+
+    public static String isPassResume(boolean isPass, User user, Station station){
+        if(isPass) {
+            return user.getName() + ",您好:\n" +
+                    "\t我是BuctHelper！小助手恭喜您已通过岗位: " + station.getTitle() +
+                    "的重重面试，现邀请您加入我们，请与我们保持联系完成后续入职操作。" +
+                    "\n祝好!" +
+                    "\n" + Utils.getDate().toString() +
+                    "\n北京化工大学XX学院人事部";
+        }
+        else {
+            return user.getName() + ",您好:\n" +
+                    "\t我是BuctHelper！小助手提示您未能通过岗位: " + station.getTitle() +
+                    "的面试，但请您不要灰心，我们已将您加入我们的人才储备库，如有与您匹配的岗位会主动与您联系，尽管这是一张好人卡，但还是请您收下。" +
+                    "\n祝好!" +
+                    "\n" + Utils.getDate().toString() +
+                    "\n北京化工大学XX学院人事部";
+        }
         //todo 学院信息
     }
 }

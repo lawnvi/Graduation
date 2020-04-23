@@ -1,5 +1,7 @@
 package com.buct.graduation.model.pojo;
 
+import com.buct.graduation.util.GlobalName;
+
 /**
  * 会议论文
  */
@@ -15,6 +17,16 @@ public class ConferencePaper {
     
     private String AttrName;
     private String AttrMeeting;
+    private boolean isEsi;
+    private String belong = GlobalName.belongApply;//所属
+
+    public String getBelong() {
+        return belong;
+    }
+
+    public void setBelong(String belong) {
+        this.belong = belong;
+    }
 
     public String getAttrMeeting() {
         return AttrMeeting;
@@ -50,7 +62,7 @@ public class ConferencePaper {
         }
     }
 
-    private boolean isEsi;
+
 
     public boolean isEsi() {
         return isEsi;

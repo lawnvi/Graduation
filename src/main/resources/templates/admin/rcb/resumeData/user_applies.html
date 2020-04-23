@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>模板</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <!-- Bootstrap -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <link href="../../adminres/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+    <!--    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <script src="../../adminres/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="../index">后台管理</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                            <span th:text="${user.getName()}">管理员</span>
+                            <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../personalData">个人资料</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../logout">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="active">
+                        <a href="../index">首页</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">学院科研 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" id="menu1">
+                            <li>
+                                <a href="../research/overview">数据概览
+                                    <!--                                    <i class="icon-arrow-right"></i>-->
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../research/researcher">科研人员</a>
+                            </li>
+                            <li>
+                                <a href="../research/reporterModel">评价模型</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="../research/article">期刊论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/meetingPaper">会议论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/project">项目数据</a>
+                            </li>
+                            <li>
+                                <a href="../research/patent">发明专利</a>
+                            </li>
+                            <li>
+                                <a href="../research/journal">期刊数据</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">招聘相关 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../recruit/stations">岗位管理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/resume">简历处理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/interview">面试安排</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/config">招聘配置</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">工具 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" target="_blank" href="../tools/visitor">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/article">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/journal">抓取期刊数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/project">抓取项目数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/reporter">excel评价</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../tool/ipPoolConfig">IP池管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">网站管理 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../webapp/overview">网站情况</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/user">用户列表</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/config">网站设置</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/logs">日志</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a th:href="'./userDetail?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 基本信息</a>
+                </li>
+                <li class="active">
+                    <a th:href="'./userApplies?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 投递岗位</a>
+                </li>
+                <li>
+                    <a th:href="'./article?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 期刊论文</a>
+                </li>
+                <li>
+                    <a th:href="'./meeting?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 会议论文</a>
+                </li>
+                <li>
+                    <a th:href="'./project?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 主持项目</a>
+                </li>
+                <li>
+                    <a th:href="'./patent?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 发明专利</a>
+                </li>
+                <li>
+                    <a th:href="'./article_wait?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 待审核期刊论文</a>
+                </li>
+                <li>
+                    <a th:href="'./project_wait?id='+${resume.getId()}"><i class="icon-chevron-right"></i> 待审核项目</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--/span-->
+        <div class="span10" id="content">
+            <div class="row-fluid">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>成功提示</h4>
+                    操作已经成功了！
+                </div>
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="breadcrumb">
+                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#'
+                                                                                                title="Show Sidebar"
+                                                                                                rel='tooltip'>&nbsp;</a></i>
+                            <li>
+                                <a href="../index">首页</a> <span class="divider">/</span>
+                            </li>
+                            <li>
+                                <a href="#">岗位</a> <span class="divider">/</span>
+                            </li>
+                            <li class="active" th:text="'简历详情 '+${resume.getUser().getName()}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="component-wrapper rounded shadow">
+                    <div class="p-4 border-bottom bg-light">
+                        <h4 class="title mb-0">投递记录</h4>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="faq-content">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card border rounded shadow mb-3" th:each="apply, stat:${applies}">
+                                    <a data-toggle="collapse" th:href="'#collapse'+${applies.indexOf(apply)}"
+                                       class="faq position-relative collapsed" style="text-decoration:none"
+                                       aria-expanded="false" th:aria-controls="'#collapse'+${applies.indexOf(apply)}">
+                                        <div class="card-header bg-light p-3"
+                                             th:id="'heading'+${applies.indexOf(apply)}">
+                                            <tr>
+                                                <td><h4 class="title mb-0 faq-question"
+                                                        th:text="${apply.getStation().getTitle()}"></h4></td>
+                                                <td th:text="'投递于'+${apply.getResume().getTime()}"></td>
+                                                <td th:text="'已面试'+${apply.getInterviews().size()}+'次'"></td>
+                                                <td th:text="'当前状态:'+${apply.getResume().getStatus()}"></td>
+                                            </tr>
+                                        </div>
+                                    </a>
+                                    <div th:id="'collapse'+${applies.indexOf(apply)}" class="collapse"
+                                         th:aria-labelledby="'heading'+${applies.indexOf(apply)}"
+                                         data-parent="#accordionExample" style="">
+                                        <div class="card-body">
+                                            <div class="block">
+                                                <div class="navbar navbar-inner block-header">
+                                                    <div class="muted pull-left">Table with row classes</div>
+                                                    <div class="pull-right">
+                                                        <!--                                                        <span class="badge badge-warning">添加面试安排</span>-->
+                                                        <a class="btn btn-green" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'pass\')'">接受入职</a>
+                                                        <a class="btn btn-warning" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'fail\')'">未通过</a>
+                                                        <a href="#myModal" data-toggle="modal" class="btn btn-primary"
+                                                           th:onclick="${'newTransportData('+apply.getResume().getId()+')'}">添加面试安排</a>
+                                                        <div id="myModal" class="modal hide">
+                                                            <div class="modal-header">
+                                                                <button data-dismiss="modal" class="close"
+                                                                        type="button">&times;
+                                                                </button>
+                                                                <h3>面试安排</h3>
+                                                            </div>
+                                                            <form class="form-horizontal">
+                                                                <div class="modal-body">
+                                                                    <div class="control-group">
+                                                                        <label class="control-label"
+                                                                               for="new_date">面试时间</label>
+                                                                        <div class="controls">
+                                                                            <input type="text" style="display: none" id="new_id">
+                                                                            <input type="text" style="display: none" id="new_rid">
+<!--                                                                            <input type="text" style="display: none" id="new_score">-->
+                                                                            <input class="input-xlarge focused"
+                                                                                   type="datetime-local"
+                                                                                   id="new_date">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="control-group">
+                                                                        <label class="control-label" for="new_place">面试地点</label>
+                                                                        <div class="controls">
+                                                                            <input class="input-xlarge focused"
+                                                                                   type="text"
+                                                                                   id="new_place">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="control-group">
+                                                                        <label class="control-label" for="new_advice">面试提示</label>
+                                                                        <div class="controls">
+                                                                            <textarea class="input-xlarge focused"
+                                                                                      type="text"
+                                                                                      id="new_advice">
+                                                                            </textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="control-group">
+                                                                        <label class="control-label" for="new_advice">面试提示</label>
+                                                                        <div class="controls">
+                                                                            <select id="new_status">
+                                                                                <option value="待评判">待评判</option>
+                                                                                <option value="通过">通过</option>
+                                                                                <option value="未通过">未通过</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="control-group">
+                                                                        <label class="control-label" for="new_place">面试得分</label>
+                                                                        <div class="controls">
+                                                                            <input class="input-xlarge focused"
+                                                                                   type="text"
+                                                                                   id="new_score">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a data-dismiss="modal" class="btn btn-primary"
+                                                                       onclick="addInterview()">保存</a>
+                                                                    <a data-dismiss="modal" class="btn" href="#">取消</a>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block-content collapse in">
+                                                <div class="span12">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>时间</th>
+                                                            <th>地点</th>
+                                                            <th>状态</th>
+                                                            <th>评价分数</th>
+                                                            <th>备注</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="interview, stat:${apply.getInterviews()}">
+                                                            <td th:text="${apply.getInterviews().indexOf(interview)+1}"></td>
+                                                            <td th:text="${interview.getTime()}"></td>
+                                                            <td th:text="${interview.getPlace()}"></td>
+                                                            <td th:text="${interview.getStatus()}"></td>
+                                                            <td th:text="${interview.getStatus().equals('待评判') ? '待评判':interview.getScore()}"></td>
+                                                            <td th:text="${interview.getNotes()}"></td>
+                                                            <td>
+                                                                <a href="#myModal" data-toggle="modal"
+                                                                   class="btn btn-primary"
+                                                                   th:onclick="'transportData(\''+${interview.getTime()}+'\',\''+${interview.getPlace()}+'\',\''+${interview.getAdvice()}+'\',\''+${interview.getScore()}+'\',\''+${interview.getId()}+'\',\''+ ${interview.getRid()}+'\',\''+${interview.getStatus()}+'\')'">编辑</a>
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--                                            <table class="table table-striped table-hover card-text">-->
+                                        <!--                                                <thead>-->
+                                        <!--                                                <tr>-->
+                                        <!--                                                    <th>时间</th>-->
+                                        <!--                                                    <th>地点</th>-->
+                                        <!--                                                    <th>状态</th>-->
+                                        <!--                                                    <th>备注</th>-->
+                                        <!--                                                    <th>操作</th>-->
+                                        <!--                                                </tr>-->
+                                        <!--                                                </thead>-->
+                                        <!--                                                <tbody>-->
+                                        <!--                                                <tr th:each="interview, stat:${apply.getInterviews()}">-->
+                                        <!--                                                    <td th:text="${interview.getTime()}"></td>-->
+                                        <!--                                                    <td th:text="${interview.getPlace()}"></td>-->
+                                        <!--                                                    <td th:text="${interview.getStatus()}"></td>-->
+                                        <!--                                                    <td th:text="${interview.getNotes()}"></td>-->
+                                        <!--                                                    <td><button type="button" class="btn btn-primary">编辑备注</button></td>-->
+                                        <!--                                                </tr>-->
+                                        <!--                                                </tbody>-->
+                                        <!--                                            </table>-->
+                                        <p class="text-muted mb-0 m-2 faq-ans"
+                                           th:text="'欢迎投递'+${apply.getStation().getTitle()}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /block -->
+        </div>
+    </div>
+</div>
+<hr>
+<footer class="footer footer-bar">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                </div>
+                <div class="">
+                    <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                        <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!--end container-->
+</footer><!--end footer-->
+<!-- Footer End -->
+</div>
+<!--/.fluid-container-->
+<script src="../../adminres/vendors/jquery-1.9.1.min.js"></script>
+<script src="../../adminres/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../adminres/assets/scripts.js"></script>
+<script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script>
+    $(function () {
+
+    });
+</script>
+<script src="../../js/my/user_applies.js"></script>
+<script src="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
+<script>
+    $(function () {
+        // Easy pie charts
+        $('.chart').easyPieChart({animate: 1000});
+    });
+</script>
+</body>
+</html>

@@ -1,4 +1,7 @@
 package com.buct.graduation.model.pojo;
+
+import com.buct.graduation.util.GlobalName;
+
 /**
 专利：仅列出第一发明人或导师第一本人第二且已授权的专利
  */
@@ -9,6 +12,15 @@ public class Patent {
     private String category;//类别 国内/外
     private String notes;//备注 如链接
     private String role;//参与角色
+    private String belong = GlobalName.belongApply;//所属
+
+    public String getBelong() {
+        return belong;
+    }
+
+    public void setBelong(String belong) {
+        this.belong = belong;
+    }
 
     public String getRole() {
         return role;

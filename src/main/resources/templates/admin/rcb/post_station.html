@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${flag.equals('new')?'发布新岗位':'修改岗位信息'}">填写岗位信息</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <!-- Bootstrap -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <link href="../../adminres/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+    <!--    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <script src="../../adminres/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="../index">后台管理</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                            <span th:text="${user.getName()}">管理员</span>
+                            <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../personalData">个人资料</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../logout">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li>
+                        <a href="../index">首页</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">学院科研 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" id="menu1">
+                            <li>
+                                <a href="../research/overview">数据概览
+                                    <!--                                    <i class="icon-arrow-right"></i>-->
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../research/researcher">科研人员</a>
+                            </li>
+                            <li>
+                                <a href="../research/reporterModel">评价模型</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="../research/article">期刊论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/meetingPaper">会议论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/project">项目数据</a>
+                            </li>
+                            <li>
+                                <a href="../research/patent">发明专利</a>
+                            </li>
+                            <li>
+                                <a href="../research/journal">期刊数据</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">招聘相关 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../recruit/stations">岗位管理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/resume">简历处理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/interview">面试安排</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/config">招聘配置</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">工具 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" target="_blank" href="../tools/visitor">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/article">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/journal">抓取期刊数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/project">抓取项目数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/reporter">excel评价</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../tool/ipPoolConfig">IP池管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">网站管理 <i
+                                class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../webapp/overview">网站情况</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/user">用户列表</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/config">网站设置</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/logs">日志</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="./stations">
+                        <i class="icon-chevron-right"></i>
+                        <span class="badge badge-info pull-right" th:text="${stationData.getNumber()}"></span>
+                        岗位概览</a>
+                </li>
+                <li>
+                    <a href="./stations2?status=在招">
+                        <i class="icon-chevron-right"></i>
+                        <span class="badge badge-success pull-right" th:text="${stationData.getOn()}">731</span>
+                        在招岗位</a>
+                </li>
+                <li>
+                    <a href="./stations2?status=暂停"><i class="icon-chevron-right"></i>
+                        <span class="badge badge-warning pull-right" th:text="${stationData.getPause()}">4,231</span>
+                        暂停招聘</a>
+                </li>
+                <li>
+                    <a href="./stations2?status=停止"><i class="icon-chevron-right"></i>
+                        <span class="badge badge-important pull-right" th:text="${stationData.getStop()}">83</span>
+                        停止招聘</a>
+                </li>
+                <li th:class="${flag.equals('new') ? 'active' : ''}">
+                    <a href="./post"><i class="icon-chevron-right"></i> 发布岗位</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--/span-->
+        <div class="span10" id="content">
+            <div class="row-fluid">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>成功提示</h4>
+                    操作已经成功了！
+                </div>
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="breadcrumb">
+                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#'
+                                                                                                title="Show Sidebar"
+                                                                                                rel='tooltip'>&nbsp;</a></i>
+                            <li>
+                                <a href="#">招聘相关</a> <span class="divider">/</span>
+                            </li>
+                            <li class="active" th:text="${flag.equals('new')?'发布新岗位':'修改岗位信息'}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">填写岗位信息</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                                <form class="form-horizontal" id="form_station" method="post"
+                                      th:action="${station.getId() > 0 ? 'stationUpdate.do' : './post.do'}">
+
+                                    <input type="hidden" name="id" th:value="${station.getId()}">
+                                <fieldset>
+                                        <div class="tab-pane" id="tab1">
+                                            <!--                                        <form class="form-horizontal">-->
+                                            <fieldset>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="title">岗位名称</label>
+                                                    <div class="controls">
+                                                        <input class="input-xlarge focused" id="title" name="title"
+                                                               th:value="${station.getTitle()}" type="text" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="number">所需人数</label>
+                                                    <div class="controls">
+                                                        <input class="input-xlarge focused" id="number" type="number"
+                                                               name="number" th:value="${station.getNumber()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="status">当前状态</label>
+                                                    <div class="controls">
+                                                        <select name="status" id="status" class="select"
+                                                                th:value="${station.getStatus()}">
+                                                            <option value="在招"
+                                                                    th:selected="${station.getStatus().equals('在招')}">在招
+                                                            </option>
+                                                            <option value="停止"
+                                                                    th:selected="${station.getStatus().equals('停止')}">停止
+                                                            </option>
+                                                            <option value="暂停"
+                                                                    th:selected="${station.getStatus().equals('暂停')}">暂停
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="maxAge">最高年龄</label>
+                                                    <div class="controls">
+                                                        <input class="input-xlarge focused" id="maxAge" type="number"
+                                                               name="maxAge" th:value="${station.getMaxAge()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="education">学位要求</label>
+                                                    <div class="controls">
+                                                        <select class="select" id="education" name="education"
+                                                                th:value="${station.getEducation()}">
+                                                            <option value="博士后"
+                                                                    th:selected="${station.getEducation().equals('博士后')}">
+                                                                博士后
+                                                            </option>
+                                                            <option value="博士"
+                                                                    th:selected="${station.getEducation().equals('博士')}">
+                                                                博士
+                                                            </option>
+                                                            <option value="硕士"
+                                                                    th:selected="${station.getEducation().equals('硕士')}">
+                                                                硕士
+                                                            </option>
+                                                            <option value="学士"
+                                                                    th:selected="${station.getEducation().equals('学士')}">
+                                                                学士
+                                                            </option>
+                                                            <option value="无"
+                                                                    th:selected="${station.getEducation().equals('无')}">
+                                                                无
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="major">专业要求</label>
+                                                    <div class="controls">
+                                                        <input class="input-xlarge focused" type="text" id="major"
+                                                               name="major" th:value="${station.getMajor()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="end">截止时间</label>
+                                                    <div class="controls">
+                                                        <input type="date" id="end" name="end"
+                                                               th:value="${station.getEnd()}">
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <!--                                        </form>-->
+                                        </div>
+                                        <div class="tab-pane" id="tab2">
+                                            <!--                                        <form class="form-horizontal">-->
+                                            <fieldset>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="conditions">任职条件</label>
+                                                    <div class="controls">
+                                                        <textarea class="input-xlarge textarea"
+                                                                  placeholder="Enter text ..."
+                                                                  style="width: 810px; height: 200px" id="conditions"
+                                                                  name="conditions"
+                                                                  th:text="${station.getConditions()}"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="notes">任职职责</label>
+                                                    <div class="controls">
+                                                        <textarea class="input-xlarge textarea"
+                                                                  placeholder="Enter text ..."
+                                                                  style="width: 810px; height: 200px" id="notes"
+                                                                  name="notes"
+                                                                  th:text="${station.getNotes()}"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="treatment">任职待遇</label>
+                                                    <div class="controls">
+                                                        <textarea class="input-xlarge textarea"
+                                                                  placeholder="Enter text ..."
+                                                                  style="width: 810px; height: 200px" id="treatment"
+                                                                  name="treatment"
+                                                                  th:text="${station.getTreatment()}"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="process">招聘流程</label>
+                                                    <div class="controls">
+                                                        <textarea class="input-xlarge textarea"
+                                                                  placeholder="Enter text ..."
+                                                                  style="width: 810px; height: 200px" id="process"
+                                                                  name="process"
+                                                                  th:text="${station.getProcess()}"></textarea>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <!--                                        </form>-->
+                                        </div>
+                                        <div class="tab-pane" id="tab3">
+                                            <!--                                        <form class="form-horizontal">-->
+                                            <fieldset>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="contacts">联系人</label>
+                                                    <div class="controls">
+                                                        <input type="text" class="input-xlarge focused" id="contacts"
+                                                               name="contacts" th:value="${station.getContacts()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="tel">联系电话</label>
+                                                    <div class="controls">
+                                                        <input type="text" class="input-xlarge focused" id="tel"
+                                                               name="tel" th:value="${station.getTel()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="email">联系邮箱</label>
+                                                    <div class="controls">
+                                                        <input type="email" class="input-xlarge focused" id="email"
+                                                               name="email" th:value="${station.getEmail()}">
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="contactAddress">联系地址</label>
+                                                    <div class="controls">
+                                                        <input type="text" class="input-xlarge focused"
+                                                               id="contactAddress" name="contactAddress"
+                                                               th:value="${station.getContactAddress()}">
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <!--                                        </form>-->
+                                        </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="reset" class="btn">Cancel</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <footer class="footer footer-bar">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="footer-link">
+                        <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                    </div>
+                    <div class="">
+                        <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                            <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div><!--end container-->
+    </footer><!--end footer-->
+    <!-- Footer End -->
+</div>
+<!--/.fluid-container-->
+<script src="../../adminres/vendors/jquery-1.9.1.min.js"></script>
+<script src="../../adminres/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../adminres/assets/scripts.js"></script>
+<script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script>
+    $(function () {
+
+    });
+</script>
+<script src="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
+
+<link href="../../adminres/vendors/datepicker.css" rel="stylesheet" media="screen">
+<link href="../../adminres/vendors/uniform.default.css" rel="stylesheet" media="screen">
+<link href="../../adminres/vendors/chosen.min.css" rel="stylesheet" media="screen">
+
+<link href="../../adminres/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
+
+<script src="../../adminres/vendors/jquery.uniform.min.js"></script>
+<script src="../../adminres/vendors/chosen.jquery.min.js"></script>
+<script src="../../adminres/vendors/bootstrap-datepicker.js"></script>
+
+<script src="../../adminres/vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+<script src="../../adminres/vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+
+<script src="../../adminres/vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+
+<script>
+    $(function () {
+        $('.chart').easyPieChart({animate: 1000});
+        $(".datepicker").datepicker();
+        $(".uniform_on").uniform();
+        $(".chzn-select").chosen();
+        $('.textarea').wysihtml5();
+
+        $('#rootwizard').bootstrapWizard({
+            onTabShow: function (tab, navigation, index) {
+                var $total = navigation.find('li').length;
+                var $current = index + 1;
+                var $percent = ($current / $total) * 100;
+                $('#rootwizard').find('.bar').css({width: $percent + '%'});
+                // If it's the last tab then hide the last button and show the finish instead
+                if ($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+            }
+        });
+        $('#rootwizard .finish').click(function () {
+            alert('Finished!, Starting over!');
+            $('#rootwizard').find("a[href*='tab1']").trigger('click');
+            document.getElementById('form_station').submit();
+        });
+    });
+</script>
+</body>
+</html>

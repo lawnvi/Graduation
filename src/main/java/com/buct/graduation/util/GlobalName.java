@@ -2,11 +2,22 @@ package com.buct.graduation.util;
 
 public class GlobalName {
     //简历进度
-    public static final String resume_init = "未投递";
+    public static final String resume_init = "new";
+    public static final String resume_notApply = "未投递";
     public static final String resume_wait = "等待处理";
     public static final String resume_processing = "处理中";
     public static final String resume_fail = "未通过";
     public static final String resume_pass = "通过";
+
+    //面试记录状态
+    public static final String interview_pass = "通过";
+    public static final String interview_wait = "待评判";
+    public static final String interview_fail = "未通过";
+
+    //岗位状态
+    public static final String station_on = "在招";
+    public static final String station_stop = "停止";
+    public static final String station_pause = "暂停";
 
     //成功/失败
     public static final String success = "ok";
@@ -36,11 +47,17 @@ public class GlobalName {
     /**
      * 网站路径配置数据
      */
+    //todo change path & db_psw
     //文件存储路径(ABSOLUTEPATH)
-    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/";
+//    public static final String ABSOLUTE_PATH = "D:\\schoolHelper\\mybuffer\\import\\upload\\";
+    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/import/upload/";
     public static final String RELATIVE_PATH = "/import/";
     public static final String ROOT_PATH = "import";
     public static final String PIC_PATH = "/images/avatar-1.jpg";
+    public static final String EXCEL_PATH = "excel/";
+    public static final String EXCEL_MODEL = "综合评价数据模板.xlsx";
+    public static final String EXCEL_MODEL_REPORTER = "综合评价结果模板.xlsx";
+    public static final String EXCEL_BUFFER = "buffer/";
 
     /**
      * ip 状态
@@ -48,5 +65,19 @@ public class GlobalName {
     public static final String IP_FREE = "free";
     public static final String IP_BUSY = "busy";
     public static final String IP_OFFLINE = "offline";
+
+    /**
+     * 用户类型
+     */
+    public static final String type_admin = "admin-";
+    public static final String type_user = "user-";
+    public static final String type_teacher = "teacher-";
+
+    /**
+     * 期刊是否学院
+     */
+    public static final String belongSchool = "学院";
+    public static final String belongVisitor = "访客";
+    public static final String belongApply = "应聘";
 
 }

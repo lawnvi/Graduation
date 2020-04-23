@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>简历概览</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <!-- Bootstrap -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <link href="../../adminres/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+    <!--    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <script src="../../adminres/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="../index">后台管理</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                            <span th:text="${user.getName()}">管理员</span>
+                            <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../personalData">个人资料</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../logout">退出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li>
+                        <a href="../index">首页</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">学院科研 <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" id="menu1">
+                            <li>
+                                <a href="../research/overview">数据概览
+                                    <!--                                    <i class="icon-arrow-right"></i>-->
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../research/researcher">科研人员</a>
+                            </li>
+                            <li>
+                                <a href="../research/reporterModel">评价模型</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="../research/article">期刊论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/meetingPaper">会议论文</a>
+                            </li>
+                            <li>
+                                <a href="../research/project">项目数据</a>
+                            </li>
+                            <li>
+                                <a href="../research/patent">发明专利</a>
+                            </li>
+                            <li>
+                                <a href="../research/journal">期刊数据</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">招聘相关 <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../recruit/stations">岗位管理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/resume">简历处理</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/interview">面试安排</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../recruit/config">招聘配置</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">工具 <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" target="_blank" href="../tools/visitor">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/article">抓取论文数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/journal">抓取期刊数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/project">抓取项目数据</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../tool/reporter">excel评价</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="../tool/ipPoolConfig">IP池管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">网站管理 <i class="caret"></i>
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="../webapp/overview">网站情况</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/user">用户列表</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/config">网站设置</a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="../webapp/logs">日志</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2" id="sidebar">
+            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li th:class="${ !status.equals('处理中')&&!status.equals('等待处理')&&!status.equals('通过')&&!status.equals('未通过') ? 'active' : ''}">
+                    <a href="./resume?status=all">
+                        <i class="icon-chevron-right"></i>
+                        <span class="badge badge-info pull-right" th:text="${resumes.getAll()}"></span>
+                        简历概览</a>
+                </li>
+                <li th:class="${status.equals('等待处理') ? 'active' : ''}">
+                    <a href="./resume?status=wait">
+                        <i class="icon-chevron-right"></i>
+                        <span class="badge badge-success pull-right" th:text="${resumes.getWait()}">731</span>
+                        待处理简历</a>
+                </li>
+                <li th:class="${status.equals('处理中') ? 'active' : ''}">
+                    <a href="./resume?status=interview"><i class="icon-chevron-right"></i>
+                        <span class="badge badge-warning pull-right" th:text="${resumes.getProcessing()}">4,231</span>
+                        面试中简历</a>
+                </li>
+                <li th:class="${status.equals('通过') ? 'active' : ''}">
+                    <a href="./resume?status=pass"><i class="icon-chevron-right"></i>
+                        <span class="badge badge-important pull-right" th:text="${resumes.getPassed()}">83</span>
+                        已通过简历</a>
+                </li>
+                <li th:class="${status.equals('未通过') ? 'active' : ''}">
+                    <a href="./resume?status=other"><i class="icon-chevron-right"></i>
+                        <span class="badge badge-important pull-right" th:text="${resumes.getFailed()}">83</span>
+                        其他简历</a>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-chevron-right"></i> 简历分析</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--/span-->
+        <div class="span10" id="content">
+            <div class="row-fluid">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>成功提示</h4>
+                    操作已经成功了！</div>
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="breadcrumb">
+                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
+                            <li>
+                                <a href="../index">首页</a> <span class="divider">/</span>
+                            </li>
+                            <li class="active" th:text="${status}">简历概览</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">统计</div>
+                        <div class="pull-right">
+                            <a class="badge badge-warning" href="#">
+                                查看更多
+                            </a>
+                        </div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span3">
+                            <div class="chart" data-percent="100" th:text="${resumes.getAll()}"></div>
+                            <div class="chart-bottom-heading"><span class="label label-info">共收到简历</span>
+
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <div class="chart" th:data-percent="${100*resumes.getWait()/resumes.getAll()}" th:text="${resumes.getWait()}"></div>
+                            <div class="chart-bottom-heading"><span class="label label-info">待处理简历</span>
+
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <div class="chart" th:data-percent="${100*resumes.getProcessing()/resumes.getAll()}" th:text="${resumes.getProcessing()}">83%</div>
+                            <div class="chart-bottom-heading"><span class="label label-info">处理中</span>
+
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <div class="chart" th:data-percent="${100*resumes.getPassed()/resumes.getAll()}" th:text="${resumes.getPassed()}">13%</div>
+                            <div class="chart-bottom-heading"><span class="label label-info">已通过</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">收到简历</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+                                <thead>
+                                <tr>
+                                    <th>应聘人员</th>
+                                    <th>性别</th>
+                                    <th>学历</th>
+                                    <th>JCR1/2篇数</th>
+                                    <th>SCI被引</th>
+                                    <th>项目金额</th>
+                                    <th>JCR分数</th>
+                                    <th>定岗推荐</th>
+                                    <th>应聘岗位</th>
+                                    <th>投递时间</th>
+                                    <th>备注</th>
+                                    <th>状态</th>
+                                    <th th:hidden="${!status.equals('等待处理')}">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="odd gradeX" th:each="obj, stat:${resumes.getResumes()}">
+                                    <td>
+                                        <a th:href="'./userDetail?id='+${obj.getId()}" th:text="${obj.getUser().getName()}"></a>
+                                    </td>
+                                    <td th:text="${obj.getUser().getSex()}"></td>
+                                    <td th:text="${obj.getUser().getEducation()}"></td>
+                                    <td th:text="${obj.getReporter().getJcr()}"></td>
+                                    <td th:text="${obj.getReporter().getSciCitation()}"></td>
+                                    <td th:text="${obj.getReporter().getFunds()}"></td>
+                                    <td th:text="${obj.getReporter().getJcrScore()}"></td>
+                                    <td th:text="${obj.getReporter().getPost()}"></td>
+                                    <td>
+                                        <a th:href="'./station?id='+${obj.getStation().getId()}" th:text="${obj.getStation().getTitle()}"></a>
+                                    </td>
+                                    <td th:text="${obj.getTime()}"></td>
+                                    <td th:text="${obj.getReporter().getNotes()}"></td>
+                                    <td>
+                                        <a th:href="'./resumeUpdate?id='+${obj.getId()}" th:text="${obj.getStatus()}"></a>
+                                    </td>
+                                    <td th:hidden="${!status.equals('等待处理')}">
+                                        <a>接收</a>
+                                        <a>拒绝</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+    </div>
+    <hr>
+    <footer class="footer footer-bar">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="footer-link">
+                        <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                    </div>
+                    <div class="">
+                        <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                            <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div><!--end container-->
+    </footer><!--end footer-->
+    <!-- Footer End -->
+</div>
+<!--/.fluid-container-->
+<script src="../../adminres/vendors/jquery-1.9.1.min.js"></script>
+<script src="../../adminres/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../adminres/assets/scripts.js"></script>
+<script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script>
+    $(function() {
+
+    });
+</script>
+<script src="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
+<script>
+    $(function() {
+        // Easy pie charts
+        $('.chart').easyPieChart({animate: 1000});
+    });
+</script>
+</body>
+
+</html>

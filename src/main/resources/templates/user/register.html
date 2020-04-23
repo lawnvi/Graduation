@@ -41,7 +41,7 @@
             };
             $.ajax(
                 {
-                    url: '../user/register.code',//这里是写controller中requestMapping中的路径
+                    url: './register.code',//这里是写controller中requestMapping中的路径
                     type: 'POST',//通过get或者post在发送请求
                     datatype: "json",//这是数据的格式，可以是String、json、xml等
                     async: true,//同步或异步，如果有多个ajax请求，则设成false
@@ -72,6 +72,9 @@
             var code = document.getElementById("checkCode").value;
             var psw = document.getElementById("psw1").value;
             var psw2 = document.getElementById("psw2").value;
+            document.getElementById("tips1").innerHTML="";
+            document.getElementById("tips2").innerHTML="";
+            document.getElementById("tips3").innerHTML="";
             if(!isEmail(email)){
                 document.getElementById("tips1").innerHTML = "请检查邮箱是否正确输入！";
                 return;
@@ -93,9 +96,10 @@
                 "checkCode": code,
                 "psw": psw
             };
+            document.getElementById("btn_code").setAttribute("disabled", true);
             $.ajax(
                 {
-                    url: '../user/register.do',//这里是写controller中requestMapping中的路径
+                    url: './register.do',//这里是写controller中requestMapping中的路径
                     type: 'POST',//通过get或者post在发送请求
                     datatype: "json",//这是数据的格式，可以是String、json、xml等
                     async: true,//同步或异步，如果有多个ajax请求，则设成false
@@ -112,10 +116,12 @@
                         }
                         else {
                             alert("未知错误，请重试");
+                            document.getElementById("btn_code").removeAttribute("disabled");
                         }
                     },
                     error: function(){//如果失败则会调用error方法
                         alert("未知网络错误");
+                        document.getElementById("btn_code").removeAttribute("disabled");
                     }
                 }
             )

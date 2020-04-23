@@ -2,6 +2,7 @@ package com.buct.graduation.service.impl;
 
 import com.buct.graduation.mapper.JournalMapper;
 import com.buct.graduation.model.pojo.Journal;
+import com.buct.graduation.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -95,9 +95,12 @@ public class UserServiceImpl implements UserService {
         List<Project> projects = projectMapper.findByUid(uid);
         List<Patent> patents = patentMapper.findByUid(uid);
         List<Article> articles = articleMapper.findByIds(uid);
-        for(Article article: articles){
+        /*for(Article article: articles){
+            if(article.getJid() == null || article.getJid() == 0){
+                continue;
+            }
             article.setJournal(journalMapper.findById(article.getJid()));
-        }
+        }*/
         Reporter reporter = Utils.getScore(new Reporter(), projects, patents, articles, papers);
         reporter.setUid(uid);
         reporter.setTimestamp(Utils.getDate().toString());
@@ -108,7 +111,7 @@ public class UserServiceImpl implements UserService {
         resume.setSid(sid);
         resume.setRid(reporter.getId());
         resume.setResumePath(user.getResumePath());
-        resume.setStatus("new");
+        resume.setStatus(GlobalName.resume_wait);
 
         return resumeMapper.addResume(resume) > 0 ? GlobalName.success : GlobalName.fail;
     }
@@ -116,6 +119,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Project> showProjects(int uid) {
         return projectMapper.findByUid(uid);
+    }
+
+    @Override
+    public List<Project> showProjectsByStatus(int uid, boolean isChecked) {
+        return projectMapper.findByUidStatus(uid, isChecked);
     }
 
     @Override
@@ -134,11 +142,11 @@ public class UserServiceImpl implements UserService {
         List<Article> articles = articleMapper.findByIds(uid);
         List<UserArticle> list = new ArrayList<>();
         for(Article article: articles){
-            if(article.getJid() != null) {
+            /*if(article.getJid() != null) {
                 article.setJournal(journalMapper.findById(article.getJid()));
             }else {
                 article.setJournal(new Journal());
-            }
+            }*/
             UserArticle a = userArticleMapper.findById(article.getId(), uid);
             a.setArticle(article);
             list.add(a);

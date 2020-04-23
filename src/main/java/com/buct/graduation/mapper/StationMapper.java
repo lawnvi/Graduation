@@ -2,6 +2,7 @@ package com.buct.graduation.mapper;
 
 import com.buct.graduation.model.pojo.recruit.Station;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,8 +11,17 @@ public interface StationMapper {
     @Insert("insert into station (title, number, status, start, end, treatment, conditions, notes, process, contacts, tel, email, contactAddress, maxAge, major, education) values (#{title}, #{number}, #{status}, #{start}, #{end}, #{treatment}, #{conditions}, #{notes}, #{process}, #{contacts}, #{tel}, #{email}, #{contactAddress}, #{maxAge}, #{major}, #{education})")
     int add(Station station);
 
-    @Update("update station set title=#{title} number = #{number}, status=#{status}, start=#{start}, end=#{end}, treatment=#{treatment}, conditions=#{conditions}, notes=#{notes}, process=#{process},contacts=#{contacts}, tel=#{tel}, email=#{email}, contactAddress=#{contactAddress}, maxAge=#{maxAge}, major=#{major}, education=#{education} where id = #{id}")
+    @Update("update station set title=#{title}, number = #{number}, status=#{status}, start=#{start}, end=#{end}, treatment=#{treatment}, conditions=#{conditions}, notes=#{notes}, process=#{process},contacts=#{contacts}, tel=#{tel}, email=#{email}, contactAddress=#{contactAddress}, maxAge=#{maxAge}, major=#{major}, education=#{education} where id = #{id}")
     int update(Station station);
+
+/*    @Update("update station set passed=#{passed}, interviewing=#{interviewing} where id = #{id}")
+    int updatePassed(Station station);
+
+    @Update("update station set interviewing = #{interviewing} where id = #{id}")
+    int updateInterview(Station station);
+
+    @Update("update station set resumeNumber=#{resumeNumber} where id = #{id}")
+    int updateNewResume(Station station);*/
 
     @Select("select * from station where id = #{id}")
     Station findById(int id);
@@ -19,9 +29,19 @@ public interface StationMapper {
     @Select("select * from station")
     List<Station> findAll();
 
+    @Select("select * from station where status=#{status}")
+    List<Station> findByStatus(String status);
+
     @Select("select * from (SELECT * FROM station WHERE end > now() order by start desc) as a limit #{start}, #{number}")
     List<Station> findJobsWithPage(@Param("start") int start, @Param("number") int number);
 
     @Delete("delete from station where id =#{id}")
     void delete(int id);
+
+    @Select("select count(id) from station")
+    int countAll();
+
+    @Select("select count(id) from station where status = #{status}")
+    int countByStatus(String status);
+
 }

@@ -3,13 +3,13 @@ package com.buct.graduation.controller;
 import com.buct.graduation.model.pojo.Article;
 import com.buct.graduation.model.pojo.Journal;
 import com.buct.graduation.model.pojo.User;
-import com.buct.graduation.model.pojo.recruit.Hr;
 import com.buct.graduation.model.spider.Periodical;
 import com.buct.graduation.model.spider.PeriodicalTable;
 import com.buct.graduation.service.ArticleService;
 import com.buct.graduation.service.SpiderService;
-import com.buct.graduation.service.impl.JournalService;
+import com.buct.graduation.service.JournalService;
 import com.buct.graduation.util.GlobalName;
+import com.buct.graduation.util.Utils;
 import com.buct.graduation.util.excel.Excel2Excel;
 import com.buct.graduation.util.spider.GetArticlesByAddress;
 import com.buct.graduation.util.spider.SpiderLetpub;
@@ -17,13 +17,9 @@ import com.buct.graduation.util.spider.SpiderWOS;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -157,9 +153,16 @@ public class ToolController {
         }
         String fileName = file.getOriginalFilename();
         String path = "D:\\schoolHelper\\upload\\" + fileName;
+        path = GlobalName.EXCEL_PATH+GlobalName.EXCEL_BUFFER + Utils.getTodayPath();
+        path = Utils.saveFile(file, path);
+        if(path.equals("")){
+            System.out.println("bad");
+        }
+/*        }
         File dest = new File(path);
         try {
-            file.transferTo(dest);
+            file.transferTo(dest);*/
+        else{
             System.out.println("good");
             try {
                 String newPath = null;
@@ -171,25 +174,23 @@ public class ToolController {
                 else {
                     return "error";
                 }
+                System.out.println(newPath);
                 InputStream is = new FileInputStream(new File(newPath));
                 Workbook wb = WorkbookFactory.create(is);
                 is.close();
                 response.setContentType("application/vnd.ms-excel");
-                response.setHeader("Content-disposition", "attachment;filename=C0414信息学院-谢晓明-副本.xlsx");
-                OutputStream ouputStream = response.getOutputStream();
-                wb.write(ouputStream);
-                ouputStream.flush();
-                ouputStream.close();
+                response.setHeader("Content-disposition", "attachment;filename=reporter"+fileName);
+                OutputStream outputStream = response.getOutputStream();
+                wb.write(outputStream);
+                outputStream.flush();
+                outputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return "上传成功";
-        } catch (IOException e) {
         }
-        if(way.equals("论文数据未填写")){
-
-        }
-
+//        catch (IOException e) {
+//        }
         System.out.println("bad");
         //reporter
         return "";

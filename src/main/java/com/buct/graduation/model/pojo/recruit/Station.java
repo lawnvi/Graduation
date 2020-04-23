@@ -1,5 +1,6 @@
 package com.buct.graduation.model.pojo.recruit;
 
+import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
 
 /**
@@ -8,7 +9,7 @@ import com.buct.graduation.util.Utils;
  * 应聘者查看
  */
 public class Station {
-    private Integer id;
+    private Integer id = -1;
     private String title;//题目
     private Integer number;//需求数量
     private String status;//状态
@@ -27,10 +28,16 @@ public class Station {
     private String education;//学位要求
     private int maxAge;//年龄要求
 
+    //展示需要 数据库没存
+    private Integer passed = 0;//通过数量
+    private Integer interviewing = 0;//面试中
+    private Integer resumeNumber = 0;//收到简历数
+    private Integer newResume = 0;//未处理简历
+
     public Station() {
         this.title = "";
         this.number = 0;
-        this.status = "正常";
+        this.status = GlobalName.station_on;
         this.start = Utils.getDate().toDate();
         this.end = Utils.getDate().toDate();
         this.treatment = "";
@@ -41,9 +48,41 @@ public class Station {
         this.tel = "";
         this.email = "";
         this.contactAddress = "";
-        this.major = "";
+        this.major = "无";
         this.education = "无";
         this.maxAge = 0;
+    }
+
+    public Integer getNewResume() {
+        return newResume;
+    }
+
+    public void setNewResume(Integer newResume) {
+        this.newResume = newResume;
+    }
+
+    public Integer getPassed() {
+        return passed;
+    }
+
+    public void setPassed(Integer passed) {
+        this.passed = passed;
+    }
+
+    public Integer getInterviewing() {
+        return interviewing;
+    }
+
+    public void setInterviewing(Integer interviewing) {
+        this.interviewing = interviewing;
+    }
+
+    public Integer getResumeNumber() {
+        return resumeNumber;
+    }
+
+    public void setResumeNumber(Integer resumeNumber) {
+        this.resumeNumber = resumeNumber;
     }
 
     public String getMajor() {

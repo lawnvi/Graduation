@@ -1,4 +1,3 @@
-
 function postAjax(datas, url) {
     $.ajax(
         {
