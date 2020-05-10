@@ -10,6 +10,7 @@ public class Journal {
     private String AbbrTitle;//简称
     private String ISSN;//唯一码？
     private Boolean isTop;//是否TOP
+    private String is_top;
     private Float IF;//影响因子
     private Integer year;//数据年份
     private String section = "JCR-";//jcr分区1/2/3/4
@@ -26,6 +27,14 @@ public class Journal {
         this.section = "未知";
         this.url = "not find";
         this.notes = "404";
+    }
+
+    public String getIs_top() {
+        return is_top;
+    }
+
+    public void setIs_top(String is_top) {
+        this.is_top = is_top;
     }
 
     public String getAbbrTitle() {
@@ -66,6 +75,7 @@ public class Journal {
 
     public void setTop(Boolean top) {
         isTop = top;
+        this.is_top = isTop ? "是" : "否";
     }
 
     public Float getIF() {

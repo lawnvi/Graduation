@@ -27,6 +27,7 @@ public class GlobalName {
     public static final String session_userId = "session_user_id";
     public static final String session_user = "session_user";
     public static final String session_admin = "session_admin";
+    public static final String session_teacher = "session_teacher";
 
     //level
     public static final String teacher = "讲师";
@@ -49,8 +50,8 @@ public class GlobalName {
      */
     //todo change path & db_psw
     //文件存储路径(ABSOLUTEPATH)
-//    public static final String ABSOLUTE_PATH = "D:\\schoolHelper\\mybuffer\\import\\upload\\";
-    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/import/upload/";
+    public static final String ABSOLUTE_PATH = "D:\\schoolHelper\\mybuffer\\import\\upload\\";
+//    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/import/upload/";
     public static final String RELATIVE_PATH = "/import/";
     public static final String ROOT_PATH = "import";
     public static final String PIC_PATH = "/images/avatar-1.jpg";
@@ -79,5 +80,19 @@ public class GlobalName {
     public static final String belongSchool = "学院";
     public static final String belongVisitor = "访客";
     public static final String belongApply = "应聘";
+
+    /**
+     * 学院教师期刊论文状态
+     */
+    public static final String teacher_flag_normal = "正常";
+    public static final String teacher_flag_apply = "申请";
+    public static final String teacher_flag_claim = "待认领";
+    public static final String teacher_flag_other = "其他";
+
+    /**
+     * 用户类型
+     */
+    public static final String user_type_user = "应聘者";
+    public static final String user_type_teacher = "教师";
 
 }

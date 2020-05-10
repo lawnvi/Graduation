@@ -18,6 +18,10 @@ public interface ArticleMapper {
     void delete(int id);
 
     @Select("select * from article where id  = #{id}")
+    @Results(id = "findByAid",value = {
+            @Result(id = true,column = "id",property = "id"),
+            @Result(property = "journal", column = "jid" ,one = @One(select = "com.buct.graduation.mapper.JournalMapper.findById",fetchType = FetchType.EAGER))
+    })
     Article findById(int id);
 
     @Select("select * from article where name  = #{name}")

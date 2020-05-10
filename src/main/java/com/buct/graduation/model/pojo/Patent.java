@@ -13,6 +13,15 @@ public class Patent {
     private String notes;//备注 如链接
     private String role;//参与角色
     private String belong = GlobalName.belongApply;//所属
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public String getBelong() {
         return belong;

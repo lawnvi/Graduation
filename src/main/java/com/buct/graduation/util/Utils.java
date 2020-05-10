@@ -1,6 +1,7 @@
 package com.buct.graduation.util;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.pojo.science.Teacher;
 import com.buct.graduation.model.util.NowDate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -191,6 +192,11 @@ public class Utils {
     public static User getUser(HttpServletRequest request){
         HttpSession session = request.getSession();
         return (User)session.getAttribute(GlobalName.session_user);
+    }
+
+    public static Teacher getTeacher(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        return (Teacher) session.getAttribute(GlobalName.session_teacher);
     }
 
     /**

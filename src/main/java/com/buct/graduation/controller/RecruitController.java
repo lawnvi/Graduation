@@ -5,6 +5,7 @@ import com.buct.graduation.model.pojo.recruit.Interview;
 import com.buct.graduation.model.pojo.recruit.Resume;
 import com.buct.graduation.model.pojo.recruit.Station;
 import com.buct.graduation.model.vo.Apply;
+import com.buct.graduation.model.vo.ResumeData;
 import com.buct.graduation.service.ArticleService;
 import com.buct.graduation.service.ResumeService;
 import com.buct.graduation.service.StationService;
@@ -105,7 +106,12 @@ public class RecruitController {
         Station station = stationService.findStationById(id);
         model.addAttribute("status", status);
         model.addAttribute("station", station);
-        model.addAttribute("resumes", resumeService.findResumesBySid(id));
+        System.out.println("size "+status);
+        ResumeData resumeData = resumeService.findResumesBySid(id);
+        if(!status.equals("全部简历")) {
+            resumeData.getResumes().removeIf(resume -> !resume.getStatus().equals(status));
+        }
+        model.addAttribute("resumes", resumeData);
         model.addAttribute("user", Utils.getAdmin(request));
         model.addAttribute("stationData", stationService.findStationData());
         return "/admin/rcb/show_station";

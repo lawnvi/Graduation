@@ -1,6 +1,7 @@
 package com.buct.graduation.config;
 
 import com.buct.graduation.config.interceptor.AdminInterceptor;
+import com.buct.graduation.config.interceptor.TeacherInterceptor;
 import com.buct.graduation.config.interceptor.UserInterceptor;
 import com.buct.graduation.util.GlobalName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     private UserInterceptor loginInterceptor;
     @Autowired
     private AdminInterceptor adminInterceptor;
+    @Autowired
+    private TeacherInterceptor teacherInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -31,5 +34,6 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         // excludePathPatterns("/login", "/register") 表示除了登陆与注册之外，因为登陆注册不需要登陆也可以访问
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns();
         registry.addInterceptor(adminInterceptor).addPathPatterns("/**").excludePathPatterns();
+        registry.addInterceptor(teacherInterceptor).addPathPatterns("/**").excludePathPatterns();
     }
 }

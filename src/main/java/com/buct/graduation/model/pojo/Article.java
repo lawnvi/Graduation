@@ -15,12 +15,14 @@ public class Article {
     private String notes = "";
     private String url = "";
     private Boolean isESI = false;//是否高被引
+    private String is_esi;
     private String filePath;//存档位置
     private String volume = "";//卷号
     private String page = "";//页码
     private String issue = "";//期
 
     private Boolean isSci = false;//sci收录
+    private String is_sci;
     private String addWay = GlobalName.addWay_missing_c;
     private String address = "应聘";//是否学院
     private String uploadEmail;//录入者邮箱
@@ -28,6 +30,26 @@ public class Article {
     private Journal journal = new Journal();//期刊
 
     private String AttrName;
+
+    public String getIs_esi() {
+        return is_esi;
+    }
+
+    public void setIs_esi(String is_esi) {
+        this.is_esi = is_esi;
+    }
+
+    public String getIs_sci() {
+        return is_sci;
+    }
+
+    public void setIs_sci(String is_sci) {
+        this.is_sci = is_sci;
+    }
+
+    public void setAttrName(String attrName) {
+        AttrName = attrName;
+    }
 
     public String getAttrName() {
         return AttrName;
@@ -60,6 +82,7 @@ public class Article {
 
     public void setSci(Boolean sci) {
         isSci = sci;
+        this.is_sci = isSci ? "是" : "否";
     }
 
     public String getAddWay() {
@@ -190,6 +213,7 @@ public class Article {
 
     public void setESI(Boolean ESI) {
         isESI = ESI;
+        this.is_esi = isESI ? "是" : "否";
     }
 
     public String getYear() {

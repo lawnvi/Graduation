@@ -18,7 +18,25 @@ public class ConferencePaper {
     private String AttrName;
     private String AttrMeeting;
     private boolean isEsi;
+    private String is_esi;
     private String belong = GlobalName.belongApply;//所属
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getIs_esi() {
+        return is_esi;
+    }
+
+    public void setIs_esi(String is_esi) {
+        this.is_esi = is_esi;
+    }
 
     public String getBelong() {
         return belong;
@@ -70,6 +88,7 @@ public class ConferencePaper {
 
     public void setEsi(boolean esi) {
         isEsi = esi;
+        this.is_esi = isEsi ? "是" : "否";
     }
 
     public String getRole() {

@@ -8,10 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface ProjectMapper {
-    @Insert("insert into project (belong, uid, name, funds, notes, role, number,fund,charge,ischecked) values(#{belong}, #{uid}, #{name}, #{funds}, #{notes}, #{role}, #{number},#{fund},#{charge},#{ischecked})")
+    @Insert("insert into project (belong, uid, name, funds, notes, role, number,fund,charge,checked,flag,url) values(#{belong}, #{uid}, #{name}, #{funds}, #{notes}, #{role}, #{number},#{fund},#{charge},#{checked}, #{flag},#{url})")
     int addProject(Project project);
 
-    @Update("update project set belong=#{belong}, name=#{name}, funds=#{funds}, notes=#{notes}, role=#{role}, number=#{number}, fund=#{fund},charge=#{charge}, ischecked=#{ischecked} where id = #{id}")
+    @Update("update project set belong=#{belong}, name=#{name}, funds=#{funds}, notes=#{notes}, role=#{role}, number=#{number}, fund=#{fund},charge=#{charge}, checked=#{checked}, flag=#{flag}, url=#{url} where id = #{id}")
     int update(Project project);
 
     @Delete("delete from project where id = #{id}")
@@ -20,8 +20,8 @@ public interface ProjectMapper {
     @Select("select * from project where uid = #{uid}")
     List<Project> findByUid(@Param("uid") int uid);
 
-    @Select("select * from project where uid = #{uid} and ischecked = #{isChecked}")
-    List<Project> findByUidStatus(@Param("uid") int uid, @Param("isChecked") boolean isChecked);
+    @Select("select * from project where uid = #{uid} and checked = #{isChecked}")
+    List<Project> findByUidStatus(@Param("uid") int uid, @Param("checked") boolean checked);
 
     @Select("select * from project where id = #{id}")
     Project findById(@Param("id") int id);
@@ -31,4 +31,7 @@ public interface ProjectMapper {
 
     @Select("select * from project where belong = #{belong}")
     List<Project> findByBelong(String belong);
+
+    @Select("select * from project where belong = #{belong} and flag = #{flag}")
+    List<Project> findByBelongFlag(@Param("belong") String belong, @Param("flag") String flag);
 }

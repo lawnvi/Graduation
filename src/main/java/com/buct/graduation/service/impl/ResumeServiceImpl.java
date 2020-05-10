@@ -44,11 +44,30 @@ public class ResumeServiceImpl implements ResumeService {
         return data;
     }
 
+
+    private void setResumeDataWithId(ResumeData data){
+        data.setAll(data.getResumes().size());
+        int w = 0, ing = 0, pass = 0, f = 0;
+        for(Resume resume: data.getResumes()){
+            switch (resume.getStatus()){
+                case GlobalName.resume_wait: w++;break;
+                case GlobalName.resume_processing: ing++;break;
+                case GlobalName.resume_pass: pass++;break;
+                case GlobalName.resume_fail: f++;break;
+                default:break;
+            }
+        }
+        data.setWait(w);
+        data.setProcessing(ing);
+        data.setPassed(pass);
+        data.setFailed(f);
+    }
+
     @Override
     public ResumeData findResumesBySid(int sid) {
         ResumeData data = new ResumeData();
         data.setResumes(resumeMapper.findBySid(sid));
-        setResumeData(data);
+        setResumeDataWithId(data);
         return data;
     }
 

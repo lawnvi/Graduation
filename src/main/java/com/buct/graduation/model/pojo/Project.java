@@ -16,7 +16,25 @@ public class Project {
     private String number;//项目编号
     private String fund;//基金
     private String charge;//负责人
-    private Boolean isChecked = false;//是否已检查
+    private Boolean checked = false;//是否已检查
+    private String flag = GlobalName.teacher_flag_apply;
+    private String url = "";
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     private String belong = GlobalName.belongApply;//所属
 
@@ -29,11 +47,11 @@ public class Project {
     }
 
     public Boolean getChecked() {
-        return isChecked;
+        return checked;
     }
 
     public void setChecked(Boolean checked) {
-        isChecked = checked;
+        checked = checked;
     }
 
     public String getCharge() {

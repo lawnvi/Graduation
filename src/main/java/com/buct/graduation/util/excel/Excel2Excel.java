@@ -336,7 +336,7 @@ public class Excel2Excel {
                             stu.setEsi("是".equals(cell5.getStringCellValue()));
                         }
                         Cell cell6 = row.getCell(6);
-                        if(cell5 != null) {
+                        if(cell6 != null) {
                             stu.setNotes(cell6.getStringCellValue());
                         }
 

@@ -59,4 +59,5 @@ public interface UserService {
     boolean deleteUserArticle(int aid, int uid);
 
     List<Apply> findApply(int uid);
+
 }

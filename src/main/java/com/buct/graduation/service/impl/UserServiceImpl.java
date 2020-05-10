@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String email, String psw) {
         User user = userMapper.findUserByEmail(email);
-        if(user == null)
+        if(user == null || !user.getLevel().equals(GlobalName.user_type_user))
             return null;
         if(psw.equals(user.getPsw()))
             return user;
@@ -216,6 +216,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUserArticle(Article article, UserArticle userArticle) {
+        if(userArticle == null){
+            return 0;
+        }
+        UserArticle userArticle1 = userArticleMapper.findById(userArticle.getAid(), userArticle.getUid());
+        if(userArticle1 == null){
+            return 0;
+        }
+        userArticle.setFlag(userArticle1.getFlag());
         return userArticleMapper.update(userArticle);
     }
 

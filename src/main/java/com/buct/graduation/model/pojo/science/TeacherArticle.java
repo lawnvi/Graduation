@@ -1,12 +1,13 @@
-package com.buct.graduation.model.pojo;
+package com.buct.graduation.model.pojo.science;
+
+import com.buct.graduation.model.pojo.Article;
 
 /**
- * 考虑到一篇论文可能有多个作者
- * 遂新建UA表
+ * 在职者的期刊论文记录
  */
-public class UserArticle {
+public class TeacherArticle {
     private Integer id;
-    private Integer uid;//用户id
+    private Integer tid;//教师id
     private Integer aid;//期刊论文id
     private String role;//担任角色
     private String notes;
@@ -21,22 +22,6 @@ public class UserArticle {
         this.flag = flag;
     }
 
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -45,12 +30,12 @@ public class UserArticle {
         this.id = id;
     }
 
-    public Integer getUid() {
-        return uid;
+    public Integer getTid() {
+        return tid;
     }
 
-    public void setUid(Integer uid) {
-        this.uid = uid;
+    public void setTid(Integer tid) {
+        this.tid = tid;
     }
 
     public Integer getAid() {
@@ -67,5 +52,21 @@ public class UserArticle {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 }

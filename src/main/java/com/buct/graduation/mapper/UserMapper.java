@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @Insert("insert into user (email, psw, level) values(#{email}, #{psw}, #{level})")
+    @Options(useGeneratedKeys=true, keyProperty = "id")
     int addUser(User user);
 
     @Update("update user set level=#{level}, name = #{name}, email = #{email}, tel = #{tel}, picPath = #{picPath}, notes = #{notes}, resumePath=#{resumePath}, education=#{education}, title=#{title}, fund=#{fund}, status=#{status}, major=#{major}, sex=#{sex}, birthday=#{birthday}, contactAddress=#{contactAddress} where id = #{id}")

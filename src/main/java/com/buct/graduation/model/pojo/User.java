@@ -1,5 +1,7 @@
 package com.buct.graduation.model.pojo;
 
+import com.buct.graduation.util.GlobalName;
+
 /**
  * 用户 包括应聘者、在职者、访问者
  * 应聘：招聘
@@ -28,7 +30,7 @@ public class User {
     private String birthday;
     private String contactAddress;//联系地址
 
-    private String level = "";//应聘者/老师
+    private String level = GlobalName.user_type_user;//应聘者/老师
 
     //todo 待定是否加上 还有更多
     private String nation;//民族

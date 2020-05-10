@@ -63,6 +63,7 @@ public class SpiderServiceImpl implements SpiderService {
             articleMapper.update(article);
         }
         article.setUploadEmail(a.getUploadEmail());
+//        System.out.println("ceshi:"+article.getYear());
         return article;
     }
 
