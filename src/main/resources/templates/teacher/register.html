@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>注册</title>
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../js/util.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="Themesdesign" />
+    
+        <link rel="shortcut icon" href="../images/favicon.ico">
+    
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+    
+        <!--Material Icon -->
+        <link rel="stylesheet" type="text/css" href="../css/materialdesignicons.min.css" />
+    
+        <link rel="stylesheet" type="text/css" href="../css/selectize.css" />
+    
+        <link rel="stylesheet" type="text/css" href="../css/nice-select.css" />
+    
+        <!-- Custom  Css -->
+        <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <script>
+        function getCode() {
+            if(countdown > 0)
+                return;
+            var email = document.getElementById("email").value;
+            console.log(email);
+            if(!isEmail(email)){
+                alert("请检查邮箱是否正确输入！");
+                document.getElementById("tips1").innerHTML = "请输入邮箱";
+                return;
+            }
+            let datas = {
+                "email":email,
+            };
+            $.ajax(
+                {
+                    url: './register.code',//这里是写controller中requestMapping中的路径
+                    type: 'POST',//通过get或者post在发送请求
+                    datatype: "json",//这是数据的格式，可以是String、json、xml等
+                    async: true,//同步或异步，如果有多个ajax请求，则设成false
+                    data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                    success: function(data){//回调函数，如果请求成功，则会调用success方法
+                        console.log("yes");
+                        if(data === "ok"){
+                            console.log(data);
+                            document.getElementById("tips1").innerHTML = "验证码发送成功";
+                            countdown = 60;
+                            setTime();
+                        }else if(data === "existed"){
+                            document.getElementById("tips1").innerHTML = "邮箱已注册，请登录或找回密码";
+                        }
+                        else {
+                            document.getElementById("tips1").innerHTML = "验证码发送失败，请重试";
+                        }
+                    },
+                    error: function(){//如果失败则会调用error方法
+                        alert("未知网络错误");
+                    }
+                }
+            )
+        }
+
+        function register() {
+            var email = document.getElementById("email").value;
+            var code = document.getElementById("checkCode").value;
+            var psw = document.getElementById("psw1").value;
+            var psw2 = document.getElementById("psw2").value;
+            document.getElementById("tips1").innerHTML="";
+            document.getElementById("tips2").innerHTML="";
+            document.getElementById("tips3").innerHTML="";
+            if(!isEmail(email)){
+                document.getElementById("tips1").innerHTML = "请检查邮箱是否正确输入！";
+                return;
+            }
+            if(code.length < 6){
+                document.getElementById("tips2").innerHTML = "请检查验证码是否正确！";
+                return;
+            }
+            if(psw !== psw2){
+                document.getElementById("tips3").innerHTML = "密码不一致";
+                return;
+            }
+            if(!pattern.test(psw)){
+                document.getElementById("tips3").innerHTML = "密码6-16位";
+                return;
+            }
+            let datas = {
+                "email": email,
+                "checkCode": code,
+                "psw": psw
+            };
+            document.getElementById("btn_code").setAttribute("disabled", true);
+            $.ajax(
+                {
+                    url: './register.do',//这里是写controller中requestMapping中的路径
+                    type: 'POST',//通过get或者post在发送请求
+                    datatype: "json",//这是数据的格式，可以是String、json、xml等
+                    async: true,//同步或异步，如果有多个ajax请求，则设成false
+                    data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
+                    success: function(data){//回调函数，如果请求成功，则会调用success方法
+                        console.log("yes");
+                        if(data === "ok"){
+                            console.log(data);
+                            alert("注册成功了，去登录吧");
+                            window.location.href="./login";
+                        }else if(data === "codeError"){
+                            // alert("验证码错误");
+                            document.getElementById("tips2").innerHTML = "验证码错误";
+                        }
+                        else {
+                            alert("未知错误，请重试");
+                            document.getElementById("btn_code").removeAttribute("disabled");
+                        }
+                    },
+                    error: function(){//如果失败则会调用error方法
+                        alert("未知网络错误");
+                        document.getElementById("btn_code").removeAttribute("disabled");
+                    }
+                }
+            )
+        }
+
+        var countdown = 0;
+        function setTime() {
+            var obj = document.getElementById("btn_code");
+            if (countdown === 0) {
+                obj.removeAttribute("disabled");
+                obj.innerHTML="获取验证码";
+                document.getElementById("tips1").innerHTML = "";
+                countdown = 60;
+                return;
+            } else {
+                obj.setAttribute("disabled", true);
+                obj.innerHTML="重新发送(" + countdown + "s)";
+                countdown--;
+            }
+            setTimeout(function() {
+                    setTime() }
+                ,1000)
+        }
+        function isEmail(sText) {
+            var reEmail = /^(?:\w+\.?)*\w+@(?:\w+\.)+\w+$/;
+            return reEmail.test(sText);
+        }
+
+    </script>
+    </head>
+
+    <body>
+        <!-- Loader -->
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Loader -->
+        
+        <div class="back-to-home rounded d-none d-sm-block">
+            <a href="../index" class="text-white rounded d-inline-block text-center"><i class="mdi mdi-home"></i></a>
+        </div>
+
+        <!-- Hero Start -->
+        <section class="vh-100" style="background: url('../images/user.jpg') center center;">
+            <div class="home-center">
+                <div class="home-desc-center">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="login_page bg-white shadow rounded p-4">
+                                    <div class="text-center">
+                                        <h4 class="mb-4">Signup</h4>  
+                                    </div>
+<!--                                    <form class="login-form">-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group position-relative">
+                                                    <label>Your Email
+                                                        <span class="text-danger">*</span>
+                                                        <span id="tips1"></span>
+                                                    </label>
+                                                    <input type="email" class="form-control" placeholder="Email" name="email" id="email" required="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <div class="form-group position-relative">
+                                                    <label>验证码 <span class="text-danger">*</span>
+                                                        <span id="tips2"></span></label>
+                                                    <input type="text" class="form-control" id="checkCode" name="checkCode" placeholder="查看您的邮箱以获取验证码">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group position-relative">
+                                                    <label><span class="text-danger"></span></label>
+                                                    <button class="btn btn-primary w-100" onclick="getCode()" id="btn_code">获取验证码</button>
+                                                </div>
+                                                </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group position-relative">
+                                                    <label>Password <span class="text-danger">*</span></label>
+                                                    <input type="password" class="form-control" id="psw1" name="psw1" placeholder="Password" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group position-relative">
+                                                    <label>Confirm Password <span class="text-danger">*</span>
+                                                        <span id="tips3"></span></label>
+                                                    <input type="password" class="form-control" id="psw2" name="psw2" placeholder="Confirm Password" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control m-0 custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                        <label class="custom-control-label" for="customCheck1">I Accept <a href="#" class="text-primary">Terms And Condition</a></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary w-100" onclick="register()">Register</button>
+                                            </div>
+                                            <div class="mx-auto">
+                                                <p class="mb-0 mt-3"><small class="text-dark mr-2">Already have an account ?</small> <a href="./login" class="text-dark font-weight-bold">Sign in</a></p>
+                                            </div>
+                                        </div>
+<!--                                    </form>-->
+                                </div>
+                            </div> <!--end col-->
+                        </div><!--end row-->
+                    </div> <!--end container-->
+                </div>
+            </div>
+        </section><!--end section-->
+        <!-- Hero End -->
+
+        <!-- javascript -->
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script src="../js/jquery.easing.min.js"></script>
+        <script src="../js/plugins.js"></script>
+
+        <!-- selectize js -->
+        <script src="../js/selectize.min.js"></script>
+
+        <script src="../js/jquery.nice-select.min.js"></script>
+
+        <script src="../js/app.js"></script>
+    </body>
+</html>

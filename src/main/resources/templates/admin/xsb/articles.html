@@ -156,11 +156,20 @@
     <div class="row-fluid">
         <div class="span2" id="sidebar">
             <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                <li class="active">
-                    <a href="./article"><i class="icon-chevron-right"></i> 数据统计</a>
+                <li>
+                    <a href="./articleData"><i class="icon-chevron-right"></i> 数据统计</a>
+                </li>
+                <li th:class="${flag.equals('正常') ? 'active' : ''}">
+                    <a href="./article?flag=正常"><i class="icon-chevron-right"></i> 正常</a>
+                </li>
+                <li th:class="${flag.equals('申请') ? 'active' : ''}">
+                    <a href="./article?flag=申请"><i class="icon-chevron-right"></i> 需核验</a>
+                </li>
+                <li th:class="${flag.equals('待认领') ? 'active' : ''}">
+                    <a href="./article?flag=待认领"><i class="icon-chevron-right"></i> 待认领</a>
                 </li>
                 <li>
-                    <a href="./articleNote"><i class="icon-chevron-right"></i> 其他</a>
+                    <a href="./addArticle"><i class="icon-chevron-right"></i> 添加期刊论文</a>
                 </li>
             </ul>
         </div>
@@ -208,28 +217,70 @@
                                     <th>IF</th>
                                     <th>分区</th>
                                     <th>状态</th>
-                                    <th>操作</th>
+                                    <th th:style="${!flag.equals('申请') ? 'display:none;' : ''}">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:class="'odd gradeX '+${obj.getAddWay().equals('自动')? '': 'error'}" th:each="obj, stat:${articles}">
-                                    <td th:text="${articles.indexOf(obj)}"></td>
-                                    <td th:text="${obj.getName()}"></td>
+                                <tr th:class="'odd gradeX '+${obj.getArticle().getAddWay().equals('自动')? '': 'error'}" th:each="obj, stat:${articles}">
+                                    <td th:text="${articles.indexOf(obj)+1}"></td>
                                     <td>
-                                        <a target="_blank" th:href="${obj.getJournal().getUrl()}" th:title="${obj.getJournal().getName()}" th:text="${obj.getJournal().getAbbrTitle()}"></a>
+                                        <a target="_blank" th:title="${obj.getArticle().getName()}" th:text="${obj.getArticle().getAttrName()}"></a>
                                     </td>
-                                    <td th:text="${obj.getCitation()}"></td>
-                                    <td th:text="${obj.getESI() ? '是' : '否'}"></td>
-                                    <td th:text="${obj.getJournal().getTop() ? '是' : '否'}"></td>
-                                    <td th:text="${obj.getJournal().getIF()}"></td>
-                                    <td th:text="${obj.getJournal().getSection()}"></td>
-                                    <td th:text="${obj.getNotes() + ' ' + obj.getJournal().getNotes()}"></td>
                                     <td>
-                                        <!--                                        todo 管理员确认操作修改数据-->
-                                        <a href="#">操作</a>
+                                        <a target="_blank" th:href="${obj.getArticle().getJournal().getUrl()}" th:title="${obj.getArticle().getJournal().getName()}" th:text="${obj.getArticle().getJournal().getAbbrTitle()}"></a>
+                                    </td>
+                                    <td th:text="${obj.getArticle().getCitation()}"></td>
+                                    <td th:text="${obj.getArticle().getESI() ? '是' : '否'}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getTop() ? '是' : '否'}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getIF()}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getSection()}"></td>
+<!--                                    <td th:text="${obj.getArticle().getNotes() + ' ' + obj.getArticle().getJournal().getNotes()}"></td>-->
+                                    <td th:text="${obj.getFlag()}"></td>
+                                    <td th:style="${!obj.getFlag().equals('申请') ? 'display:none;' : ''}">
+                                        <!--<a href="#myModal" th:style="${obj.getFlag().equals('申请') ? 'display:none;' : ''}" data-toggle="modal" class="btn btn-primary btn-small"
+                                           th:onclick="${'updateArticleByAdmin('')'}">更新
+                                        </a>-->
+                                        <button class="btn btn-small btn-primary" th:style="${!obj.getFlag().equals('申请') ? 'display:none;' : ''}" th:onclick="'passData('+${obj.getId()}+', 1, \''+${obj.getFlag()}+'\', \'article\')'" th:text="${obj.getFlag().equals('申请') ? '通过': '更新'}"></button>
+                                        <button class="btn btn-small btn-warning" th:style="${!obj.getFlag().equals('申请') ? 'display:none;' : ''}" th:onclick="'passData('+${obj.getId()}+', 0, \''+${obj.getFlag()}+'\', \'article\')'">移除</button>
                                     </td>
                                 </tr>
                                 </tbody>
+                                <div id="myModal" class="modal hide">
+                                    <div class="modal-header">
+                                        <button data-dismiss="modal" class="close"
+                                                type="button">&times;
+                                        </button>
+                                        <h3>期刊更新</h3>
+                                    </div>
+                                    <form class="form-horizontal">
+                                        <div class="modal-body">
+                                            <div class="control-group">
+                                                <label class="control-label"
+                                                       for="paper_name">论文名称</label>
+                                                <div class="controls">
+                                                    <input type="text" style="display: none" id="new_id">
+                                                    <!--                                                                            <input type="text" style="display: none" id="new_score">-->
+                                                    <input class="input-xlarge focused"
+                                                           type="text"
+                                                           id="paper_name">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="paper_article">期刊名称</label>
+                                                <div class="controls">
+                                                    <input class="input-xlarge focused"
+                                                           type="text"
+                                                           id="paper_article">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a data-dismiss="modal" class="btn btn-primary"
+                                               onclick="updateArticles()">保存</a>
+                                            <a data-dismiss="modal" class="btn" href="#">取消</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </table>
                         </div>
                     </div>
@@ -267,6 +318,7 @@
 <script src="../../adminres/assets/scripts.js"></script>
 <script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
 <script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script src="../../js/my/admin_science.js"></script>
 <script>
     $(function() {
 
