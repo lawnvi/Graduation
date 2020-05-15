@@ -2,12 +2,14 @@ package com.buct.graduation.controller;
 
 import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.science.Teacher;
+import com.buct.graduation.model.spider.ProjectData;
 import com.buct.graduation.service.SpiderService;
 import com.buct.graduation.service.TeacherService;
 import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.EmailUtil;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.buct.graduation.util.spider.SpiderLetpubProject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -160,6 +162,11 @@ public class TeacherController {
         return "redirect:./login";
     }
 
+    @RequestMapping("/changePsw")
+    public String changePsw(){
+        return "redirect:./resetPsw";
+    }
+
     /**
      * 信息展示，填写
      */
@@ -191,6 +198,10 @@ public class TeacherController {
         teacher.setUser(user);
         teacherService.update(teacher);
         Teacher user2 = teacherService.findByEmail(teacher.getUser().getEmail());
+        Utils.removeSession(request, GlobalName.session_teacher);
+        HttpSession session = request.getSession();
+        user.setPsw("");
+        session.setAttribute(GlobalName.session_teacher, user2);
         model.addAttribute("user", user2);
         return "/teacher/data/basicInfo";
     }
@@ -220,12 +231,15 @@ public class TeacherController {
     @ResponseBody
     public String addProject(HttpServletRequest request){
         Project project = getProject(request);
+        Utils.checkProject(project);
         project.setFlag(GlobalName.teacher_flag_apply);
         project.setBelong(GlobalName.belongSchool);
 //        project.setChecked(false);
-        if(userService.addProject(project) > 0)
-            return GlobalName.success;
-        return GlobalName.fail;
+        String msg = "";
+        if(project.getCharge() != null && !Utils.getTeacher(request).getUser().getName().equals(project.getCharge())){
+            msg =  " 负责人与用户不匹配，请确认归属";
+        }
+        return userService.addProject(project)+msg;
     }
     //修改
     @RequestMapping("/updateProject")
@@ -233,6 +247,11 @@ public class TeacherController {
     public String updateProject(HttpServletRequest request){
         Project project = getProject(request);
         project.setId(Integer.parseInt(request.getParameter("id")));
+        Utils.checkProject(project);
+        String msg = "";
+        if(project.getCharge() != null && !Utils.getTeacher(request).getUser().getName().equals(project.getCharge())){
+            msg =  " 负责人与用户不匹配，请确认归属";
+        }
         if(userService.updateProject(project) > 0)
             return GlobalName.success;
         return GlobalName.fail;

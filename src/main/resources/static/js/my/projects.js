@@ -8,6 +8,7 @@ function postAjax(datas, url) {
             data: datas,//传给后台的参数，也可以手动写成json或其他格式，这里提前在上面创建一个json对象，如果不想这样写，也可以手动{id:<%= user.getId()%>}写一个匿名对象传过去
             success: function(data){//回调函数，如果请求成功，则会调用success方法
                 if(data) {
+                    alert(data);
                     window.location.reload();
                 }
             },

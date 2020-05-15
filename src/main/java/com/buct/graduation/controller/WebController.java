@@ -33,18 +33,20 @@ public class WebController {
     }
 
     @RequestMapping("/index")
-    public String index(Model model){
+    public String index(Model model, HttpServletRequest request){
         List<Station> list = stationService.findAllStations();
         model.addAttribute("stations", list);
-        return "/index";
+        model.addAttribute("user", getUser(request));
+        return "/index2";
     }
 
     @RequestMapping("/jobs")
     public String showJobs(Model model, HttpServletRequest request){
+        String keyword = request.getParameter("keyword");
         //当前页码
         int page = 0;
         //当前页显示数量
-        int number = 20;
+        int number = 10;
         String s1 = request.getParameter("page");
         String s2 = request.getParameter("action");
         if(!(s1 == null || s1.length() == 0)){
@@ -61,12 +63,32 @@ public class WebController {
         }
 
         //给自己挖坑 睡觉了
-        List<Station> stations = stationService.findJobsWithPage(page, number);
+        List<Station> stations = stationService.findJobsWithPage(page, number, keyword);
         model.addAttribute("jobs", stations);
         model.addAttribute("page", page);
+        model.addAttribute("kw", keyword);
 
 //        model.addAttribute("number", number);
         model.addAttribute("user", getUser(request));
         return "/job_list";
+    }
+
+    @RequestMapping("/jobDetail")
+    public String jobDetails(HttpServletRequest request, Model model){
+        String sid = request.getParameter("sid");
+        if(sid == null || "".equals(sid)){
+            return "/errorPage";
+        }
+        int id = Integer.parseInt(sid);
+        Station station = stationService.findStationById(id);
+        model.addAttribute("job", station);
+        model.addAttribute("user", getUser(request));
+        return "/job_details";
+    }
+
+    @RequestMapping("/about")
+    public String about(HttpServletRequest request, Model model){
+        model.addAttribute("user", getUser(request));
+        return "/about";
     }
 }

@@ -158,7 +158,12 @@ public class AdminController {
     public String logoutMethod(HttpServletRequest request){
         Utils.removeSession(request, GlobalName.session_admin);
         //todo 去首页
-        return "redirect: ../index";
+        return "redirect:../index";
+    }
+
+    @RequestMapping("/changePsw")
+    public String changePsw(){
+        return "redirect:./resetPsw";
     }
 
     //todo 招聘/用户等管理

@@ -34,4 +34,6 @@ public interface ScienceService {
     String updatePatentByFlag(int pid, boolean action);
 
     String insertArticle(Article article);
+
+    String insertJournal(Journal journal);
 }

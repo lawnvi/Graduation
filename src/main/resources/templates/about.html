@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>about</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="Themesdesign" />
+
+    <link rel="shortcut icon" href="./images/favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
+
+    <!--Material Icon -->
+    <link rel="stylesheet" type="text/css" href="./css/materialdesignicons.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="./css/fontawesome.css" />
+
+    <!-- selectize css -->
+    <link rel="stylesheet" type="text/css" href="./css/selectize.css" />
+
+    <link rel="stylesheet" type="text/css" href="./css/nice-select.css" />
+
+    <!-- Custom  Css -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navigation Bar-->
+<header id="topnav" class="defaultscroll scroll-active">
+    <!-- Tagline STart -->
+    <div class="tagline">
+        <div class="container">
+            <div class="float-left">
+                <div class="phone">
+                    <i class="mdi mdi-phone-classic"></i> +86 13263227599
+                </div>
+                <div class="email">
+                    <a href="#">
+                        <i class="mdi mdi-email"></i> 1340878220@qq.com
+                    </a>
+                </div>
+            </div>
+            <div class="float-right">
+                <ul class="topbar-list list-unstyled d-flex" style="margin: 11px 0px;">
+                    <!--                    	<li>-->
+                    <!--                    		<div class="col-lg-4 col-md-5">-->
+                    <!--                    			<div class="float-left position-relative notification-icon mr-2">-->
+                    <!--                        			<i class="mdi mdi-bell-outline text-primary"></i>-->
+                    <!--                        			<span class="badge badge-pill badge-danger">1</span>-->
+                    <!--                    			</div>-->
+                    <!--                			</div>-->
+                    <!--                    	</li>-->
+                    <li class="list-inline-item"><a href="./user/information"><i class="mdi mdi-account mr-2"></i><span th:text="${user.getName()}"></span></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- Tagline End -->
+
+    <!-- Menu Start -->
+    <div class="container">
+        <!-- Logo container-->
+        <div>
+            <a href="./index" class="logo">
+                <img src="images/logo-light.jpg" alt="" class="logo-light" height="90" />
+                <img src="images/logo-dark.jpg" alt="" class="logo-dark" height="90" />
+            </a>
+        </div>
+
+        <!-- End Logo container-->
+        <div class="menu-extras">
+            <div class="menu-item">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </div>
+        </div>
+
+        <div id="navigation">
+            <!-- Navigation Menu-->
+            <ul class="navigation-menu">
+                <li><a href="./index">Home</a></li>
+                <li class="has-submenu">
+                    <a href="./jobs">Jobs</a></span>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="javascript:void(0)">Tools</a><span class="menu-arrow"></span>
+                    <ul class="submenu">
+                        <!-- todo add -->
+                        <li><a href="./tools/visitor">查期刊论文数据</a></li>
+                        <li><a href="./tools/admin">获取评价报告</a></li>
+                        <li><a href="./tools/awsl">学院某年期刊论文数据</a></li>
+                        <li><a href="./tools/faq">Help</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./about">About</a>
+                </li>
+            </ul><!--end navigation menu-->
+        </div><!--end navigation-->
+    </div><!--end container-->
+    <!--end end-->
+</header><!--end header-->
+    
+    <!-- Start home -->
+    <section class="bg-half page-next-level"> 
+        <div class="bg-overlay"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center text-white">
+                        <h4 class="text-uppercase title mb-4">About Us</h4>
+                        <ul class="page-next d-inline-block mb-0">
+                            <li><a href="index.html" class="text-uppercase font-weight-bold">Home</a></li>
+                            <li>
+                                <span class="text-uppercase text-white font-weight-bold">About Us</span>
+                            </li> 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end home -->
+
+    <!-- MAP START -->
+    <section class="section pt-0 bg-light">
+        <div class="container mt-100 mt-60">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
+                    <div class="contact-item mt-40">
+                        <div class="float-left">
+                            <div class="contact-icon d-inline-block border rounded-pill shadow text-primary mt-1 mr-4">
+                                <i class="mdi mdi-earth"></i>
+                            </div>
+                        </div>
+                        <div class="contact-details">
+                            <h4 class="text-dark mb-1">Website</h4>
+                            <p class="mb-0 text-muted"><a href="https://www.buct.edu.cn/" target="_blank">北京化工大学</a> </p>
+                            <p class="mb-0 text-muted"><a href="https://www.buct.edu.cn/rczp/main.htm" target="_blank">人才招聘</a> </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="contact-item mt-40">
+                        <div class="float-left">
+                            <div class="contact-icon d-inline-block border rounded-pill shadow text-primary mt-1 mr-4">
+                                <i class="mdi mdi-cellphone-iphone"></i>
+                            </div>
+                        </div>
+                        <div class="contact-details">
+                            <h4 class="text-dark mb-1">Call us</h4>
+                            <p class="mb-0 text-muted">6443 4842</p>
+                            <p class="mb-0 text-muted">北京市朝阳区北三环东路15号</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="contact-item mt-40">
+                        <div class="float-left">
+                            <div class="contact-icon d-inline-block border rounded-pill shadow text-primary mt-1 mr-4">
+                                <i class="mdi mdi-email"></i>
+                            </div>
+                        </div>
+                        <div class="contact-details">
+                            <h4 class="text-dark mb-1">Email</h4>
+                            <p class="mb-0 text-muted">renshi@mail.buct.edu.cn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- CONTACT END -->
+
+<hr>
+<footer class="footer footer-bar">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                </div>
+                <div class="">
+                    <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                        <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!--end container-->
+</footer><!--end footer-->
+    <!-- Back to top -->
+    <a href="#" class="back-to-top rounded text-center" id="back-to-top"> 
+        <i class="mdi mdi-chevron-up d-block"> </i> 
+    </a>
+    <!-- Back to top -->
+
+    <!-- javascript -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/plugins.js"></script>
+
+    <!-- selectize js -->
+    <script src="js/selectize.min.js"></script>
+
+    <script src="js/jquery.nice-select.min.js"></script>
+    <!-- CONTACT -->
+    <script src="js/contact.js"></script>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>

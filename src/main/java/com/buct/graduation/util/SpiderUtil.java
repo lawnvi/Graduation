@@ -7,11 +7,10 @@ import com.buct.graduation.model.pojo.Journal;
 import com.buct.graduation.model.spider.Periodical;
 import com.buct.graduation.model.spider.PeriodicalTable;
 import com.buct.graduation.util.spider.SpiderAPI;
-import com.buct.graduation.util.spider.SpiderLetpub;
+import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import com.buct.graduation.util.spider.SpiderWOS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -73,7 +72,7 @@ public class SpiderUtil {
         if(journal != null){
             return journal;
         }
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         journal = letpub.getJournal(keyword);
         if(journal != null){
             journalMapper.addJournal(journal);
@@ -83,7 +82,7 @@ public class SpiderUtil {
     }
 
     public List<Periodical> getJournals(String keyword) {
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         PeriodicalTable table = letpub.getPeriodicals(keyword);
         return table.getList();
     }

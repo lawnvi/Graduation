@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">
+    <script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>首页</title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content="Themesdesign"/>
+
+    <link rel="shortcut icon" href="./images/favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
+
+    <!--Material Icon -->
+    <link rel="stylesheet" type="text/css" href="./css/materialdesignicons.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./css/fontawesome.css"/>
+
+    <!-- selectize css -->
+    <link rel="stylesheet" type="text/css" href="./css/selectize.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./css/nice-select.css"/>
+
+    <!-- Custom  Css -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+
+<!-- Navigation Bar-->
+<header id="topnav" class="defaultscroll scroll-active">
+    <!-- Tagline STart -->
+    <div class="tagline">
+        <div class="container">
+            <div class="float-left">
+                <div class="phone">
+                    <i class="mdi mdi-phone-classic"></i> +86 13263227599
+                </div>
+                <div class="email">
+                    <a href="#">
+                        <i class="mdi mdi-email"></i> 1340878220@qq.com
+                    </a>
+                </div>
+            </div>
+            <div class="float-right">
+                <ul class="topbar-list list-unstyled d-flex" style="margin: 11px 0px;">
+                    <!--                    	<li>-->
+                    <!--                    		<div class="col-lg-4 col-md-5">-->
+                    <!--                    			<div class="float-left position-relative notification-icon mr-2">-->
+                    <!--                        			<i class="mdi mdi-bell-outline text-primary"></i>-->
+                    <!--                        			<span class="badge badge-pill badge-danger">1</span>-->
+                    <!--                    			</div>-->
+                    <!--                			</div>-->
+                    <!--                    	</li>-->
+                    <li class="list-inline-item"><a href="./user/information"><i class="mdi mdi-account mr-2"></i><span
+                            th:text="${user.getName()}"></span></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- Tagline End -->
+
+    <!-- Menu Start -->
+    <div class="container">
+        <!-- Logo container-->
+        <div>
+            <a href="./index" class="logo">
+                <img src="images/logo-light.jpg" alt="" class="logo-light" height="90"/>
+                <img src="images/logo-dark.jpg" alt="" class="logo-dark" height="90"/>
+            </a>
+        </div>
+
+        <!-- End Logo container-->
+        <div class="menu-extras">
+            <div class="menu-item">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </div>
+        </div>
+
+        <div id="navigation">
+            <!-- Navigation Menu-->
+            <ul class="navigation-menu">
+                <li><a href="./index">Home</a></li>
+                <li class="has-submenu">
+                    <a href="./jobs">Jobs</a></span>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="javascript:void(0)">Tools</a><span class="menu-arrow"></span>
+                    <ul class="submenu">
+                        <!-- todo add -->
+                        <li><a href="./tools/visitor">查期刊论文数据</a></li>
+                        <li><a href="./tools/admin">获取评价报告</a></li>
+                        <li><a href="./tools/awsl">学院某年期刊论文数据</a></li>
+                        <li><a href="./tools/faq">Help</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./about">About</a>
+                </li>
+            </ul><!--end navigation menu-->
+        </div><!--end navigation-->
+    </div><!--end container-->
+    <!--end end-->
+</header><!--end header-->
+<!-- Navbar End -->
+<!-- Start Home -->
+    <section class="bg-home" style="background: url('images/bg-home.jpg') center center;">
+        <div class="bg-overlay"></div>
+
+        <div class="home-center">
+            <div class="home-desc-center">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="title-heading text-center text-white">
+                                <h6 class="small-title text-uppercase text-light mb-3">Find jobs, create trackable resumes and enrich your applications.</h6>
+                                <h1 class="heading font-weight-bold mb-4">北京化工大学欢迎你</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-form-position">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="home-registration-form p-4 mb-3">
+                                    <div class="title-heading text-center text-white">
+                                        <h6 class="small-title text-light mb-3">Welcome to Beijing University of Chemical Technology</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end home -->
+
+    <!-- popular category start -->
+    <section class="section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="section-title text-center mb-4 pb-2">
+                        <h4 class="title title-line pb-5">Take a Look</h4>
+                        <p class="text-muted para-desc mx-auto mb-1">Post a job to tell us about your project. We'll quickly match you with the right freelancers.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-account d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">教职工</h5>
+                                <p class="text-success mb-0 rounded">2600+</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-desktop-classic d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">本科生</h5>
+                                <p class="text-success mb-0 rounded">1.5w+</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-bank d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">研究生</h5>
+                                <p class="text-success mb-0 rounded">6K+</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-auto-fix d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">博士生</h5>
+                                <p class="text-success mb-0 rounded">1000+</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-office-building d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">重点大学</h5>
+                                <p class="text-success mb-0 rounded">211工程 985优势学科创新平台。现有8个一级学科博士点，21个一级学科硕士点，2个二级学科硕士点，10个硕士专业学位授权类别。</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-telegram d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">学科实力</h5>
+                                <p class="text-success mb-0 rounded">ESI 排名的前1‰，材料科学、工程学以及生物学与生物化学等3个学科进入ESI排名的前1%</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-television-classic d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">就业工作</h5>
+                                <p class="text-success mb-0 rounded">2019年本科毕业生就业率为97.96%，毕业研究生就业率为96.85%。</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-4 pt-2">
+                    <a href="javascript:void(0)">
+                        <div class="popu-category-box bg-light rounded text-center p-4">
+                            <div class="popu-category-icon mb-3">
+                                <i class="mdi mdi-human d-inline-block rounded-pill h3 text-primary"></i>
+                            </div>
+                            <div class="popu-category-content">
+                                <h5 class="mb-2 text-dark title">科研水平</h5>
+                                <p class="text-success mb-0 rounded">2019年学校科技经费到款8.1亿元，获专利授权448项，鉴定成果6项，信息学院发表sci论文100+。</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-12 text-center mt-4 pt-2">
+                    <a href="./jobs" class="btn btn-primary-outline">太棒了！我去看看岗位 <i class="mdi mdi-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- popular category end -->
+
+    <!-- How it Work start -->
+    <section class="section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="section-title text-center mb-4 pb-2">
+                        <h4 class="title title-line pb-5">How It Work</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mt-4 pt-2">
+                    <div class="how-it-work-box bg-light p-4 text-center rounded shadow">
+                        <div class="how-it-work-img position-relative rounded-pill mb-3">
+                            <img src="images/how-it-work/img-1.png" alt="" class="mx-auto d-block" height="50">
+                        </div>
+                        <div>
+                            <h5>注册账户</h5>
+                            <p class="text-muted">使用您的邮箱进行验证注册，后续登录也将使用您的邮箱作为账号。</p>
+                            <a href="./user/register" class="text-primary">sign up <i class="mdi mdi-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-4 pt-2">
+                    <div class="how-it-work-box bg-light p-4 text-center rounded shadow">
+                        <div class="how-it-work-img position-relative rounded-pill mb-3">
+                            <img src="images/how-it-work/img-2.png" alt="" class="mx-auto d-block" height="50">
+                        </div>
+                        <div>
+                            <h5>完善您的个人信息</h5>
+                            <p class="text-muted">完善您的个人信息、学术信息，请按实际填写，我们将以此作为录用参考。</p>
+                            <a href="./user/information" class="text-primary">完善信息 <i class="mdi mdi-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-4 pt-2">
+                    <div class="how-it-work-box bg-light p-4 text-center rounded shadow">
+                        <div class="how-it-work-img position-relative rounded-pill mb-3">
+                            <img src="images/how-it-work/img-3.png" alt="" class="mx-auto d-block" height="50">
+                        </div>
+                        <div>
+                            <h5>投递职位</h5>
+                            <p class="text-muted">在您完成个人信息的填写后，选择您心仪的岗位进行投递，至此请关注系统或邮件面试进度提示。</p>
+                            <a href="./user/apply" class="text-primary">查看进展 <i class="mdi mdi-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- How it Work end -->
+
+<hr>
+<footer class="footer footer-bar">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                </div>
+                <div class="">
+                    <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                        <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!--end container-->
+</footer><!--end footer-->
+<!-- Footer End -->
+
+    <!-- Back to top -->
+    <a href="#" class="back-to-top rounded text-center" id="back-to-top"> 
+        <i class="mdi mdi-chevron-up d-block"> </i> 
+    </a>
+    <!-- Back to top -->
+
+    <!-- javascript -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/plugins.js"></script>
+
+    <!-- selectize js -->
+    <script src="js/selectize.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/counter.int.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
+
+</body>
+</html>

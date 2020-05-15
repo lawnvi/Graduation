@@ -4,7 +4,7 @@ import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.util.LogUtil;
 import com.buct.graduation.util.ThreadPoolUtil;
 import com.buct.graduation.util.Utils;
-import com.buct.graduation.util.spider.SpiderLetpub;
+import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import com.buct.graduation.util.spider.SpiderWOS;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -147,7 +147,7 @@ public class Excel2Excel {
             }
         }
         for (Article a: excel.articles){
-            SpiderLetpub letpub = new SpiderLetpub();
+            SpiderLetpubJournal letpub = new SpiderLetpubJournal();
             if(a.getNotes().equals("not find") || a.getJournalIssn().equals("")){
                 System.out.println("not find "+a.getName()+" not search journal");
                 continue;

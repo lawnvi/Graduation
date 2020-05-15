@@ -2,8 +2,10 @@ package com.buct.graduation.service.impl;
 
 import com.buct.graduation.mapper.*;
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.pojo.recruit.Interview;
 import com.buct.graduation.model.pojo.recruit.Resume;
 import com.buct.graduation.model.vo.Apply;
+import com.buct.graduation.model.vo.UserVData;
 import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
@@ -66,6 +68,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(int id) {
         return userMapper.findUserById(id);
+    }
+
+    @Override
+    public UserVData findUserByUid(int uid) {
+        UserVData data = new UserVData();
+        data.setUser(userMapper.findUserById(uid));
+        data.setArticles(articleMapper.findByIds(uid));
+        data.setPapers(conferencePaperMapper.findByUid(uid));
+        data.setProjects(projectMapper.findByUid(uid));
+        data.setPatents(patentMapper.findByUid(uid));
+        data.calculateScore();
+        return data;
+    }
+
+    @Override
+    public List<UserVData> findUserByLevel(String level) {
+        List<User> users = userMapper.findUserByLevel(level);
+        List<UserVData> data = new ArrayList<>();
+        for(User user: users){
+            UserVData u = new UserVData();
+            u.setUser(user);
+            u.setA_num(articleMapper.findByIds(user.getId()).size());
+            u.setC_num(conferencePaperMapper.findByUid(user.getId()).size());
+            u.setPa_num(patentMapper.findByUid(user.getId()).size());
+            u.setPr_num(projectMapper.findByUid(user.getId()).size());
+            data.add(u);
+        }
+        return data;
     }
 
     @Override
@@ -160,8 +190,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addProject(Project project) {
-        return projectMapper.addProject(project);
+    public String addProject(Project project) {
+        if(projectMapper.findByNumber(project.getNumber()) != null){
+            return "此项目已存在";
+        }
+        return projectMapper.addProject(project) > 0 ? "保存成功": "保存失败";
     }
 
     @Override
@@ -263,5 +296,42 @@ public class UserServiceImpl implements UserService {
             applies.add(apply);
         }
         return applies;
+    }
+
+    @Override
+    @Transactional
+    public List<Apply> findComingInterview(int uid) {
+        List<Resume> resumes = resumeMapper.findResumeByUidStatus(uid, GlobalName.resume_processing);
+        List<Apply> applies = new ArrayList<>();
+        for(Resume resume: resumes){
+            Apply apply = new Apply();
+            apply.setResume(resume);
+            apply.setStation(stationMapper.findById(resume.getSid()));
+            apply.setReporter(reporterMapper.findById(resume.getRid()));
+            apply.setInterviews(interviewMapper.findByRidStatus(resume.getId(), GlobalName.interview_wait));
+            applies.add(apply);
+        }
+        applies.removeIf(apply -> apply.getInterviews().size() == 0 || apply.getInterviews().get(0).getTime().compareTo(Utils.getDate().toDate()) < 0);
+        return applies;
+    }
+
+    @Override
+    public ConferencePaper findPaperById(int id) {
+        return conferencePaperMapper.findById(id);
+    }
+
+    @Override
+    public List<Resume> findComingInterviews() {
+        List<Interview> interviews = interviewMapper.findComing();
+        List<Resume> resumes = new ArrayList<>();
+        for(Interview interview: interviews){
+            Resume resume = resumeMapper.findById(interview.getRid());
+            resume.getInterviews().add(interview);
+            resume.setStation(stationMapper.findById(resume.getSid()));
+            resume.setUser(userMapper.findUserById(resume.getUid()));
+            resume.setReporter(reporterMapper.findById(resume.getRid()));
+            resumes.add(resume);
+        }
+        return resumes;
     }
 }

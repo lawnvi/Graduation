@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="../personalData">个人资料</a>
+                                <a tabindex="-1" href="./changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -171,10 +171,6 @@
         <!--/span-->
         <div class="span10" id="content">
             <div class="row-fluid">
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>成功提示</h4>
-                    操作已经成功了！</div>
                 <div class="navbar">
                     <div class="navbar-inner">
                         <ul class="breadcrumb">
@@ -221,7 +217,7 @@
 <!--                                    <td th:text="${obj.getFlag()}"></td>-->
                                     <td>
                                         <a href="#myModal" data-toggle="modal" class="btn btn-primary btn-small"
-                                           th:onclick="${'updateArticleByAdmin('')'}">更新
+                                           th:onclick="'fillPatent('+${obj.getId()}+','+${obj.getUid()}+', \''+${obj.getName()}+'\', \''+${obj.getCategory()}+'\', \''+${obj.getRole()}+'\', \''+${obj.getNotes()}+'\')'">更新
                                         </a>
 <!--                                        <button class="btn btn-small btn-primary" th:onclick="'passData('+${obj.getId()}+', 1, \''+${obj.getFlag()}+'\', \'patent\')'" th:text="${obj.getFlag().equals('申请') ? '通过': '更新'}"></button>-->
                                         <button class="btn btn-small btn-warning" th:onclick="'passData('+${obj.getId()}+', 0, \''+${obj.getFlag()}+'\', \'patent\')'">移除</button>
@@ -234,33 +230,54 @@
                                         <button data-dismiss="modal" class="close"
                                                 type="button">&times;
                                         </button>
-                                        <h3>期刊更新</h3>
+                                        <h3>修改专利数据</h3>
                                     </div>
                                     <form class="form-horizontal">
                                         <div class="modal-body">
                                             <div class="control-group">
                                                 <label class="control-label"
-                                                       for="paper_name">论文名称</label>
+                                                       for="patent_name">名称</label>
                                                 <div class="controls">
                                                     <input type="text" style="display: none" id="new_id">
+                                                    <input type="text" style="display: none" id="uid">
                                                     <!--                                                                            <input type="text" style="display: none" id="new_score">-->
                                                     <input class="input-xlarge focused"
                                                            type="text"
-                                                           id="paper_name">
+                                                           id="patent_name">
+                                                    国内 <input type="radio" name="kind" id="kind1" value="国内">
+                                                     国际 <input type="radio" name="kind" id="kind2" value="国际">
                                                 </div>
                                             </div>
-                                            <div class="control-group">
-                                                <label class="control-label" for="paper_article">期刊名称</label>
+<!--                                            <div class="control-group">
+                                                <label class="control-label" for="email">发明人邮箱</label>
                                                 <div class="controls">
                                                     <input class="input-xlarge focused"
                                                            type="text"
-                                                           id="paper_article">
+                                                           id="email">
+                                                </div>
+                                            </div>-->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="role">发明人身份</label>
+                                                <div class="controls">
+                                                    <select class="input-xlarge focused" id="role" name="role">
+                                                        <option value="第一发明人">第一发明人</option>
+                                                        <option value="导师第一本人第二">导师第一本人第二</option>
+                                                        <option value="参与">参与</option>
+                                                        <option value="未授权">未授权</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="notes">备注</label>
+                                                <div class="controls">
+                                                    <textarea class="input-xxlarge focused" id="notes" name="notes" type="text"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <a data-dismiss="modal" class="btn btn-primary"
-                                               onclick="updateArticles()">保存</a>
+                                               onclick="updatePatent()">保存</a>
                                             <a data-dismiss="modal" class="btn" href="#">取消</a>
                                         </div>
                                     </form>

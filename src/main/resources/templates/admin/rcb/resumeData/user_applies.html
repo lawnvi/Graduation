@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="../personalData">个人资料</a>
+                                <a tabindex="-1" href="../changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -189,11 +189,6 @@
         <!--/span-->
         <div class="span10" id="content">
             <div class="row-fluid">
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>成功提示</h4>
-                    操作已经成功了！
-                </div>
                 <div class="navbar">
                     <div class="navbar-inner">
                         <ul class="breadcrumb">
@@ -246,9 +241,10 @@
                                                     <div class="muted pull-left">Table with row classes</div>
                                                     <div class="pull-right">
                                                         <!--                                                        <span class="badge badge-warning">添加面试安排</span>-->
-                                                        <a class="btn btn-green" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'pass\')'">接受入职</a>
-                                                        <a class="btn btn-warning" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'fail\')'">未通过</a>
+                                                        <a class="btn btn-green" th:style="${apply.getResume().getStatus().equals('处理中') ? '': 'display:none;'}" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'pass\')'">接受入职</a>
+                                                        <a class="btn btn-warning" th:style="${apply.getResume().getStatus().equals('处理中') ? '': 'display:none;'}" th:onclick="'isAccept('+${apply.getResume().getId()}+', \'fail\')'">未通过</a>
                                                         <a href="#myModal" data-toggle="modal" class="btn btn-primary"
+                                                           th:style="${apply.getResume().getStatus().equals('处理中') ? '': 'display:none;'}"
                                                            th:onclick="${'newTransportData('+apply.getResume().getId()+')'}">添加面试安排</a>
                                                         <div id="myModal" class="modal hide">
                                                             <div class="modal-header">
@@ -328,7 +324,7 @@
                                                             <th>状态</th>
                                                             <th>评价分数</th>
                                                             <th>备注</th>
-                                                            <th>操作</th>
+                                                            <th th:style="${apply.getResume().getStatus().equals('处理中') ? '': 'display:none;'}">操作</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -342,6 +338,7 @@
                                                             <td>
                                                                 <a href="#myModal" data-toggle="modal"
                                                                    class="btn btn-primary"
+                                                                   th:style="${apply.getResume().getStatus().equals('处理中') ? '': 'display:none;'}"
                                                                    th:onclick="'transportData(\''+${interview.getTime()}+'\',\''+${interview.getPlace()}+'\',\''+${interview.getAdvice()}+'\',\''+${interview.getScore()}+'\',\''+${interview.getId()}+'\',\''+ ${interview.getRid()}+'\',\''+${interview.getStatus()}+'\')'">编辑</a>
 
                                                             </td>

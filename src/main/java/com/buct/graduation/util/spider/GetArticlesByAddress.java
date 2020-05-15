@@ -1,10 +1,6 @@
 package com.buct.graduation.util.spider;
 
 import com.buct.graduation.model.pojo.Article;
-import com.buct.graduation.model.pojo.Journal;
-import com.buct.graduation.model.spider.Periodical;
-import com.buct.graduation.model.spider.PeriodicalTable;
-import com.buct.graduation.util.Utils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -327,7 +323,7 @@ public class GetArticlesByAddress {
             SpiderWOS wos = new SpiderWOS();
             Article article = wos.getArticle(url);
             SpiderAPI api = new SpiderAPI();
-            SpiderLetpub letpub = new SpiderLetpub();
+            SpiderLetpubJournal letpub = new SpiderLetpubJournal();
             article.setJournal(letpub.getJournal(article.getJournalIssn()));
             /*PeriodicalTable table = letpub.getPeriodicals(Journal);
             if(table.getNumber() == 0){

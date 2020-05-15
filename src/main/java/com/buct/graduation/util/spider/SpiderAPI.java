@@ -35,7 +35,7 @@ public class SpiderAPI {
 //            }
 //        }
         if(table.getNumber() == 0) {
-            SpiderLetpub letpub = new SpiderLetpub();
+            SpiderLetpubJournal letpub = new SpiderLetpubJournal();
             table = letpub.getPeriodicals(keyword);
         }
         return table;

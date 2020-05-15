@@ -48,8 +48,11 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<Station> findJobsWithPage(int page, int number) {
-        return stationMapper.findJobsWithPage((page-1)*number, number);
+    public List<Station> findJobsWithPage(int page, int number, String keyword) {
+        if(keyword == null || "".equals(keyword))
+            return stationMapper.findJobsWithPage((page-1)*number, number);
+        keyword = "%"+keyword+"%";
+        return stationMapper.findJobsByKeywordWithPage((page-1)*number, number, keyword);
     }
 
     @Override

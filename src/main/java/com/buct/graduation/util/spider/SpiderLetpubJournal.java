@@ -3,7 +3,6 @@ package com.buct.graduation.util.spider;
 import com.buct.graduation.model.pojo.Journal;
 import com.buct.graduation.model.spider.Periodical;
 import com.buct.graduation.model.spider.PeriodicalTable;
-import com.buct.graduation.util.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,10 +17,10 @@ import java.util.List;
  * letPub 使用Journal保存数据
  */
 
-public class SpiderLetpub {
+public class SpiderLetpubJournal {
 
     public static void main(String[] args) {
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
 //        letpub.getPeriodicals("IEEE ACCESS");
 //        getIF("0169-7439");
 //        String url = "http://www.letpub.com.cn/index.php?journalid=3407&page=journalapp&view=detail";
@@ -46,6 +45,7 @@ public class SpiderLetpub {
     public static String urlSearch = "http://www.letpub.com.cn/index.php?page=journalapp&view=search&searchissn=&searchfield=&searchimpactlow=&searchimpacthigh=&searchscitype=&view=search&searchcategory1=&searchcategory2=&searchjcrkind=&searchopenaccess=&searchsort=relevance&searchname=";
     public static String urlSearchISSN = "http://www.letpub.com.cn/index.php?page=journalapp&view=search&searchname=&searchfield=&searchimpactlow=&searchimpacthigh=&searchscitype=&view=search&searchcategory1=&searchcategory2=&searchjcrkind=&searchopenaccess=&searchsort=relevance&searchissn=";
     public static String urlIndex = "http://www.letpub.com.cn/";
+    public static String urlProject = "http://www.letpub.com.cn/index.php?page=grant";
 
     public PeriodicalTable getPeriodicals(String keyword){
         PeriodicalTable table = new PeriodicalTable();
@@ -253,10 +253,4 @@ public class SpiderLetpub {
         }
         return journal;
     }
-
-    /**
-     * 抓取项目数据
-     */
-
-
 }

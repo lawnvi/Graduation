@@ -1,6 +1,8 @@
 package com.buct.graduation.controller;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.pojo.recruit.Interview;
+import com.buct.graduation.model.spider.ProjectData;
 import com.buct.graduation.model.vo.Apply;
 import com.buct.graduation.service.IpService;
 import com.buct.graduation.service.SpiderService;
@@ -8,6 +10,7 @@ import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.EmailUtil;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.buct.graduation.util.spider.SpiderLetpubProject;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -161,6 +164,11 @@ public class UserController {
         return "redirect: ../index";
     }
 
+    @RequestMapping("/changePsw")
+    public String changePsw(){
+        return "redirect:./resetPsw";
+    }
+
     /**
      * 信息展示，填写
      */
@@ -214,6 +222,13 @@ public class UserController {
         user.setFund(Utils.checkboxToString(funds));
         userService.updateUser(user);
         User user2 = userService.findUserById(id);
+
+        Utils.removeSession(request, GlobalName.session_user);
+        HttpSession session = request.getSession();
+        user.setPsw("");
+        session.setAttribute(GlobalName.session_user, user2);
+        //时限600s
+        session.setMaxInactiveInterval(600);
         model.addAttribute("user", user2);
         return "/user/data/basicInfo";
     }
@@ -242,9 +257,12 @@ public class UserController {
     @ResponseBody
     public String addProject(HttpServletRequest request){
         Project project = getProject(request);
-        if(userService.addProject(project) > 0)
-            return GlobalName.success;
-        return GlobalName.fail;
+        Utils.checkProject(project);
+        String msg = "";
+        if(project.getCharge() != null && !getUser(request).getName().equals(project.getCharge())){
+            msg =  " 负责人与用户姓名不匹配，请确认归属";
+        }
+        return userService.addProject(project)+msg;
     }
     //修改
     @RequestMapping("/updateProject")
@@ -252,6 +270,11 @@ public class UserController {
     public String updateProject(HttpServletRequest request){
         Project project = getProject(request);
         project.setId(Integer.parseInt(request.getParameter("id")));
+        Utils.checkProject(project);
+        String msg = "";
+        if(project.getCharge() != null && !getUser(request).getName().equals(project.getCharge())){
+            msg =  " 负责人与用户不匹配，请确认归属";
+        }
         if(userService.updateProject(project) > 0)
             return GlobalName.success;
         return GlobalName.fail;
@@ -516,10 +539,14 @@ public class UserController {
     }
 
     @RequestMapping("/interview.coming")
-    public String getInterviewComing(HttpServletRequest request){
-        return "/errorPage";
+    public String getInterviewComing(HttpServletRequest request, Model model){
+        List<Apply> applies = userService.findComingInterview(getThisId(request));
+        model.addAttribute("user", getUser(request));
+        model.addAttribute("applies", applies);
+        return "/user/interview_coming";
     }
 
+    @Deprecated
     @RequestMapping("/interviewLog")
     public String getInterviewLog(HttpServletRequest request){
         return "/errorPage";

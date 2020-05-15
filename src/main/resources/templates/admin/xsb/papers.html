@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="../personalData">个人资料</a>
+                                <a tabindex="-1" href="./changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -171,10 +171,6 @@
         <!--/span-->
         <div class="span10" id="content">
             <div class="row-fluid">
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>成功提示</h4>
-                    操作已经成功了！</div>
                 <div class="navbar">
                     <div class="navbar-inner">
                         <ul class="breadcrumb">
@@ -218,13 +214,14 @@
                                     <td th:text="${obj.getName()}"></td>
                                     <td th:text="${obj.getConference()}"></td>
                                     <td th:text="${obj.getCitation()}"></td>
-                                    <td th:text="${obj.getIs_esi()}"></td>
+                                    <td th:text="${obj.isEsi()}"></td>
                                     <td th:text="${obj.getSection()}"></td>
                                     <!--                                    <td th:text="${obj.getFlag()}"></td>-->
                                     <td>
-                                        <a href="#myModal" data-toggle="modal" class="btn btn-primary btn-small"
-                                           th:onclick="${'updateArticleByAdmin('')'}">更新
-                                        </a>
+                                        <!--<a href="#myModal" data-toggle="modal" class="btn btn-primary btn-small"
+                                           th:onclick="'./addPaper?id='+${obj.getId()}">更新
+                                        </a>-->
+                                        <a th:href="'./addPaper?id='+${obj.getId()}" class="btn btn-primary btn-small">更新</a>
                                         <!--                                        <button class="btn btn-small btn-primary" th:onclick="'passData('+${obj.getId()}+', 1, \''+${obj.getFlag()}+'\', \'paper\')'" th:text="${obj.getFlag().equals('申请') ? '通过': '更新'}"></button>-->
                                         <button class="btn btn-small btn-warning" th:onclick="'passData('+${obj.getId()}+', 0, \''+${obj.getFlag()}+'\', \'paper\')'">移除</button>
                                     </td>

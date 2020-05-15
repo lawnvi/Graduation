@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="../personalData">个人资料</a>
+                                <a tabindex="-1" href="./changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -160,7 +160,10 @@
                     <a href="./journal"><i class="icon-chevron-right"></i> 数据统计</a>
                 </li>
                 <li class="active">
-                    <a href="./journals?flag=正常"><i class="icon-chevron-right"></i> 期刊数据</a>
+                    <a href="./journal"><i class="icon-chevron-right"></i> 期刊数据</a>
+                </li>
+                <li>
+                    <a href="./addJournal"><i class="icon-chevron-right"></i> 添加期刊数据</a>
                 </li>
                 <li>
                     <a href="./updateJournals"><i class="icon-chevron-right"></i> 更新到最新数据</a>
@@ -218,15 +221,15 @@
                                     <td th:text="${obj.getAbbrTitle()}"></td>
                                     <td th:text="${obj.getSection()}"></td>
                                     <td th:text="${obj.getIF()}"></td>
-                                    <td th:text="${obj.getIs_top()}"></td>
+                                    <td>
+                                        <span class="badge badge-success" th:text="${obj.getTop() ? 'TOP' : ''}"></span>
+                                    </td>
                                     <td th:text="${obj.getNotes()}"></td>
                                     <!--                                    <td th:text="${obj.getFlag()}"></td>-->
                                     <td>
                                         <a href="#myModal" data-toggle="modal" class="btn btn-primary btn-small"
                                            th:onclick="${'updateArticleByAdmin('')'}">更新
                                         </a>
-                                        <!--                                        <button class="btn btn-small btn-primary" th:onclick="'passData('+${obj.getId()}+', 1, \''+${obj.getFlag()}+'\', \'patent\')'" th:text="${obj.getFlag().equals('申请') ? '通过': '更新'}"></button>-->
-                                        <button class="btn btn-small btn-warning" th:onclick="'passData('+${obj.getId()}+', 0, \''+${flag}+'\', \'patent\')'">移除</button>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">
+    <script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${job.getTitle()}"></title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content="Themesdesign"/>
+
+    <link rel="shortcut icon" href="./images/favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
+
+    <!--Material Icon -->
+    <link rel="stylesheet" type="text/css" href="./css/materialdesignicons.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./css/fontawesome.css"/>
+
+    <!-- selectize css -->
+    <link rel="stylesheet" type="text/css" href="./css/selectize.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./css/nice-select.css"/>
+
+    <!-- Custom  Css -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navigation Bar-->
+<header id="topnav" class="defaultscroll scroll-active">
+    <!-- Tagline STart -->
+    <div class="tagline">
+        <div class="container">
+            <div class="float-left">
+                <div class="phone">
+                    <i class="mdi mdi-phone-classic"></i> +86 13263227599
+                </div>
+                <div class="email">
+                    <a href="#">
+                        <i class="mdi mdi-email"></i> 1340878220@qq.com
+                    </a>
+                </div>
+            </div>
+            <div class="float-right">
+                <ul class="topbar-list list-unstyled d-flex" style="margin: 11px 0px;">
+                    <!--                    	<li>-->
+                    <!--                    		<div class="col-lg-4 col-md-5">-->
+                    <!--                    			<div class="float-left position-relative notification-icon mr-2">-->
+                    <!--                        			<i class="mdi mdi-bell-outline text-primary"></i>-->
+                    <!--                        			<span class="badge badge-pill badge-danger">1</span>-->
+                    <!--                    			</div>-->
+                    <!--                			</div>-->
+                    <!--                    	</li>-->
+                    <li class="list-inline-item"><a href="./user/information"><i class="mdi mdi-account mr-2"></i><span
+                            th:text="${user.getName()}"></span></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- Tagline End -->
+
+    <!-- Menu Start -->
+    <div class="container">
+        <!-- Logo container-->
+        <div>
+            <a href="./index" class="logo">
+                <img src="images/logo-light.jpg" alt="" class="logo-light" height="90"/>
+                <img src="images/logo-dark.jpg" alt="" class="logo-dark" height="90"/>
+            </a>
+        </div>
+
+        <!-- End Logo container-->
+        <div class="menu-extras">
+            <div class="menu-item">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </div>
+        </div>
+
+        <div id="navigation">
+            <!-- Navigation Menu-->
+            <ul class="navigation-menu">
+                <li><a href="./index">Home</a></li>
+                <li class="has-submenu">
+                    <a href="./jobs">Jobs</a></span>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="javascript:void(0)">Tools</a><span class="menu-arrow"></span>
+                    <ul class="submenu">
+                        <!-- todo add -->
+                        <li><a href="./tools/visitor">查期刊论文数据</a></li>
+                        <li><a href="./tools/admin">获取评价报告</a></li>
+                        <li><a href="./tools/awsl">学院某年期刊论文数据</a></li>
+                        <li><a href="./tools/faq">Help</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="./about">About</a>
+                </li>
+            </ul><!--end navigation menu-->
+        </div><!--end navigation-->
+    </div><!--end container-->
+    <!--end end-->
+</header><!--end header-->
+    <!-- Navbar End -->
+
+<!-- Start home -->
+<section class="bg-half page-next-level">
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center text-white">
+                    <h4 class="text-uppercase title mb-4" th:text="${job.getTitle()}"></h4>
+                    <ul class="page-next d-inline-block mb-0">
+                        <li><a href="./index" class="text-uppercase font-weight-bold">Home</a></li>
+                        <li><a href="./jobs" class="text-uppercase font-weight-bold">Jobs</a></li>
+                        <li>
+                            <span class="text-uppercase text-white font-weight-bold">Job Detail</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end home -->
+
+<!-- JOB DETAILS START -->
+<section class="section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div class="job-detail border rounded p-4">
+                    <div class="job-detail-content">
+                        <img src="images/featured-job/img-4.png" alt=""
+                             class="img-fluid float-left mr-md-3 mr-2 mx-auto d-block">
+                        <div class="job-detail-com-desc overflow-hidden d-block">
+                            <h4 class="mb-2"><a href="#" class="text-dark" th:text="${job.getTitle()}">Web Developer</a></h4>
+                            <p class="text-muted mb-0"><i class="mdi mdi-link-variant mr-2"></i><span th:text="${job.getEducation()}"></span>
+                            </p>
+                            <p class="text-muted mb-0"><i class="mdi mdi-map-marker mr-2"></i><span th:text="${job.getMajor()}"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="job-detail-desc mt-4">
+                        <p class="text-muted mb-3" th:text="${job.getNotes()}"></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="text-dark mt-4">任职条件 :</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="job-detail border rounded mt-2 p-4">
+                            <div class="job-detail-desc">
+                                <p class="text-muted mb-3" th:text="${job.getConditions()}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="text-dark mt-4">任职待遇 :</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="job-detail border rounded mt-2 p-4">
+                            <div class="job-detail-desc">
+                                <p th:text="${job.getTreatment()}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="text-dark mt-4">招聘流程 :</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="job-detail border rounded mt-2 p-4">
+                            <div class="job-detail-desc">
+                                <div class="job-details-desc-item">
+                                    <div class="float-left mr-3">
+                                        <i class="mdi mdi-send text-primary"></i>
+                                    </div>
+                                    <p class="text-muted mb-2" th:text="${job.getProcess()}">HTML, CSS & Scss</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-5 mt-4 mt-sm-0">
+                <div class="job-detail border rounded p-4">
+                    <h5 class="text-muted text-center pb-2"><i class="mdi mdi-map-marker mr-2"></i>Location</h5>
+
+                    <div class="job-detail-location pt-4 border-top">
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-bank text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getEducation()}"></p>
+                        </div>
+
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-email text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getEmail()}"></p>
+                        </div>
+
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-web text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2"><a href="https://www.buct.edu.cn/" target="_blank">北京化工大学</a></p>
+                        </div>
+
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-cellphone-iphone text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getTel()}">: 1987 6543 21</p>
+                        </div>
+
+                        <div class="job-details-desc-item" hidden>
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-currency-usd text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getMaxAge()}">: $700 - $800/month</p>
+                        </div>
+
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-security text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getStatus()}">: 1 To 3 Years.</p>
+                        </div>
+
+                        <div class="job-details-desc-item">
+                            <div class="float-left mr-2">
+                                <i class="mdi mdi-clock-outline text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-2" th:text="${job.getStart()+' ~ '+ job.getEnd()}">: 4 minutes ago</p>
+                        </div>
+
+                        <h6 class="text-dark f-17 mt-3 mb-0">Share Job :</h6>
+                        <ul class="social-icon list-inline mt-3 mb-0">
+                            <li class="list-inline-item"><a href="#" class="rounded"><i
+                                    class="mdi mdi-wechat"></i></a></li>
+                            <li class="list-inline-item"><a href="#" class="rounded">
+                                <i class="mdi mdi-qqchat"></i></a>
+                            </li>
+                            <li class="list-inline-item"><a href="#" class="rounded"><i
+                                    class="mdi mdi-github-circle"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="job-detail border rounded mt-4">
+                    <a href="#" class="btn btn-primary btn-block" th:onclick="'applyResume('+${job.getId()}+')'">Apply</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- JOB DETAILS END -->
+
+<hr>
+<footer class="footer footer-bar">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                </div>
+                <div class="">
+                    <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                        <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div><!--end container-->
+</footer><!--end footer-->
+<!-- Back to top -->
+<a href="#" class="back-to-top rounded text-center" id="back-to-top">
+    <i class="mdi mdi-chevron-up d-block"> </i>
+</a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.easing.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="./js/my/jobs_list.js"></script>
+
+<!-- selectize js -->
+<script src="js/selectize.min.js"></script>
+
+<script src="js/jquery.nice-select.min.js"></script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

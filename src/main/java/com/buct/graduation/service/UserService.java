@@ -1,7 +1,10 @@
 package com.buct.graduation.service;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.pojo.recruit.Interview;
+import com.buct.graduation.model.pojo.recruit.Resume;
 import com.buct.graduation.model.vo.Apply;
+import com.buct.graduation.model.vo.UserVData;
 
 import java.util.List;
 
@@ -13,6 +16,11 @@ public interface UserService {
     int changePsw(User user);
 
     User findUserById(int id);
+
+    List<UserVData> findUserByLevel(String level);
+
+
+    UserVData findUserByUid(int uid);
 
     User findUserByEmail(String email);
 
@@ -35,7 +43,7 @@ public interface UserService {
 
     int updateProject(Project project);
     
-    int addProject(Project project);
+    String addProject(Project project);
     
     boolean deleteProject(int id, int uid);
 
@@ -60,4 +68,9 @@ public interface UserService {
 
     List<Apply> findApply(int uid);
 
+    List<Apply> findComingInterview(int uid);
+
+    ConferencePaper findPaperById(int id);
+
+    List<Resume> findComingInterviews();
 }

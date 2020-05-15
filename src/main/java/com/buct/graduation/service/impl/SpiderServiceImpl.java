@@ -2,21 +2,17 @@ package com.buct.graduation.service.impl;
 
 import com.buct.graduation.mapper.ArticleMapper;
 import com.buct.graduation.mapper.JournalMapper;
-import com.buct.graduation.mapper.UserMapper;
 import com.buct.graduation.model.pojo.Article;
 import com.buct.graduation.model.pojo.Journal;
-import com.buct.graduation.model.pojo.JournalArticles;
 import com.buct.graduation.model.spider.Periodical;
 import com.buct.graduation.model.spider.PeriodicalTable;
 import com.buct.graduation.service.SpiderService;
 import com.buct.graduation.util.GlobalName;
-import com.buct.graduation.util.Utils;
 import com.buct.graduation.util.spider.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.rmi.CORBA.Util;
 import java.util.List;
 
 @Service
@@ -86,7 +82,7 @@ public class SpiderServiceImpl implements SpiderService {
         if(journal != null){
             return journal;
         }
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         journal = letpub.getJournal(keyword);
         if(journal != null){
             journalMapper.addJournal(journal);
@@ -97,7 +93,7 @@ public class SpiderServiceImpl implements SpiderService {
 
     @Override
     public List<Periodical> getJournals(String keyword) {
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         PeriodicalTable table = letpub.getPeriodicals(keyword);
         return table.getList();
     }

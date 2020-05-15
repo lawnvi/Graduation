@@ -2,7 +2,9 @@ package com.buct.graduation.util;
 
 import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.science.Teacher;
+import com.buct.graduation.model.spider.ProjectData;
 import com.buct.graduation.model.util.NowDate;
+import com.buct.graduation.util.spider.SpiderLetpubProject;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -224,11 +226,11 @@ public class Utils {
     /**
      * 计算评价分数
 //     * @param reporter
-     * @param projects
-     * @param patents
-     * @param articles
-     * @param papers
-     * @return
+     * @param projects 项目
+     * @param patents 专利
+     * @param articles 期刊
+     * @param papers 会议
+     * @return reporter
      */
     public static Reporter getScore(Reporter reporter, List<Project> projects, List<Patent> patents, List<Article> articles, List<ConferencePaper> papers){
 //        Reporter reporter = new Reporter();
@@ -538,5 +540,15 @@ public class Utils {
             }
         }
         return "";
+    }
+
+    public static Project checkProject(Project project){
+        SpiderLetpubProject spider = new SpiderLetpubProject();
+        spider.setProjectName(project.getName());
+        ProjectData projectData = spider.searchByName();
+        if(projectData != null){
+            projectData.toProject(project);
+        }
+        return project;
     }
 }

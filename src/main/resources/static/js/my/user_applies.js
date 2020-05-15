@@ -2,7 +2,8 @@ function transportData(date, place, advice, score, id, rid, status) {
     console.log(id);
     console.log(rid);
     console.log(status);
-    $("#new_date").val(date);
+    var date2 = new Date(date);
+    $("#new_date").val(date2);
     $("#new_place").val(place);
     $("#new_advice").val(advice);
     $("#new_score").val(score);
@@ -52,7 +53,7 @@ function addInterview() {
         alert("请选择面试地点");
         return;
     }
-    if(status === "待评判" && (score > 0 || score !== '')){
+    if(status === "待评判" && score > 0){
         alert("请确认面试是否已结束，当前状态为待评判");
         return;
     }

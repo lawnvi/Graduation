@@ -20,11 +20,14 @@ public interface ProjectMapper {
     @Select("select * from project where uid = #{uid}")
     List<Project> findByUid(@Param("uid") int uid);
 
-    @Select("select * from project where uid = #{uid} and checked = #{isChecked}")
+    @Select("select * from project where uid = #{uid} and checked = #{checked}")
     List<Project> findByUidStatus(@Param("uid") int uid, @Param("checked") boolean checked);
 
     @Select("select * from project where id = #{id}")
     Project findById(@Param("id") int id);
+
+    @Select("select * from project where number = #{number}")
+    Project findByNumber(@Param("number") String number);
 
     @Select("select IFNULL(sum(funds),0) from project where uid = #{uid}")
     double countFunds(@Param("uid") int uid);

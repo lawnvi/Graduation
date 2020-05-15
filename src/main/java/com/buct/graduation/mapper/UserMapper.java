@@ -26,6 +26,9 @@ public interface UserMapper {
     @Select("select * from user where status = #{status}")
     List<User> findUserByStatus(String status);
 
+    @Select("select * from user where level = #{level}")
+    List<User> findUserByLevel(String level);
+
     @Delete("delete from user where id = #{id}")
     void delete(int id);
 }

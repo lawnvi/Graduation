@@ -18,7 +18,7 @@ public interface StationService {
 
     List<Station> findStationsByStatus(String status);
 
-    List<Station> findJobsWithPage(int page, int number);
+    List<Station> findJobsWithPage(int page, int number, String keyword);
 
     StationData findStationData();
 }

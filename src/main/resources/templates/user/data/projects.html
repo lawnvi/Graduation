@@ -88,7 +88,7 @@
               <li class="sidebar-list-item"><a href="./interview.coming" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>面试行程</span></a></li>
           		</li>
               <li class="sidebar-list-item"><a href="./apply" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>申请进度</span></a></li>
-              <li class="sidebar-list-item"><a href="./interviewLog" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>面试记录</span></a></li>
+<!--              <li class="sidebar-list-item"><a href="./interviewLog" class="sidebar-link text-muted"><i class="o-exit-1 mr-3 text-gray"></i><span>面试记录</span></a></li>-->
 
           	  <li class="sidebar-list-item">
           	  	<a href="#" data-toggle="collapse" data-target="#pages" aria-expanded="false" aria-controls="pages" class="sidebar-link text-muted active">
@@ -160,9 +160,11 @@
                       <thead>
                         <tr>
                             <th>#</th>
+                            <th>项目编号</th>
                             <th>项目名称</th>
+                            <th>项目类型</th>
                             <th>项目经费(单位:万元)</th>
-                            <th>备注</th>
+                            <th>负责人</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -171,9 +173,11 @@
                             <td scope="row" class="custom-control custom-checkbox">
                                 <input th:id="'customCheck'+${projects.indexOf(obj)}" name="checkedId" th:value="${obj.getId()}" type="checkbox" class="custom-control-input">
                                 <label th:for="'customCheck'+${projects.indexOf(obj)}" name="checkedId2" class="custom-control-label" th:text="${projects.indexOf(obj)}+1"></label></td>
+                            <td th:text="${obj.getNumber()}"></td>
                             <td th:text="${obj.getName()}"></td>
+                            <td th:text="${obj.getFund()}"></td>
                             <td th:text="${obj.getFunds()}"></td>
-                            <td th:text="${obj.getNotes()}"></td>
+                            <td th:text="${obj.getCharge()}"></td>
                             <td><button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary" th:onclick="'transportData('+${obj.getId()}+',\''+${obj.getName()}+'\', \''+${obj.getFunds()}+'\', \''+${obj.getNotes()}+'\')'">修改</button></td>
                         </tr>
                       </tbody>

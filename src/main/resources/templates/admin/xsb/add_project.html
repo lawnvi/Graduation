@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="../personalData">个人资料</a>
+                                <a tabindex="-1" href="./changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -177,10 +177,6 @@
         <!--/span-->
         <div class="span10" id="content">
             <div class="row-fluid">
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>成功提示</h4>
-                    操作已经成功了！</div>
                 <div class="navbar">
                     <div class="navbar-inner">
                         <ul class="breadcrumb">
@@ -208,10 +204,12 @@
                                 <div class="container">
                                     <div class="col-md-6 column">
                                         <div class="control-group">
-                                            <label class="control-label" for="projectName">项目名称</label>
+                                            <label class="control-label" for="projectName">项目关键字</label>
                                             <div class="controls">
                                                 <input class="input-xlarge focused" id="projectName" type="text"
                                                        th:value="${title != null ? title : ''}">
+                                                项目名称 <input type="radio" name="searchWay" value="name" id="radio_name" th:checked="${way.equals('name')}">
+                                                 项目编号 <input type="radio" name="searchWay" value="code" th:checked="${!way.equals('name')}">
                                                 <button id="btn_search" class="btn btn-primary" onclick="searchProject()">搜索
                                                 </button>
                                             </div>
@@ -231,12 +229,18 @@
                                                 <p th:text="'负责人：'+${project.getCharge()}"></p>
                                                 <span class="badge badge-success"
                                                       th:text="'金额：'+${project.getFunds()}+'万元'"></span>
-                                                <span class="badge badge-success" th:style="${project.getFund().contains('NSFC青年基金') ? '' : 'display:none;'}"
-                                                >NSFC青年基金</span>
-                                                <span class="badge badge-success" th:style="${project.getFund().contains('NSFC面上基金') ? '' : 'display:none;'}"
-                                                >NSFC面上基金</span>
-                                                <span class="badge badge-success" th:style="${project.getFund().contains('NSFC重点基金') ? '' : 'display:none;'}"
-                                                >NSFC重点基金</span>
+                                                <span class="badge badge-success"
+                                                      th:style="${project.getFund() != null && project.getFund().contains('青年科学基金项目') ? '' : 'display:none;'}"
+                                                      th:text="${project.getFund()}"
+                                                ></span>
+                                                <span class="badge badge-success"
+                                                      th:text="${project.getFund()}"
+                                                      th:style="${project.getFund() != null && project.getFund().contains('面上项目') ? '' : 'display:none;'}"
+                                                ></span>
+                                                <span class="badge badge-success"
+                                                      th:text="${project.getFund()}"
+                                                      th:style="${project.getFund() != null && project.getFund().contains('重点项目') ? '' : 'display:none;'}"
+                                                ></span>
                                             </div>
                                         </div>
                                     </div>

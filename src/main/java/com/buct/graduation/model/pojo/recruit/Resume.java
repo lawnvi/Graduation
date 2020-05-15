@@ -3,6 +3,9 @@ package com.buct.graduation.model.pojo.recruit;
 import com.buct.graduation.model.pojo.Reporter;
 import com.buct.graduation.model.pojo.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 就某岗位发出的简历表
  */
@@ -17,8 +20,17 @@ public class Resume {
     private String time;
 
     private User user;
-    private Reporter reporter;
-    private Station station;
+    private Reporter reporter = new Reporter();
+    private Station station = new Station();
+    private List<Interview> interviews = new ArrayList<>();
+
+    public List<Interview> getInterviews() {
+        return interviews;
+    }
+
+    public void setInterviews(List<Interview> interviews) {
+        this.interviews = interviews;
+    }
 
     public User getUser() {
         return user;

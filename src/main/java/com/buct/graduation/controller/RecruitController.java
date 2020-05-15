@@ -322,4 +322,12 @@ public class RecruitController {
         String msg = isPass ? "已接收": "已拒绝";
         return resumeService.isAcceptResume(rid, isPass) > 0 ? msg : "未知错误";
     }
+
+    @RequestMapping("/interview")
+    public String showComingInterview(HttpServletRequest request, Model model){
+        List<Resume> list = userService.findComingInterviews();
+        model.addAttribute("user", Utils.getAdmin(request));
+        model.addAttribute("resumes", list);
+        return "/admin/rcb/coming_interviews";
+    }
 }

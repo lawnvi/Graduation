@@ -12,7 +12,7 @@ import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
 import com.buct.graduation.util.excel.Excel2Excel;
 import com.buct.graduation.util.spider.GetArticlesByAddress;
-import com.buct.graduation.util.spider.SpiderLetpub;
+import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import com.buct.graduation.util.spider.SpiderWOS;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -77,7 +77,7 @@ public class ToolController {
             journals.add(dbJ);
             return journals;
         }
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         PeriodicalTable table = letpub.getPeriodicals(name);
         if(table == null){
             return null;
@@ -125,7 +125,7 @@ public class ToolController {
             return null;
         }
         if (!article.getName().startsWith("没有找到")) {
-            article.setJournal(new SpiderLetpub().getJournal(article.getJournalIssn()));
+            article.setJournal(new SpiderLetpubJournal().getJournal(article.getJournalIssn()));
         }
 //        model.addAttribute("journal", article.getJournal());
 //        model.addAttribute("isNull", "inline");

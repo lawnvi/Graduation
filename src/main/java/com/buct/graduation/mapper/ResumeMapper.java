@@ -39,6 +39,9 @@ public interface ResumeMapper {
     @Select("select * from resume where uid = #{uid}")
     List<Resume> findResumeByUid(int uid);
 
+    @Select("select * from resume where uid = #{uid} and status = #{status}")
+    List<Resume> findResumeByUidStatus(@Param("uid") int uid, @Param("status") String status);
+
     @Select("select * from resume where uid = #{uid} and sid = #{sid}")
     Resume findByUid_Sid(@Param("uid") int uid, @Param("sid") int sid);
 

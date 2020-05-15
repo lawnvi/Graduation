@@ -95,4 +95,16 @@ public class GlobalName {
     public static final String user_type_user = "应聘者";
     public static final String user_type_teacher = "教师";
 
+    /**
+     * 专利发明人身份
+     */
+    public static final String patent_owner_first = "第一发明人";
+    public static final String patent_owner_leader_first = "导师第一本人第二";
+    public static final String patent_owner_partner = "参与";
+    public static final String patent_owner_unauthorized = "未授权";
+
+    /**
+     * 项目
+     */
+    public static final String project_leader = "主持";
 }

@@ -1,12 +1,10 @@
 package com.buct.graduation.controller;
 
-import com.buct.graduation.mapper.JournalMapper;
-import com.buct.graduation.model.pojo.Journal;
 import com.buct.graduation.service.IpService;
 import com.buct.graduation.service.SpiderService;
 import com.buct.graduation.util.ThreadPoolUtil;
 import com.buct.graduation.util.spider.IpPoolUtil;
-import com.buct.graduation.util.spider.SpiderLetpub;
+import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +25,7 @@ public class ApiController {
     public void test(){
         long tempTime = System.currentTimeMillis();
         long start = tempTime;
-        SpiderLetpub letpub = new SpiderLetpub();
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         List<String> kw = new ArrayList<>();
         kw.add("0378-4371");
         kw.add("FOREST ECOLOGY AND MANAGEMENT");

@@ -89,7 +89,7 @@
                                                                                            style="max-width: 2.5rem;"
                                                                                            class="img-fluid rounded-circle shadow"></a>
                 <div aria-labelledby="userInfo" class="dropdown-menu">
-                    <a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family">Mark
+                    <a href="#" class="dropdown-item"><strong class="d-block text-uppercase headings-font-family" th:text="${user.getUser().getName()}">
                         Stephen</strong><small>Web Developer</small></a>
                     <div class="dropdown-divider"></div>
                     <a href="./changePsw" class="dropdown-item">修改密码</a>

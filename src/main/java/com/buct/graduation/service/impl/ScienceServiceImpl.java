@@ -170,4 +170,12 @@ public class ScienceServiceImpl implements ScienceService {
         int r2 = journalMapper.addJournal(article.getJournal());
         return r2 > 0 && r1 > 0 ? "论文保存成功" : "操作失败";
     }
+
+    @Override
+    public String insertJournal(Journal journal) {
+        if(journalMapper.findByKeyword(journal.getName()) != null){
+            return "期刊已存在";
+        }
+        return journalMapper.addJournal(journal) > 0 ? "论文保存成功" : "操作失败";
+    }
 }
