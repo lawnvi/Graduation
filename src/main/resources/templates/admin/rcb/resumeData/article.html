@@ -227,7 +227,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:class="'odd gradeX '+${obj.getAddWay().equals('自动')? '': 'error'}" th:each="obj, stat:${articles}">
-                                    <td th:text="${articles.indexOf(obj)}"></td>
+                                    <td th:text="${articles.indexOf(obj)+1}"></td>
                                     <td th:text="${obj.getName()}"></td>
                                     <td>
                                         <a target="_blank" th:href="${obj.getJournal().getUrl()}" th:title="${obj.getJournal().getName()}" th:text="${obj.getJournal().getAbbrTitle()}"></a>

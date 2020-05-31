@@ -3,6 +3,7 @@ package com.buct.graduation.controller;
 import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.science.Teacher;
 import com.buct.graduation.model.spider.ProjectData;
+import com.buct.graduation.service.ScienceService;
 import com.buct.graduation.service.SpiderService;
 import com.buct.graduation.service.TeacherService;
 import com.buct.graduation.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +32,8 @@ public class TeacherController {
     private UserService userService;
     @Autowired
     private SpiderService spiderService;
+    @Autowired
+    private ScienceService scienceService;
 
     /**
      * 注册
@@ -179,7 +183,7 @@ public class TeacherController {
     }
 
     @RequestMapping("/updateBasicInfo.do")
-    public String fillBasicDataMethod(HttpServletRequest request, Model model){
+    public String fillBasicDataMethod(HttpServletRequest request, Model model, MultipartFile picture){
         Teacher teacher = Utils.getTeacher(request);
         User user = teacher.getUser();
         user.setName(request.getParameter("name"));
@@ -191,10 +195,24 @@ public class TeacherController {
         user.setStatus(request.getParameter("status"));
         user.setTel(request.getParameter("tel"));
         user.setEducation(request.getParameter("education"));
-        String[] titles = request.getParameterValues("titles[]");
+        String[] titles = request.getParameterValues("titles");
         user.setTitle(Utils.checkboxToString(titles));
-        String[] funds = request.getParameterValues("funds[]");
+        String[] funds = request.getParameterValues("funds");
         user.setFund(Utils.checkboxToString(funds));
+
+        if(picture != null && !picture.isEmpty()){
+            String fileName = picture.getOriginalFilename();
+            String path = GlobalName.IMAGE_PATH + Utils.getTodayPath();
+            path = Utils.saveFileRelativePath(picture, path);
+            if(path.equals("")){
+                System.out.println("upload error");
+            }
+            else {
+                System.out.println("upload good");
+                user.setPicPath(path);
+            }
+        }
+
         teacher.setUser(user);
         teacherService.update(teacher);
         Teacher user2 = teacherService.findByEmail(teacher.getUser().getEmail());
@@ -513,6 +531,10 @@ public class TeacherController {
 
     @RequestMapping("/analysis")
     public String analysisTeacher(HttpServletRequest request, Model model){
+        Teacher teacher = Utils.getTeacher(request);
+        model.addAttribute("user", teacher);
+        model.addAttribute("analysis", scienceService.analysisUser(teacher.getUser().getId()));
+
         return "/teacher/data/analysis";
     }
 

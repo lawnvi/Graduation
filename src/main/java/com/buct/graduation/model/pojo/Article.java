@@ -15,7 +15,7 @@ public class Article {
     private String notes = "";
     private String url = "";
     private Boolean isESI = false;//是否高被引
-    private String is_esi;
+    private String is_esi = "否";
     private String filePath;//存档位置
     private String volume = "";//卷号
     private String page = "";//页码

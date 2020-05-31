@@ -6,19 +6,26 @@ import com.buct.graduation.model.pojo.recruit.Resume;
 import com.buct.graduation.model.pojo.recruit.Station;
 import com.buct.graduation.model.vo.Apply;
 import com.buct.graduation.model.vo.ResumeData;
-import com.buct.graduation.service.ArticleService;
-import com.buct.graduation.service.ResumeService;
-import com.buct.graduation.service.StationService;
-import com.buct.graduation.service.UserService;
+import com.buct.graduation.service.*;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.buct.graduation.util.excel.Excel2Excel;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -36,6 +43,8 @@ public class RecruitController {
     private ArticleService articleService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ScienceService scienceService;
 
     private Station getStation(HttpServletRequest request){
         Station station = new Station();
@@ -181,9 +190,11 @@ public class RecruitController {
         Resume resume = resumeService.findResumeById(id);
         if(resume == null){
             //todo 边界未知错误
+            return "error";
         }
         model.addAttribute("resume", resume);
         model.addAttribute("user", Utils.getAdmin(request));
+        model.addAttribute("analysis", scienceService.analysisUser(resume.getUid()));
         return "/admin/rcb/resume_detail";
     }
 
@@ -209,7 +220,9 @@ public class RecruitController {
         Resume resume = findResume(request);
         int uid = resume.getUid();
         model.addAttribute("resume", resume);
-        List<Article> articles = articleService.findByUidStatus(uid, GlobalName.addWay_missing_c);
+//        List<Article> articles = articleService.findByUidStatus(uid, GlobalName.addWay_missing_c);
+        List<UserArticle> articles = scienceService.findByUid(uid);
+        articles.removeIf(article -> !article.getFlag().equals(GlobalName.teacher_flag_apply));
         model.addAttribute("articles", articles);
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));
@@ -246,6 +259,7 @@ public class RecruitController {
         int uid = resume.getUid();
         model.addAttribute("resume", resume);
         List<Project> projects = userService.showProjectsByStatus(uid, false);
+        projects.removeIf(project -> !project.getFlag().equals(GlobalName.teacher_flag_apply));
         model.addAttribute("projects", projects);
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));
@@ -329,5 +343,45 @@ public class RecruitController {
         model.addAttribute("user", Utils.getAdmin(request));
         model.addAttribute("resumes", list);
         return "/admin/rcb/coming_interviews";
+    }
+
+    @RequestMapping("/changePsw")
+    public String changePsw(){
+        return "redirect:../resetPsw";
+    }
+
+    @RequestMapping("/getReporterExcel")
+    @ResponseBody
+    public String getReporterExcel(HttpServletRequest request, HttpServletResponse response){
+        int uid = Integer.parseInt(request.getParameter("uid"));
+        try {
+            String newPath = scienceService.downloadExcelReporter(uid);
+            User user = userService.findUserById(uid);
+            System.out.println(newPath);
+            InputStream is = new FileInputStream(new File(newPath));
+            Workbook wb = WorkbookFactory.create(is);
+            is.close();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition", "attachment;filename=reporter"+user.getName()+".xlsx");
+            OutputStream outputStream = response.getOutputStream();
+            wb.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            Utils.deleteFile(newPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "下载失败";
+        }
+        return "下载成功";
+    }
+
+    @RequestMapping("/handleObj")
+    @ResponseBody
+    public String handleObj(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        String keyword = request.getParameter("keyword");
+        String obj = request.getParameter("obj");
+        boolean accept = "yes".equalsIgnoreCase(keyword);
+        return scienceService.handleObj(obj, accept, id);
     }
 }

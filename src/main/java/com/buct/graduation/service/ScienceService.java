@@ -1,6 +1,7 @@
 package com.buct.graduation.service;
 
 import com.buct.graduation.model.pojo.*;
+import com.buct.graduation.model.vo.AnalysisScience;
 
 import java.util.List;
 
@@ -36,4 +37,18 @@ public interface ScienceService {
     String insertArticle(Article article);
 
     String insertJournal(Journal journal);
+
+    String addProject(Project project);
+
+    AnalysisScience analysisUser(int uid);
+
+    AnalysisScience analysisSchool();
+
+    String downloadExcelReporter(int uid);
+
+    String updateArticlesByAddress(List<Article> articles);
+
+    String handleObj(String obj, boolean accept, int id);
+
+    List<UserArticle> findByUid(int uid);
 }

@@ -117,8 +117,15 @@ public class XLSTransformerExport {
         //String exportPath = getDirPath(reporter.getName()+".xlsx", new File("D:\\temp\\reporter\\"));
         String exportPath = "D:\\temp\\"+reporter.getName()+".xlsx";
         exportPath = GlobalName.ABSOLUTE_PATH+GlobalName.EXCEL_PATH+GlobalName.EXCEL_BUFFER + Utils.getTodayPath()+Utils.getNowName()+reporter.getName()+".xlsx";
+        String exportDir = GlobalName.ABSOLUTE_PATH+GlobalName.EXCEL_PATH+GlobalName.EXCEL_BUFFER + Utils.getTodayPath();
         System.out.println(exportPath);
         try {
+            File file2 = new File(exportDir);
+            if(!file2.isDirectory()) {
+                //递归生成文件夹
+                file2.mkdirs();
+            }
+            //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
             //利用transformXLS来输出文件
             transformer.transformXLS(temppath, para, exportPath);
             //生成文件后提示是否立即打开该文件

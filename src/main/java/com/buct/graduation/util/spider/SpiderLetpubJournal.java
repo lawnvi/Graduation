@@ -215,9 +215,10 @@ public class SpiderLetpubJournal {
         Elements th = element.select("tr>th");
         Elements td = element.select("tr>td");
         int size = td.size();
+        int thSize = th.size();
         if (size > 2) {
-            year = th.get(size - 1).text();
-            IF = td.get(size - 1).text();
+            year = th.get(thSize - 1).text();
+            IF = td.get(thSize - 1).text();
         }else {
             return 0;
         }

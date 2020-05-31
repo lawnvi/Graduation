@@ -23,7 +23,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //linux 路径
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:"+ GlobalName.ABSOLUTE_PATH);
+        registry.addResourceHandler("/"+GlobalName.MAPPING_PATH+"/**").addResourceLocations("file:"+ GlobalName.ABSOLUTE_PATH);
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 

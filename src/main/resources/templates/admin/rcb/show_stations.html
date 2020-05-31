@@ -35,7 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="./changePsw">修改密码</a>
+                                <a tabindex="-1" href="../changePsw">修改密码</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -274,7 +274,7 @@
                                     <td th:text="${obj.getNewResume()}"></td>
                                     <td th:text="${obj.getInterviewing()}"></td>
                                     <td>
-                                        <a th:href="'./stationPassed?id='+${obj.getId()}" th:text="${obj.getPassed()}"></a>
+                                        <a th:href="'./station?id='+${obj.getId()}+'&status=pass'" th:text="${obj.getPassed()}"></a>
                                     </td>
                                     <td>
                                         <a th:href="'./stationUpdate?id='+${obj.getId()}" th:text="${obj.getStatus()}"></a>

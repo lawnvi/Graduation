@@ -179,7 +179,7 @@ public class Reporter {
     }
 
     public Double getScore() {
-        return score;
+        return (double) Math.round(score * 100) / 100;
     }
 
     public void setScore(Double score) {

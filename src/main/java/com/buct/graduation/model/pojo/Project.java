@@ -10,7 +10,7 @@ public class Project {
     private Integer uid;//用户id
     private String name;//项目名称
     private Double funds;//单位:万元
-    private String notes;//备注
+    private String notes="";//备注
     private String role;//担任角色
 
     private String number;//项目编号
@@ -51,7 +51,7 @@ public class Project {
     }
 
     public void setChecked(Boolean checked) {
-        checked = checked;
+        this.checked = checked;
     }
 
     public String getCharge() {

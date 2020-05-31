@@ -84,7 +84,8 @@
             </li>
             <li class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown"
                                                      aria-haspopup="true" aria-expanded="false"
-                                                     class="nav-link dropdown-toggle"><img src="../images/avatar-6.jpg"
+                                                     class="nav-link dropdown-toggle">
+                <img th:src="${(user.getUser().getPicPath() == null || user.getUser().getPicPath().equals('')) ? '../images/employers/img-1.jpg': '/import/'+user.getUser().getPicPath()}"
                                                                                            alt="Jason Doe"
                                                                                            style="max-width: 2.5rem;"
                                                                                            class="img-fluid rounded-circle shadow"></a>
@@ -162,10 +163,16 @@
 
                                         <div class="col-12 mt-3">
                                             <div class="custom-form p-4 border rounded">
-                                                <img src="../images/employers/img-1.jpg" style="max-width: 8rem;"
-                                                     class="img-fluid rounded-circle shadow mdi-xing-circle avatar avatar-medium d-block mx-auto rounded-pill"
-                                                     alt="">
-                                                 
+<!--                                                <img src="../images/employers/img-1.jpg" style="max-width: 8rem;"-->
+<!--                                                     class="img-fluid rounded-circle shadow mdi-xing-circle avatar avatar-medium d-block mx-auto rounded-pill"-->
+<!--                                                     alt="">-->
+                                                <span>
+                                                    <img th:src="${(user.getUser().getPicPath() == null || user.getUser().getPicPath().equals('')) ? '../images/employers/img-1.jpg': '/import/'+user.getUser().getPicPath()}" style="max-width: 8rem;"
+                                                         class="img-fluid rounded-circle shadow mdi-xing-circle avatar avatar-medium d-block mx-auto rounded-pill"
+                                                         alt="">
+                                                    <input hidden id="resumePath" type="file">
+                                                    修改头像<input type="file" id="img_upload">
+                                                </span>
                                                     <div class="row mt-4">
                                                         <div class="col-md-4">
                                                             <div class="form-group app-label">

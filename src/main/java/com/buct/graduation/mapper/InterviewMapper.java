@@ -22,7 +22,7 @@ public interface InterviewMapper {
     @Select("select * from interview where rid = #{rid}")
     List<Interview> findByRid(int rid);
 
-    @Select("select * from interview where time > now()")
+    @Select("select * from interview where time >= DATE_SUB(curdate(),INTERVAL 0 DAY) ")
     List<Interview> findComing();
 
 }

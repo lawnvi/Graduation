@@ -7,6 +7,7 @@ import com.buct.graduation.model.vo.UserVData;
 import com.buct.graduation.service.*;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.buct.graduation.util.spider.GetArticlesByAddress;
 import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import com.buct.graduation.util.spider.SpiderLetpubProject;
 import com.buct.graduation.util.spider.SpiderWOS;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,6 +44,7 @@ public class ScienceController {
         model.addAttribute("papers", scienceService.getConferencePapers());
         model.addAttribute("patents", scienceService.getPatents());
         model.addAttribute("projects", scienceService.getProjects(GlobalName.teacher_flag_normal));
+        model.addAttribute("analysis", scienceService.analysisSchool());
         return "/admin/xsb/science_data";
     }
 
@@ -124,6 +128,7 @@ public class ScienceController {
     @RequestMapping("/searchArticle")
     @ResponseBody
     public Article searchArticle(HttpServletRequest request){
+        long start = System.currentTimeMillis();
         String name = request.getParameter("title");
         if(name == null || "".equals(name)){
             return null;
@@ -152,6 +157,7 @@ public class ScienceController {
         session.setAttribute(Utils.getAdmin(request).getId()+article.getName(), article);
             //时限600s
         session.setMaxInactiveInterval(600);
+        System.out.println("消耗时间："+(System.currentTimeMillis()-start)/1000+"s");
         return article;
     }
 
@@ -177,6 +183,32 @@ public class ScienceController {
         session.removeAttribute(code);
         return scienceService.insertArticle(article);
     }
+
+    @RequestMapping("/getArticlesByAddress")
+    public String getArticlesByAddressPage(Model model, HttpServletRequest request){
+        model.addAttribute("user", Utils.getAdmin(request));
+        return "/admin/xsb/update_articles";
+    }
+
+    @RequestMapping("/getArticlesByAddress.do")
+    @ResponseBody
+    public String getArticlesByAddress(Model model, HttpServletRequest request, HttpServletResponse response) {
+        int year = Integer.parseInt(request.getParameter("year"));
+        long start = System.currentTimeMillis();
+        String keyword = GlobalName.school_article_address;
+        //todo init
+        String result = "失败";
+        GetArticlesByAddress op = new GetArticlesByAddress();
+        try {
+            List<Article> list = new ArrayList<>(op.getArticles(keyword, year));
+            result = scienceService.updateArticlesByAddress(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        long time = (System.currentTimeMillis() - start)/1000;
+        return result + " 耗时"+time+"秒";
+    }
+
 
     @RequestMapping("/articleData")
     public String articleData(Model model, HttpServletRequest request){
@@ -251,7 +283,7 @@ public class ScienceController {
         project.setRole(GlobalName.project_leader);
         project.setFlag(GlobalName.teacher_flag_claim);
         project.setBelong(GlobalName.belongSchool);
-        return userService.addProject(project);
+        return scienceService.addProject(project);
     }
 
     @RequestMapping("/addPatent")
@@ -413,6 +445,8 @@ public class ScienceController {
         User user = userService.findUserById(uid);
         model.addAttribute("researcher", user);
         model.addAttribute("user", Utils.getAdmin(request));
+        model.addAttribute("analysis", scienceService.analysisUser(user.getId()));
+
         return "/admin/xsb/researcherData/researcher_detail";
     }
 
@@ -433,7 +467,9 @@ public class ScienceController {
         int uid = Integer.parseInt(request.getParameter("id"));
         User user = userService.findUserById(uid);
         model.addAttribute("researcher", user);
-        List<Article> articles = articleService.findByUidStatus(uid, GlobalName.addWay_missing_c);
+//        List<Article> articles = articleService.findByUidStatus(uid, GlobalName.addWay_missing_c);
+        List<UserArticle> articles = scienceService.findByUid(uid);
+        articles.removeIf(article -> !article.getFlag().equals(GlobalName.teacher_flag_apply));
         model.addAttribute("articles", articles);
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));
@@ -470,6 +506,7 @@ public class ScienceController {
         User user = userService.findUserById(uid);
         model.addAttribute("researcher", user);
         List<Project> projects = userService.showProjectsByStatus(uid, false);
+        projects.removeIf(project -> !project.getFlag().equals(GlobalName.teacher_flag_apply));
         model.addAttribute("projects", projects);
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));
@@ -486,6 +523,11 @@ public class ScienceController {
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));
         return "/admin/xsb/researcherData/patent";
+    }
+
+    @RequestMapping("/changePsw")
+    public String changePsw(){
+        return "redirect:../resetPsw";
     }
 
 }

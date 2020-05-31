@@ -5,6 +5,8 @@ import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.science.Teacher;
 import com.buct.graduation.service.TeacherService;
 import com.buct.graduation.util.GlobalName;
+import com.buct.graduation.util.Utils;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +82,11 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public Teacher update(Teacher teacher) {
+        try {
+            teacher.setPhonetic(Utils.getPinyin(teacher.getUser().getName()));
+        } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
+            badHanyuPinyinOutputFormatCombination.printStackTrace();
+        }
         teacherMapper.update(teacher);
         userMapper.updateUser(teacher.getUser());
         return findByEmail(teacher.getUser().getEmail());

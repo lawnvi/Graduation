@@ -225,7 +225,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="obj, stat:${papers}">
-                                    <td th:text="${papers.indexOf(obj)}"></td>
+                                    <td th:text="${papers.indexOf(obj)+1}"></td>
                                     <td th:text="${obj.getName()}"></td>
                                     <td th:text="${obj.getConference()}"></td>
                                     <td th:text="${obj.getCitation()}"></td>

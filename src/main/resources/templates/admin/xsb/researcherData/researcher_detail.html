@@ -160,7 +160,7 @@
                     <a th:href="'./userDetail?id='+${researcher.getId()}"><i class="icon-chevron-right"></i> 基本信息</a>
                 </li>
                 <li>
-                    <a th:href="'./user_article?id='+${uid}"><i class="icon-chevron-right"></i> 期刊论文</a>
+                    <a th:href="'./user_article?id='+${researcher.getId()}"><i class="icon-chevron-right"></i> 期刊论文</a>
                 </li>
                 <li>
                     <a th:href="'./user_meeting?id='+${researcher.getId()}"><i class="icon-chevron-right"></i> 会议论文</a>
@@ -199,10 +199,83 @@
                     </div>
                 </div>
             </div>
-            <div class="row-fluid">
-                <!-- block -->
-                <!-- /block -->
+            <div class="row-fluid section">
+
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">基本资料</div>
+                        <div class="pull-right">
+                            <span class="badge badge-warning">
+                                    <a th:href="'../recruit/getReporterExcel?uid='+${researcher.getId()}">下载excel</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="block-content collapse in">
+                    <div class="span12">
+                        <h4 th:text="${researcher.getName()}"></h4><small th:text="${researcher.getMajor()+' '+researcher.getEducation()}"></small>
+                        <h6 th:text="${researcher.getEmail()}"></h6>
+                        JCR1/2收录文章数:<span class="badge badge-info" th:text="${analysis.getReporter().getJcr()}"></span><br>
+                        SCI被引次数:<span class="badge badge-info" th:text="${analysis.getReporter().getSciCitation()}"></span><br>
+                        综合分数:<span class="badge badge-info" th:text="${analysis.getReporter().getScore()}"></span><br>
+                        <span class="badge badge-success" th:style="${(analysis.getReporter().getTitle() != null && !analysis.getReporter().getTitle().equals('无')) ? '': 'display:none;'}" th:text="${analysis.getReporter().getTitle() != null ? analysis.getReporter().getTitle():''}"></span>
+                        <span class="badge badge-success" th:style="${analysis.getReporter().getEsi() > 0 ? '': 'display:none;'}" th:text="${'ESI论文'+analysis.getReporter().getEsi()+'篇'}"></span>
+                        <span class="badge badge-success" th:text="'主持项目金额:'+${analysis.getReporter().getFunds()}+'万元'"></span>
+                        <span class="badge badge-success" th:text="'定岗推荐：'+${analysis.getReporter().getPost()}"></span>
+                    </div>
+                </div>
             </div>
+
+
+            <div class="block">
+                <div class="navbar navbar-inner block-header">
+                    <div class="muted pull-left">统计</div>
+                    <div class="pull-right">
+                    </div>
+                </div>
+                <div class="block-content collapse in">
+                    <div class="span3">
+                        <div class="chart" data-percent="100" th:text="${analysis.getArticle()}"></div>
+                        <div class="chart-bottom-heading"><span class="label label-info">期刊论文</span>
+
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="chart" data-percent="100" th:text="${analysis.getPaper()}"></div>
+                        <div class="chart-bottom-heading"><span class="label label-info">会议论文</span>
+
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="chart" data-percent="100" th:text="${analysis.getPatent()}">83%</div>
+                        <div class="chart-bottom-heading"><span class="label label-info">发明专利</span>
+
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="chart" data-percent="100" th:text="${analysis.getProject()}">13%</div>
+                        <div class="chart-bottom-heading"><span class="label label-info">主持项目</span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- block -->
+            <div class="block">
+                <div class="navbar navbar-inner block-header">
+                    <div class="muted pull-left">期刊论文统计</div>
+                    <!--                        <div class="pull-right"><span class="badge badge-warning">View More</span>-->
+                    <!--                        </div>-->
+                </div>
+                <div class="block-content collapse in">
+                    <div class="span12">
+                        <div id="hero-graph" style="height: 230px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /block -->
+        </div>
         </div>
     </div>
     <hr>
@@ -234,16 +307,42 @@
 <script src="../../adminres/assets/scripts.js"></script>
 <script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
 <script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script src="../../adminres/vendors/morris/morris.min.js"></script>
+<script src="../../adminres/vendors/jquery.knob.js"></script>
+<script src="../../adminres/vendors/raphael-min.js"></script>
+<link rel="stylesheet" href="../../adminres/vendors/morris/morris.css">
+
+<script src="../../adminres/vendors/flot/jquery.flot.js"></script>
+<script src="../../adminres/vendors/flot/jquery.flot.categories.js"></script>
+<script src="../../adminres/vendors/flot/jquery.flot.pie.js"></script>
+<script src="../../adminres/vendors/flot/jquery.flot.time.js"></script>
+<script src="../../adminres/vendors/flot/jquery.flot.stack.js"></script>
+<script src="../../adminres/vendors/flot/jquery.flot.resize.js"></script>
 <script>
     $(function() {
 
     });
 </script>
 <script src="../../adminres/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
-<script>
+<script th:inline="javascript">
     $(function() {
         // Easy pie charts
         $('.chart').easyPieChart({animate: 1000});
+    });
+    var tax_data = [];
+    var message = [[${analysis.analysisYears}]];
+    for(var i = 0; i < message.length; i++){
+        var obj = {"period": message[i]['year']+'-01', "num":message[i]['number'], "citation":message[i]['citation'], "esi":message[i]['esi'], "top":message[i]['top'], "jcr12":message[i]['jcr_12']};
+        tax_data[i] = obj;
+    }
+    console.log(tax_data);
+    Morris.Line({
+        element: 'hero-graph',
+        data: tax_data,
+        xkey: 'period',
+        xLabels: "month",
+        ykeys: ['num', 'citation', 'esi', 'top', 'jcr12'],
+        labels: ['article', 'Citation', 'ESI', 'TOP', 'JCR-1/2']
     });
 </script>
 </body>

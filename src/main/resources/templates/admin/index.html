@@ -12,7 +12,23 @@
     <link href="../adminres/vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
     <!--    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
     <script src="../adminres/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <style>
+        .header {
+            background-color: #ffe4c4;
+        }
 
+        .main {
+            padding-bottom: 50px;
+        }
+
+        /* main的padding-bottom值要等于或大于footer的height值 */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -154,107 +170,93 @@
 </div>
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span2" id="sidebar">
-            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                <li class="active">
-                    <a href="./index"><i class="icon-chevron-right"></i> 首页</a>
-                </li>
-                <li>
-                    <a href="calendar.html"><i class="icon-chevron-right"></i> 日历</a>
-                </li>
-                <li>
-                    <a href="stats.html"><i class="icon-chevron-right"></i> 统计图表</a>
-                </li>
-                <li>
-                    <a href="form.html"><i class="icon-chevron-right"></i> 表单</a>
-                </li>
-                <li>
-                    <a href="tables.html"><i class="icon-chevron-right"></i> 表格</a>
-                </li>
-                <li>
-                    <a href="buttons.html"><i class="icon-chevron-right"></i> 按钮 & 图标</a>
-                </li>
-                <li>
-                    <a href="editors.html"><i class="icon-chevron-right"></i> 编辑器</a>
-                </li>
-                <li>
-                    <a href="interface.html"><i class="icon-chevron-right"></i> UI界面</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-success pull-right">731</span> 订单</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-success pull-right">812</span> 清单</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-info pull-right">27</span> 客户</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-info pull-right">1,234</span> 用户</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-info pull-right">2,221</span> 消息</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-info pull-right">11</span> 报告</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-important pull-right">83</span> 错误</a>
-                </li>
-                <li>
-                    <a href="#"><span class="badge badge-warning pull-right">4,231</span> 日志</a>
-                </li>
-            </ul>
-        </div>
+<!--        <div class="span2" id="sidebar">-->
+<!--            <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">-->
+<!--                <li class="active">-->
+<!--                    <a href="./index"><i class="icon-chevron-right"></i> 首页</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="calendar.html"><i class="icon-chevron-right"></i> 日历</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="stats.html"><i class="icon-chevron-right"></i> 统计图表</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="form.html"><i class="icon-chevron-right"></i> 表单</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="tables.html"><i class="icon-chevron-right"></i> 表格</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="buttons.html"><i class="icon-chevron-right"></i> 按钮 & 图标</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="editors.html"><i class="icon-chevron-right"></i> 编辑器</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="interface.html"><i class="icon-chevron-right"></i> UI界面</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-success pull-right">731</span> 订单</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-success pull-right">812</span> 清单</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-info pull-right">27</span> 客户</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-info pull-right">1,234</span> 用户</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-info pull-right">2,221</span> 消息</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-info pull-right">11</span> 报告</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-important pull-right">83</span> 错误</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#"><span class="badge badge-warning pull-right">4,231</span> 日志</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
 
         <!--/span-->
-        <div class="span10" id="content">
-            <div class="row-fluid">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <ul class="breadcrumb">
-                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
-                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
-                            <li class="active">
-                                <a href="#">首页</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="span12" id="content">
             <div class="row-fluid">
                 <!-- block -->
                 <div class="block">
                     <div class="navbar navbar-inner block-header">
-                        <div class="muted pull-left">统计</div>
+                        <div class="muted pull-left">今日待办</div>
                         <div class="pull-right">
-                            <a class="badge badge-warning" href="#">
-                                查看更多
-                            </a>
+<!--                            <a class="badge badge-warning" href="#">-->
+<!--                            </a>-->
                         </div>
                     </div>
                     <div class="block-content collapse in">
                         <div class="span3">
-                            <div class="chart" data-percent="90">90</div>
-                            <div class="chart-bottom-heading"><span class="label label-info">岗位数量</span>
+                            <div class="chart" data-percent="100" th:text="${map.get('resume')}">90</div>
+                            <div class="chart-bottom-heading"><a class="label label-info" href="./recruit/resume?status=wait">待处理简历</a>
 
                             </div>
                         </div>
                         <div class="span3">
-                            <div class="chart" data-percent="53">53%</div>
-                            <div class="chart-bottom-heading"><span class="label label-info">需求人数</span>
+                            <div class="chart" data-percent="100" th:text="${map.get('interview')}">53%</div>
+                            <div class="chart-bottom-heading"><a class="label label-info" href="./recruit/interview">今日面试</a>
 
                             </div>
                         </div>
                         <div class="span3">
-                            <div class="chart" data-percent="83">83%</div>
-                            <div class="chart-bottom-heading"><span class="label label-info">在招岗位</span>
+                            <div class="chart" data-percent="100" th:text="${map.get('article')}">83%</div>
+                            <div class="chart-bottom-heading"><a class="label label-info" href="./research/article?flag=申请">待审核期刊论文</a>
 
                             </div>
                         </div>
                         <div class="span3">
-                            <div class="chart" data-percent="13">13%</div>
-                            <div class="chart-bottom-heading"><span class="label label-info">在招人数</span>
+                            <div class="chart" data-percent="100" th:text="${map.get('project')}">13%</div>
+                            <div class="chart-bottom-heading"><a class="label label-info" href="./research/project?flag=申请">待审核项目</a>
 
                             </div>
                         </div>

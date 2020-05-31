@@ -10,12 +10,12 @@ public class Journal {
     private String AbbrTitle;//简称
     private String ISSN;//唯一码？
     private Boolean isTop;//是否TOP
-    private String is_top;
+    private String is_top = "否";
     private Float IF;//影响因子
     private Integer year;//数据年份
     private String section = "JCR-";//jcr分区1/2/3/4
     private String url = "";//letPub网址
-    private String notes;//备注
+    private String notes="";//备注
 
     public Journal() {
         this.name = "404";
@@ -30,7 +30,7 @@ public class Journal {
     }
 
     public String getIs_top() {
-        return is_top;
+        return isTop ? "是": "否";
     }
 
     public void setIs_top(String is_top) {

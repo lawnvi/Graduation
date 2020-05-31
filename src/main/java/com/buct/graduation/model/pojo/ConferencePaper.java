@@ -12,13 +12,13 @@ public class ConferencePaper {
     private String conference;//会议名称
     private String section;//分区 CCF-A/B/C
     private Integer citation;
-    private String notes;//备注
+    private String notes = "";//备注
     private String role;//担任角色
     
     private String AttrName;
     private String AttrMeeting;
     private boolean isEsi;
-    private String is_esi;
+    private String is_esi = "否";
     private String belong = GlobalName.belongApply;//所属
     private String flag;
 

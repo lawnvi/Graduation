@@ -32,10 +32,10 @@ public interface StationMapper {
     @Select("select * from station where status=#{status}")
     List<Station> findByStatus(String status);
 
-    @Select("select * from (SELECT * FROM station WHERE end > now() order by start desc) as a limit #{start}, #{number}")
+    @Select("select * from (SELECT * FROM station WHERE end >= now() order by start desc) as a limit #{start}, #{number}")
     List<Station> findJobsWithPage(@Param("start") int start, @Param("number") int number);
 
-    @Select("select * from (SELECT * FROM station WHERE end > now() and (title like #{kw} or major like #{kw}) order by start desc) as a limit #{start}, #{number}")
+    @Select("select * from (SELECT * FROM station WHERE end >= now() and (title like #{kw} or major like #{kw}) order by start desc) as a limit #{start}, #{number}")
     List<Station> findJobsByKeywordWithPage(@Param("start") int start, @Param("number") int number, @Param("kw") String kw);
 
 

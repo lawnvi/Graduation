@@ -174,13 +174,22 @@ public class SpiderWOS {
         for (Element element : elements) {
 //                        System.out.println(element.attr("value")+" text:"+element.text());
             if (element.children().size() > 0) {
-                if (element.child(0).text().equals("出版年:") || element.child(0).text().equals("Published:")) {
+                if (element.child(0).text().contains("出版年") || element.child(0).text().contains("Published")) {
                     year = element.child(1).text();
                     System.out.println("find year" + year);
-                } else if (element.child(0).text().equals("通讯作者地址:") || element.child(0).text().equals("Reprint Address:")) {
+                }else if (element.child(0).text().equals("通讯作者地址:") || element.child(0).text().equals("Reprint Address:")) {
                     CAuthor = element.text().substring(17, element.text().length() - 16);
                     System.out.println("find 通讯作者" + CAuthor);
                     break;
+                }
+            }
+        }
+
+        if("".equals(year)){
+            for(Element element:d3.getElementsByClass("FR_label")){
+                if(element.text().contains("在线发表日期") || element.text().equals("Early Access:")){
+                    year = element.nextElementSibling().text();
+                    System.out.println("find year Access" + year);
                 }
             }
         }

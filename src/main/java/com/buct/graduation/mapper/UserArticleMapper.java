@@ -34,4 +34,11 @@ public interface UserArticleMapper {
     })
     List<UserArticle> findByFlag(String flag);
 
+    @Select("select * from userarticle where uid = #{uid}")
+    @Results(id = "findByUidMap",value = {
+            @Result(id = true,column = "id",property = "id"),
+            @Result(property = "article", column = "aid" ,one = @One(select = "com.buct.graduation.mapper.ArticleMapper.findById",fetchType = FetchType.EAGER))
+    })
+    List<UserArticle> findByUid(int uid);
+
 }

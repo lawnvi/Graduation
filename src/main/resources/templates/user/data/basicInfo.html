@@ -84,7 +84,8 @@
             </li>
             <li class="nav-item dropdown ml-auto"><a id="userInfo" href="http://example.com" data-toggle="dropdown"
                                                      aria-haspopup="true" aria-expanded="false"
-                                                     class="nav-link dropdown-toggle"><img src="../images/avatar-6.jpg"
+                                                     class="nav-link dropdown-toggle">
+                <img th:src="${(user.getPicPath() == null || user.getPicPath().equals('')) ? '../images/employers/img-1.jpg': '/import/'+user.getPicPath()}"
                                                                                            alt="Jason Doe"
                                                                                            style="max-width: 2.5rem;"
                                                                                            class="img-fluid rounded-circle shadow"></a>
@@ -139,7 +140,7 @@
         <div class="container-fluid px-xl-5">
             <section class="py-5">
                 <div class="row">
-<!--                    <form action="./updateBasicInfo.do" method="post">-->
+                    <!--                    <form action="./updateBasicInfo.do" method="post">-->
                     <div class="col-lg-12 mb-4">
                         <div class="card">
                             <div class="card-header">
@@ -161,82 +162,108 @@
 
                                         <div class="col-12 mt-3">
                                             <div class="custom-form p-4 border rounded">
-                                                <img src="../images/employers/img-1.jpg" style="max-width: 8rem;"
-                                                     class="img-fluid rounded-circle shadow mdi-xing-circle avatar avatar-medium d-block mx-auto rounded-pill"
-                                                     alt="">
-                                                 
-                                                    <div class="row mt-4">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">姓名<span
-                                                                        class="text-danger">*</span> :</label>
-                                                                <input id="name" type="text" name="name"
-                                                                       th:value="${user.getName()}"
-                                                                       class="form-control resume" placeholder="Name">
+                                                <span>
+                                                    <img th:src="${(user.getPicPath() == null || user.getPicPath().equals('')) ? '../images/employers/img-1.jpg': '/import/'+user.getPicPath()}" style="max-width: 8rem;"
+                                                        class="img-fluid rounded-circle shadow mdi-xing-circle avatar avatar-medium d-block mx-auto rounded-pill"
+                                                        alt="">
+                                                    修改头像<input type="file" id="img_upload">
+                                                </span>
+                                                <div class="row mt-4">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">姓名<span
+                                                                    class="text-danger">*</span> :</label>
+                                                            <input id="name" type="text" name="name"
+                                                                   th:value="${user.getName()}"
+                                                                   class="form-control resume" placeholder="Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">性别<span
+                                                                    class="text-danger">*</span> :</label><br>
+                                                            <div class="row">
+                                                                <div class="col-md-1">男</div>
+                                                                <div class="switch-btn">
+                                                                    <input type="checkbox" class="hidden-checkbox"
+                                                                           id="sex" name="sex"
+                                                                           th:checked="${user.getSex().equals('女')}">
+                                                                    <span class="switch-area"></span>
+                                                                    <span class="switch-toggle"></span>
+                                                                </div>
+                                                                <div class="col-md-1">女</div>
                                                             </div>
                                                         </div>
+                                                    </div>
 
-                                                        <div class="col-md-8">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">性别<span
-                                                                        class="text-danger">*</span> :</label><br>
-                                                                <div class="row">
-                                                                    <div class="col-md-1">男</div>
-                                                                    <div class="switch-btn">
-                                                                        <input type="checkbox" class="hidden-checkbox"
-                                                                               id="sex" name="sex"
-                                                                               th:checked="${user.getSex().equals('女')}">
-                                                                        <span class="switch-area"></span>
-                                                                        <span class="switch-toggle"></span>
-                                                                    </div>
-                                                                    <div class="col-md-1">女</div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted"><a
+                                                                    th:href="${(user.getResumePath() != null && !user.getResumePath().equals('')) ? '/import/'+user.getResumePath() : '#'}"
+                                                                    target="_blank">查看简历</a><span
+                                                                    class="text-danger">*</span> :</label><br>
+                                                            <div class="row">
+                                                                <div class="custom-file">
+                                                                    <input hidden th:value="${user.getResumePath()}"
+                                                                           name="resumePath" id="resumePath">
+                                                                    <input type="file" name="resume"
+                                                                           class="custom-file-input"
+                                                                           id="inputGroupFile01"
+                                                                           aria-describedby="inputGroupFileAddon01">
+                                                                    <label class="custom-file-label rounded"><i
+                                                                            class="mdi mdi-cloud-upload mr-1"></i>
+                                                                        上传简历</label>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">生日<span
-                                                                        class="text-danger">*</span> :</label>
-                                                                <input id="birthday" type="date"
-                                                                       th:value="${user.getBirthday()}"
-                                                                       class="form-control resume"
-                                                                       placeholder="13-02-1999">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">邮箱<span
-                                                                        class="text-danger">*</span> :</label>
-                                                                <input id="email" type="email"
-                                                                       th:value="${user.getEmail()}"
-                                                                       class="form-control resume" placeholder="@">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">联系电话<span class="text-danger">*</span>
-                                                                    :</label>
-                                                                <input id="tel" type="text" th:value="${user.getTel()}"
-                                                                       class="form-control resume"
-                                                                       placeholder="130 2199 0009">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-12">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">通讯地址<span class="text-danger">*</span>
-                                                                    :</label>
-                                                                <input id="contactAddress"
-                                                                       th:value="${user.getContactAddress()}"
-                                                                       type="text" class="form-control resume"
-                                                                       placeholder="13-02-1999">
-                                                            </div>
-                                                        </div>
-
                                                     </div>
-                                                 
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">生日<span
+                                                                    class="text-danger">*</span> :</label>
+                                                            <input id="birthday" type="date"
+                                                                   th:value="${user.getBirthday()}"
+                                                                   class="form-control resume"
+                                                                   placeholder="13-02-1999">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">邮箱<span
+                                                                    class="text-danger">*</span> :</label>
+                                                            <input id="email" type="email"
+                                                                   th:value="${user.getEmail()}"
+                                                                   class="form-control resume" placeholder="@">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">联系电话<span
+                                                                    class="text-danger">*</span>
+                                                                :</label>
+                                                            <input id="tel" type="text" th:value="${user.getTel()}"
+                                                                   class="form-control resume"
+                                                                   placeholder="130 2199 0009">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">通讯地址<span
+                                                                    class="text-danger">*</span>
+                                                                :</label>
+                                                            <input id="contactAddress"
+                                                                   th:value="${user.getContactAddress()}"
+                                                                   type="text" class="form-control resume"
+                                                                   placeholder="13-02-1999">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -248,147 +275,165 @@
 
                                         <div class="col-12 mt-3">
                                             <div class="custom-form p-4 border rounded">
-                                                 
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">最高学历</label>
-                                                                <div class="select">
-                                                                    <input th:value="${user.getEducation()}" id="graduationValue" hidden>
-                                                                    <select name="graduation" id="education"
-                                                                            class="form-control">
-                                                                        <option th:selected="${user.getEducation().equals('博士')}" value="博士">博士</option>
-                                                                        <option th:selected="${user.getEducation().equals('硕士')}" value="硕士">硕士</option>
-                                                                        <option th:selected="${user.getEducation().equals('本科')}" value="本科">本科</option>
-                                                                        <option th:selected="${user.getEducation().equals('其他')}" value="其他">其他</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="col-md-8">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">所学专业/研究方向</label>
-                                                                <input id="major" th:value="${user.getMajor()}"
-                                                                       type="text" class="form-control resume"
-                                                                       placeholder="">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-4">
-                                                            <div class="form-group app-label">
-                                                                <label class="text-muted">当前状态</label>
-                                                                <div class="select" id="nowStatus">
-                                                                    <input th:value="${user.getStatus()}" id="statusValue" hidden>
-                                                                    <select name="status"
-                                                                            id="status"
-                                                                            class="form-control">
-                                                                        <option th:selected="${user.getStatus().equals('已工作')}" value="已工作">已工作</option>
-                                                                        <option th:selected="${user.getStatus().equals('博士后')}" value="博士后">博士后</option>
-                                                                        <option th:selected="${user.getStatus().equals('博士在读')}" value="博士在读">博士在读</option>
-                                                                        <option th:selected="${user.getStatus().equals('其他')}" value="其他">其他</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8"></div>
-                                                        <div class="col-lg-12">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group app-label">
-                                                                        <label class="text-muted">所获头衔</label>
-
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck1"
-                                                                                   type="checkbox"
-                                                                                   name="title"
-                                                                                   th:value="院士"
-                                                                                   th:checked="${user.getTitle().contains('院士')}"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck1"
-                                                                                   class="custom-control-label">院士</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck2"
-                                                                                   th:checked="${user.getTitle().contains('千人')}"
-                                                                                   type="checkbox"
-                                                                                   name="title"
-                                                                                   th:value="千人"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck2"
-                                                                                   class="custom-control-label">千人</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck3"
-                                                                                   th:checked="${user.getTitle().contains('杰青')}"
-                                                                                   type="checkbox"
-                                                                                   name="title"
-                                                                                   th:value="杰青"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck3"
-                                                                                   class="custom-control-label">杰青</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck4"
-                                                                                   th:checked="${user.getTitle().contains('优青')}"
-                                                                                   type="checkbox"
-                                                                                   name="title"
-                                                                                   th:value="优青"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck4"
-                                                                                   class="custom-control-label">优青</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group app-label">
-                                                                        <label class="text-muted">所获基金</label>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck5"
-                                                                                   th:checked="${user.getFund().contains('NSFC青年基金')}"
-                                                                                   name="funds"
-                                                                                   th:value="NSFC青年基金"
-                                                                                   type="checkbox"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck5"
-                                                                                   class="custom-control-label">NSFC青年基金</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck6"
-                                                                                   th:checked="${user.getFund().contains('NSFC面上基金')}"
-                                                                                   type="checkbox"
-                                                                                   name="funds"
-                                                                                   th:value="NSFC面上基金"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck6"
-                                                                                   class="custom-control-label">NSFC面上基金</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input id="customCheck7"
-                                                                                   th:checked="${user.getFund().contains('NSFC重点基金')}"
-                                                                                   type="checkbox"
-                                                                                   name="funds"
-                                                                                   th:value="NSFC重点基金"
-                                                                                   class="custom-control-input">
-                                                                            <label for="customCheck7"
-                                                                                   class="custom-control-label">NSFC重点基金</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-lg-12">
-                                                            <div class="form-group app-label">
-                                                                <label>Additional Information :</label>
-                                                                <textarea id="notes" th:text="${user.getNotes()}"
-                                                                          rows="6" class="form-control resume"
-                                                                          placeholder=""></textarea>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">最高学历</label>
+                                                            <div class="select">
+                                                                <input th:value="${user.getEducation()}"
+                                                                       id="graduationValue" hidden>
+                                                                <select name="graduation" id="education"
+                                                                        class="form-control">
+                                                                    <option th:selected="${user.getEducation().equals('博士')}"
+                                                                            value="博士">博士
+                                                                    </option>
+                                                                    <option th:selected="${user.getEducation().equals('硕士')}"
+                                                                            value="硕士">硕士
+                                                                    </option>
+                                                                    <option th:selected="${user.getEducation().equals('本科')}"
+                                                                            value="本科">本科
+                                                                    </option>
+                                                                    <option th:selected="${user.getEducation().equals('其他')}"
+                                                                            value="其他">其他
+                                                                    </option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                 
+
+                                                    <div class="col-md-8">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">所学专业/研究方向</label>
+                                                            <input id="major" th:value="${user.getMajor()}"
+                                                                   type="text" class="form-control resume"
+                                                                   placeholder="">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group app-label">
+                                                            <label class="text-muted">当前状态</label>
+                                                            <div class="select" id="nowStatus">
+                                                                <input th:value="${user.getStatus()}" id="statusValue"
+                                                                       hidden>
+                                                                <select name="status"
+                                                                        id="status"
+                                                                        class="form-control">
+                                                                    <option th:selected="${user.getStatus().equals('已工作')}"
+                                                                            value="已工作">已工作
+                                                                    </option>
+                                                                    <option th:selected="${user.getStatus().equals('博士后')}"
+                                                                            value="博士后">博士后
+                                                                    </option>
+                                                                    <option th:selected="${user.getStatus().equals('博士在读')}"
+                                                                            value="博士在读">博士在读
+                                                                    </option>
+                                                                    <option th:selected="${user.getStatus().equals('其他')}"
+                                                                            value="其他">其他
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-8"></div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group app-label">
+                                                                    <label class="text-muted">所获头衔</label>
+
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck1"
+                                                                               type="checkbox"
+                                                                               name="title"
+                                                                               th:value="院士"
+                                                                               th:checked="${user.getTitle().contains('院士')}"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck1"
+                                                                               class="custom-control-label">院士</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck2"
+                                                                               th:checked="${user.getTitle().contains('千人')}"
+                                                                               type="checkbox"
+                                                                               name="title"
+                                                                               th:value="千人"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck2"
+                                                                               class="custom-control-label">千人</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck3"
+                                                                               th:checked="${user.getTitle().contains('杰青')}"
+                                                                               type="checkbox"
+                                                                               name="title"
+                                                                               th:value="杰青"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck3"
+                                                                               class="custom-control-label">杰青</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck4"
+                                                                               th:checked="${user.getTitle().contains('优青')}"
+                                                                               type="checkbox"
+                                                                               name="title"
+                                                                               th:value="优青"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck4"
+                                                                               class="custom-control-label">优青</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group app-label">
+                                                                    <label class="text-muted">所获基金</label>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck5"
+                                                                               th:checked="${user.getFund().contains('NSFC青年基金')}"
+                                                                               name="funds"
+                                                                               th:value="NSFC青年基金"
+                                                                               type="checkbox"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck5"
+                                                                               class="custom-control-label">NSFC青年基金</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck6"
+                                                                               th:checked="${user.getFund().contains('NSFC面上基金')}"
+                                                                               type="checkbox"
+                                                                               name="funds"
+                                                                               th:value="NSFC面上基金"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck6"
+                                                                               class="custom-control-label">NSFC面上基金</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="customCheck7"
+                                                                               th:checked="${user.getFund().contains('NSFC重点基金')}"
+                                                                               type="checkbox"
+                                                                               name="funds"
+                                                                               th:value="NSFC重点基金"
+                                                                               class="custom-control-input">
+                                                                        <label for="customCheck7"
+                                                                               class="custom-control-label">NSFC重点基金</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group app-label">
+                                                            <label>Additional Information :</label>
+                                                            <textarea id="notes" th:text="${user.getNotes()}"
+                                                                      rows="6" class="form-control resume"
+                                                                      placeholder=""></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -396,14 +441,15 @@
                                     <div class="row">
                                         <div class="col-12 mt-4">
                                             <input type="submit" id="submit" name="send"
-                                                   class="submitBnt btn btn-primary" onclick="updateInfo()" value="提交保存">
+                                                   class="submitBnt btn btn-primary" onclick="updateInfo()"
+                                                   value="提交保存">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-<!--                    </form>-->
+                    <!--                    </form>-->
                 </div>
             </section>
         </div>

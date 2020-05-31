@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
+    @Options(useGeneratedKeys=true, keyProperty = "id")
     @Insert("insert into article (jid, name, journalIssn, citation, author, CAuthor, year, isESI, url, filePath, notes, volume, issue, page, isSci, addWay, address, uploadEmail) values(#{jid}, #{name}, #{journalIssn}, #{citation}, #{author}, #{CAuthor}, #{year}, #{isESI}, #{url}, #{filePath}, #{notes}, #{volume}, #{issue}, #{page}, #{isSci}, #{addWay}, #{address}, #{uploadEmail})")
     int insertArticle(Article article);
 

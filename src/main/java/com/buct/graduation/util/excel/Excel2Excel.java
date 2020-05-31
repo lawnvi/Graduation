@@ -35,6 +35,23 @@ public class Excel2Excel {
 //        String file = "王晓静-附件5：信息学院人才引进综合评价模板.xlsx";
         getReporter(path+file);
     }
+    public static String outputReporter(Reporter reporter, List<Article> articles, List<ConferencePaper> papers, List<Project> projects, List<Patent> patents) {
+        Excel2Excel excel_obj = new Excel2Excel();
+        excel_obj.articles = articles;
+        excel_obj.papers = papers;
+        excel_obj.patents = patents;
+        excel_obj.projects = projects;
+        excel_obj.reporter = reporter;
+        //getScore
+//        Reporter reporter = Utils.getScore(excel_obj.reporter, excel_obj.projects, excel_obj.patents, excel_obj.articles, excel_obj.papers);
+        excel_obj.getReporter().setCheckbox(new ExcelCheckBox(reporter));
+        //saveExcel
+        //System.out.println(reporter.getEducation());
+        String path2 = XLSTransformerExport.exportData(excel_obj);
+        System.out.println("path:"+path2);
+        return path2;
+    }
+
     public static String getReporter(String path) {
         Excel2Excel excel_obj = new Excel2Excel();
 

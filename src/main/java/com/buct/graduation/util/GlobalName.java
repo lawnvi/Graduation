@@ -45,17 +45,26 @@ public class GlobalName {
     public static final String addWay_missing_c = "应聘者待完善";
     public static final String addWay_missing_a = "管理员待完善";
 
+    //学院地址
+    public static final String school_article_address = "Beijing+Univ+Chem+Technol%2C+Coll+Informat+Sci+%26+Technol";
+
     /**
      * 网站路径配置数据
      */
     //todo change path & db_psw
     //文件存储路径(ABSOLUTEPATH)
-    public static final String ABSOLUTE_PATH = "D:\\schoolHelper\\mybuffer\\import\\upload\\";
-//    public static final String ABSOLUTE_PATH = "/usr/local/programs/myBuffer/import/upload/";
+    public static final String ABSOLUTE_ROOT_PATH = "D:\\schoolHelper\\mybuffer\\import\\";
+//    public static final String ABSOLUTE_ROOT_PATH = "/usr/local/programs/myBuffer/import/";
+
+    public static final String MAPPING_PATH = "upload/";
+    public static final String ABSOLUTE_PATH = ABSOLUTE_ROOT_PATH+MAPPING_PATH;
+//    public static final String ABSOLUTE_PATH = ABSOLUTE_ROOT_PATH+GlobalName.MAPPING_PATH;
     public static final String RELATIVE_PATH = "/import/";
     public static final String ROOT_PATH = "import";
     public static final String PIC_PATH = "/images/avatar-1.jpg";
     public static final String EXCEL_PATH = "excel/";
+    public static final String RESUME_PATH = "resume/";//简历路径
+    public static final String IMAGE_PATH = "image/";//简历路径
     public static final String EXCEL_MODEL = "综合评价数据模板.xlsx";
     public static final String EXCEL_MODEL_REPORTER = "综合评价结果模板.xlsx";
     public static final String EXCEL_BUFFER = "buffer/";
@@ -102,6 +111,15 @@ public class GlobalName {
     public static final String patent_owner_leader_first = "导师第一本人第二";
     public static final String patent_owner_partner = "参与";
     public static final String patent_owner_unauthorized = "未授权";
+
+    /**
+     * 期刊论文
+     */
+    public static final String article_role_first = "第一作者";
+    public static final String article_role_contact = "通讯作者";
+    public static final String article_role_unknown = "未知";
+    public static final String article_role_leader = "导师一作本人二作";
+    public static final String article_role_other = "参与";
 
     /**
      * 项目

@@ -17,10 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -204,7 +207,7 @@ public class UserController {
         return "/user/data/updateBasic";
     }
     @RequestMapping("/updateBasicInfo.do")
-    public String fillBasicDataMethod(HttpServletRequest request, Model model){
+    public String fillBasicDataMethod(HttpServletRequest request, Model model, MultipartFile file, MultipartFile picture){
         int id = getThisId(request);
         User user = userService.findUserById(id);
         user.setName(request.getParameter("name"));
@@ -216,10 +219,37 @@ public class UserController {
         user.setStatus(request.getParameter("status"));
         user.setTel(request.getParameter("tel"));
         user.setEducation(request.getParameter("education"));
-        String[] titles = request.getParameterValues("titles[]");
+        user.setResumePath(request.getParameter("resumePath"));
+        String[] titles = request.getParameterValues("titles");
         user.setTitle(Utils.checkboxToString(titles));
-        String[] funds = request.getParameterValues("funds[]");
+        String[] funds = request.getParameterValues("funds");
         user.setFund(Utils.checkboxToString(funds));
+        //System.out.println("funds:"+ Arrays.toString(request.getParameterValues("funds")));
+        //System.out.println("titles:"+ Arrays.toString(request.getParameterValues("titles")));
+        if(file != null && !file.isEmpty()){
+            String fileName = file.getOriginalFilename();
+            String path = GlobalName.RESUME_PATH + Utils.getTodayPath();
+            path = Utils.saveFileRelativePath(file, path);
+            if(path.equals("")){
+                System.out.println("upload error");
+            }
+            else {
+                System.out.println("upload good");
+                user.setResumePath(path);
+            }
+        }
+        if(picture != null && !picture.isEmpty()){
+            String fileName = picture.getOriginalFilename();
+            String path = GlobalName.IMAGE_PATH + Utils.getTodayPath();
+            path = Utils.saveFileRelativePath(picture, path);
+            if(path.equals("")){
+                System.out.println("upload error");
+            }
+            else {
+                System.out.println("upload good");
+                user.setPicPath(path);
+            }
+        }
         userService.updateUser(user);
         User user2 = userService.findUserById(id);
 
@@ -324,6 +354,7 @@ public class UserController {
         userArticle.setUid(uid);
         userArticle.setNotes(notes);
         userArticle.setRole(role);
+        userArticle.setFlag(GlobalName.teacher_flag_other);
         if(userService.addUserArticle(article, userArticle) > 0){
             return GlobalName.success;
         }

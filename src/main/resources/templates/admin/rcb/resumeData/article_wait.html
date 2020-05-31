@@ -227,21 +227,27 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:class="'odd gradeX '+${obj.getAddWay().equals('自动')? '': 'error'}" th:each="obj, stat:${articles}">
-                                    <td th:text="${articles.indexOf(obj)}"></td>
-                                    <td th:text="${obj.getName()}"></td>
+                                <tr th:class="'odd gradeX '+${obj.getArticle().getAddWay().equals('自动')? '': 'error'}" th:each="obj, stat:${articles}">
+                                    <td th:text="${articles.indexOf(obj)+1}"></td>
+                                    <td th:text="${obj.getArticle().getName()}"></td>
                                     <td>
-                                        <a target="_blank" th:href="${obj.getJournal().getUrl()}" th:title="${obj.getJournal().getName()}" th:text="${obj.getJournal().getAbbrTitle()}"></a>
+                                        <a target="_blank" th:href="${obj.getArticle().getJournal().getUrl()}" th:title="${obj.getArticle().getJournal().getName()}" th:text="${obj.getArticle().getJournal().getAbbrTitle()}"></a>
                                     </td>
-                                    <td th:text="${obj.getCitation()}"></td>
-                                    <td th:text="${obj.getESI() ? '是' : '否'}"></td>
-                                    <td th:text="${obj.getJournal().getTop() ? '是' : '否'}"></td>
-                                    <td th:text="${obj.getJournal().getIF()}"></td>
-                                    <td th:text="${obj.getJournal().getSection()}"></td>
-                                    <td th:text="${obj.getNotes() + ' ' + obj.getJournal().getNotes()}"></td>
+                                    <td th:text="${obj.getArticle().getCitation()}"></td>
+                                    <td th:text="${obj.getArticle().getESI() ? '是' : '否'}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getTop() ? '是' : '否'}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getIF()}"></td>
+                                    <td th:text="${obj.getArticle().getJournal().getSection()}"></td>
+                                    <td th:text="${obj.getArticle().getNotes() + ' ' + obj.getArticle().getJournal().getNotes()}"></td>
                                     <td>
                                         <!--                                        todo 管理员确认操作修改数据-->
-                                        <a href="#">操作</a>
+                                        <div th:hidden="${obj.getFlag()}">
+                                            <button class="btn btn-small" th:onclick="'handleObj(\'yes\', '+${obj.getId()}+', \'article\')'">
+                                                <i class="icon-ok"></i>
+                                            </button>
+                                            <button class="btn btn-small" th:onclick="'handleObj(\'no\', '+${obj.getId()}+', \'article\')'">
+                                                <i class="icon-minus-sign"></i></button>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -282,6 +288,7 @@
 <script src="../../adminres/assets/scripts.js"></script>
 <script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
 <script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script src="../../js/my/resume.js"></script>
 <script>
     $(function() {
 

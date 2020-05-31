@@ -224,7 +224,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="obj, stat:${patents}">
-                                    <td th:text="${patents.indexOf(obj)}"></td>
+                                    <td th:text="${patents.indexOf(obj)+1}"></td>
                                     <td th:text="${obj.getName()}"></td>
                                     <td th:text="${obj.getCategory()}"></td>
                                     <td th:text="${obj.getRole()}"></td>

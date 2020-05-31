@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -25,12 +26,15 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+
     //todo information update
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request, Model model){
         Admin admin = Utils.getAdmin(request);
         model.addAttribute("user", admin);
+        HashMap<String, Integer> map = adminService.findAnalysisData();
+        model.addAttribute("map", map);
         return "/admin/index";
     }
 

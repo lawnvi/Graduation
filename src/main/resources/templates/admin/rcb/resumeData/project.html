@@ -227,7 +227,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:class="'odd gradeX '+${obj.getChecked()? '': 'error'}" th:each="obj, stat:${projects}">
-                                    <td th:text="${projects.indexOf(obj)}"></td>
+                                    <td th:text="${projects.indexOf(obj)+1}"></td>
                                     <td th:text="${obj.getNumber()}"></td>
                                     <td th:text="${obj.getCharge()}"></td>
                                     <td th:text="${obj.getName()}"></td>

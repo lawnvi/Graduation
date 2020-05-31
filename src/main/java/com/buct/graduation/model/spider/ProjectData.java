@@ -32,6 +32,7 @@ public class ProjectData {
         project.setRole(GlobalName.project_leader);
         project.setNotes(this.notes);
         project.setNumber(this.number);
+        project.setChecked(true);
         return project;
     }
 

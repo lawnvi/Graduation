@@ -131,7 +131,7 @@ public class HttpUtil {
             System.out.println("result code:" + code + "  visit:"+url);
             result = EntityUtils.toString(entry);
             LogUtil.getInstance().addLog("log-访问"+url+"成功");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             LogUtil.getInstance().addLog("error-访问"+url+"失败");
             return null;

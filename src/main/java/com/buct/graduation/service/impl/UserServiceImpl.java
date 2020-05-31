@@ -109,7 +109,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int updateUser(User user) {
+        User u = userMapper.findUserById(user.getId());
+        //该不该删除呢
+        if(user.getResumePath() != null && ((u.getResumePath() != null && !u.getResumePath().equals("")) && !user.getResumePath().equals(u.getResumePath()))){
+            boolean re = Utils.deleteFile(GlobalName.ABSOLUTE_ROOT_PATH+u.getResumePath());
+            if(!re){
+                return -1;
+            }
+        }
+        if(user.getPicPath() != null && ((u.getPicPath() != null && !u.getPicPath().equals("")) && !user.getPicPath().equals(u.getPicPath()))){
+            boolean re = Utils.deleteFile(GlobalName.ABSOLUTE_ROOT_PATH+u.getPicPath());
+            if(!re){
+                return -1;
+            }
+        }
         return userMapper.updateUser(user);
     }
 

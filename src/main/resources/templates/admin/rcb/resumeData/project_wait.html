@@ -227,7 +227,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:class="'odd gradeX '+${obj.getChecked()? '': 'error'}" th:each="obj, stat:${projects}">
-                                    <td th:text="${projects.indexOf(obj)}"></td>
+                                    <td th:text="${projects.indexOf(obj)+1}"></td>
                                     <td th:text="${obj.getNumber()}"></td>
                                     <td th:text="${obj.getCharge()}"></td>
                                     <td th:text="${obj.getName()}"></td>
@@ -237,7 +237,13 @@
                                     <td th:text="${obj.getNotes()}"></td>
                                     <td>
                                         <!--                                        todo 管理员确认操作修改数据-->
-                                        <a href="#">操作</a>
+                                        <div th:hidden="${obj.getChecked()}">
+                                            <button class="btn btn-small" th:onclick="'handleObj(\'yes\', '+${obj.getId()}+', \'project\')'">
+                                                <i class="icon-ok"></i>
+                                            </button>
+                                            <button class="btn btn-small" th:onclick="'handleObj(\'no\', '+${obj.getId()}+', \'project\')'">
+                                                <i class="icon-minus-sign"></i></button>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -278,6 +284,7 @@
 <script src="../../adminres/assets/scripts.js"></script>
 <script src="../../adminres/vendors/datatables/js/jquery.dataTables.min.js"></script>
 <script src="../../adminres/assets/DT_bootstrap.js"></script>
+<script src="../../js/my/resume.js"></script>
 <script>
     $(function() {
 

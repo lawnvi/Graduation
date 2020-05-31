@@ -10,7 +10,7 @@ public class Patent {
     private Integer uid;
     private String name;//专利名称
     private String category;//类别 国内/外
-    private String notes;//备注 如链接
+    private String notes="";//备注 如链接
     private String role;//参与角色
     private String belong = GlobalName.belongApply;//所属
     private String flag;

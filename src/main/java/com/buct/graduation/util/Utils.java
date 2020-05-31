@@ -4,14 +4,21 @@ import com.buct.graduation.model.pojo.*;
 import com.buct.graduation.model.pojo.science.Teacher;
 import com.buct.graduation.model.spider.ProjectData;
 import com.buct.graduation.model.util.NowDate;
+import com.buct.graduation.model.vo.AnalysisScience;
+import com.buct.graduation.model.vo.AnalysisYear;
 import com.buct.graduation.util.spider.SpiderLetpubProject;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 
 public class Utils {
 
@@ -35,7 +42,7 @@ public class Utils {
     public static String getNames(String str){
         if(str.equals("") || !str.contains("("))
             return str;
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         boolean temp = false;
         for(int i = 0; i < str.length(); i++){
             if(str.charAt(i) == '('){
@@ -46,7 +53,7 @@ public class Utils {
                 temp = false;
             }
             if(temp){
-                if(str.charAt(i) != ',')
+                if(str.charAt(i) != ',' && str.charAt(i) != ' ')
                     s.append(str.charAt(i));
             }
         }
@@ -288,8 +295,8 @@ public class Utils {
         reporter.setEsi(esi);
         reporter.setIF(IF);
         reporter.setFunds(money);
-        reporter.setJcrScore(jcrScore);
-        reporter.setScore(score);
+        reporter.setJcrScore((100*jcrScore)/100);
+        reporter.setScore((100*score)/100);
 
         String post = getPost(reporter);
         reporter.setPost(post);
@@ -542,6 +549,44 @@ public class Utils {
         return "";
     }
 
+
+    public static String saveFileRelativePath(MultipartFile file, String path){
+        if(file == null){
+            return "";
+        }
+        if(!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();  // 文件名
+            //fileName = UUID.randomUUID() + suffixName; // 新文件名
+            String newName= Utils.getNowName()+"-" +Utils.getCode() + fileName.substring(fileName.lastIndexOf(".")); // 新文件名
+
+            File file2 = new File(GlobalName.ABSOLUTE_PATH+path);
+            if(!file2.isDirectory()) {
+                //递归生成文件夹
+                file2.mkdirs();
+            }
+            try {
+                //构建真实的文件路径
+                File newFile = new File(file2.getAbsolutePath() + File.separator + newName);
+                //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+                file.transferTo(newFile);
+                return GlobalName.MAPPING_PATH+path+File.separator+newName;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    public static boolean deleteFile(String pathname){
+        boolean result = false;
+        File file = new File(pathname);
+        if (file.exists()) {
+            result = file.delete();
+            System.out.println("文件已经被成功删除");
+        }
+        return result;
+    }
+
     public static Project checkProject(Project project){
         SpiderLetpubProject spider = new SpiderLetpubProject();
         spider.setProjectName(project.getName());
@@ -550,5 +595,183 @@ public class Utils {
             projectData.toProject(project);
         }
         return project;
+    }
+
+    public static AnalysisScience analysisScience(List<User> users, List<Article> articles, List<Patent> patents, List<ConferencePaper> papers, List<Project> projects) {
+        AnalysisScience analysis = new AnalysisScience();
+        analysis.setArticle(articles.size());
+        analysis.setPaper(papers.size());
+        analysis.setPatent(patents.size());
+        analysis.setProject(projects.size());
+        analysis.setAnalysisYears(Utils.analysisData(articles));
+
+        int citation = 0;
+        int top = 0;
+        int esi = 0;
+        int jcr12 = 0;
+        for(Article article: articles){
+            if(article.getJournal().getTop()){
+                top++;
+            }
+            if(article.getESI()){
+                esi++;
+            }
+            if(article.getJournal().getSection().equalsIgnoreCase("JCR-1") || article.getJournal().getSection().equalsIgnoreCase("JCR-2")){
+                jcr12++;
+            }
+            citation += article.getCitation();
+        }
+
+        for(ConferencePaper paper: papers){
+            if(paper.isEsi()){
+                esi++;
+            }
+            citation += paper.getCitation();
+        }
+        analysis.setEsi(esi);
+        analysis.setJcr_12(jcr12);
+        analysis.setTop(top);
+        analysis.setCitation(citation);
+
+        int in = 0;
+        int out = 0;
+        for(Patent patent: patents){
+            if(patent.getCategory().equals("国内")){
+                in++;
+            }else if(patent.getCategory().equals("国际")){
+                out++;
+            }
+        }
+        analysis.setPatentIn(in);
+        analysis.setPatentOut(out);
+
+        double funds = 0;
+        for(Project project: projects){
+            funds += project.getFunds();
+        }
+        analysis.setFunds(funds);
+
+        int f  = 0;
+        for(User user: users){
+            if(user.getTitle() != null && !"无".equals(user.getTitle()) && !"".equals(user.getTitle())){
+                f++;
+            }
+        }
+        analysis.setFourYoung(f);
+        return analysis;
+    }
+
+    public static List<AnalysisYear> analysisData(List<Article> articles) {
+        List<AnalysisYear> analysis = new ArrayList<>();
+        String mixYear = (Utils.getDate().getYear()+1)+"";
+        for(Article article: articles){
+            if(article.getYear() == null || "".equals(article.getYear())){
+                continue;
+            }
+            if(article.getYear().compareTo(mixYear) < 0){
+                mixYear = article.getYear();
+            }
+        }
+        int mix = Integer.parseInt(mixYear.substring(0, 4));
+        int max = Utils.getDate().getYear();
+//        AnalysisYear year0 = new AnalysisYear();
+//        year0.setYear(mix-1);
+//        analysis.add(year0);
+        long s = System.currentTimeMillis();
+/*        for(int i = mix; i < max; i++){
+            AnalysisYear year = new AnalysisYear();
+            year.setYear(i);
+            for(Article article: articles){
+                if(article.getYear() == null || "".equals(article.getYear())){
+                    analysis.get(0).setNumber(1);
+                    analysis.get(0).setCitation(article.getCitation());
+                    if(article.getESI()){
+                        analysis.get(0).setEsi(1);
+                    }
+                    if(article.getJournal().getTop()){
+                        analysis.get(0).setTop(1);
+                    }
+                    if(article.getJournal().getSection().equalsIgnoreCase("JCR-1") || article.getJournal().getSection().equalsIgnoreCase("JCR-2")){
+                        analysis.get(0).setJcr_12(1);
+                    }
+                    continue;
+                }
+                if(article.getYear().compareTo((i-1)+"") > 0 && article.getYear().compareTo((i+1)+"") < 0){
+                    year.setNumber(1);
+                    year.setCitation(article.getCitation());
+                    if(article.getESI()){
+                        year.setEsi(1);
+                    }
+                    if(article.getJournal().getTop()){
+                        year.setTop(1);
+                    }
+                    if(article.getJournal().getSection().equalsIgnoreCase("JCR-1") || article.getJournal().getSection().equalsIgnoreCase("JCR-2")){
+                        year.setJcr_12(1);
+                    }
+                }
+            }
+            analysis.add(year);
+        }
+        System.out.println("first:"+1.0*(System.currentTimeMillis()-s)+"s");
+
+        analysis.clear();*/
+        s = System.currentTimeMillis();
+
+        for(int i = mix-1; i <= max; i++){
+            AnalysisYear year = new AnalysisYear();
+            year.setYear(i);
+            analysis.add(year);
+        }
+        for(Article article: articles){
+            int index = 0;
+            if(article.getYear() != null && !"".equals(article.getYear())){
+                index = Integer.parseInt(article.getYear().substring(0,4)) + 1 - mix;
+            }
+            analysis.get(index).setNumber(1);
+            analysis.get(index).setCitation(article.getCitation());
+            if(article.getESI()){
+                analysis.get(index).setEsi(1);
+            }
+            if(article.getJournal().getTop()){
+                analysis.get(index).setTop(1);
+            }
+            if(article.getJournal().getSection().equalsIgnoreCase("JCR-1") || article.getJournal().getSection().equalsIgnoreCase("JCR-2")){
+                analysis.get(index).setJcr_12(1);
+            }
+        }
+        System.out.println("second:"+1.0*(System.currentTimeMillis()-s)+"s");
+        return analysis;
+    }
+
+    public static String getPinyin(String s) throws BadHanyuPinyinOutputFormatCombination {
+        char[] t1=null;
+        t1=s.toCharArray();
+        String[] t2=new String[t1.length];
+        HanyuPinyinOutputFormat t3=new HanyuPinyinOutputFormat();
+        t3.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        t3.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        t3.setVCharType(HanyuPinyinVCharType.WITH_V);
+        StringBuilder t4= new StringBuilder();
+        for (char c : t1) {
+           /* if (Character.toString(c).matches("[\\u4E00-\\u9FA5]+")) {
+            }*/
+            if(c == ' '){
+//                t4.append(" ");
+                continue;
+            }
+            t2 = PinyinHelper.toHanyuPinyinStringArray(c, t3);
+
+            System.out.println(t2.length);
+//            t4.append(t2[0]);
+            for(String str: t2){
+                t4.append(str);
+                break;
+            }
+        }
+        return t4.toString();
+    }
+
+    public static void main(String[] args) throws BadHanyuPinyinOutputFormatCombination {
+        System.out.println("2020".compareTo("202001"));
     }
 }
