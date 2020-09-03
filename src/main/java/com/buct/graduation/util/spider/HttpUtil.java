@@ -3,7 +3,6 @@ package com.buct.graduation.util.spider;
 import com.buct.graduation.model.spider.IpPort;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.LogUtil;
-import com.buct.graduation.util.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;

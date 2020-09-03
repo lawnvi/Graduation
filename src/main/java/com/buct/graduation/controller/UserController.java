@@ -10,6 +10,7 @@ import com.buct.graduation.service.UserService;
 import com.buct.graduation.util.EmailUtil;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
+import com.buct.graduation.util.spider.SpiderConfig;
 import com.buct.graduation.util.spider.SpiderLetpubProject;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,6 +145,7 @@ public class UserController {
     public String loginMethod(HttpServletRequest request){
         String email = request.getParameter("email");
         String psw = request.getParameter("psw");
+        String sid = request.getParameter("sid");
         if(email == null || email.equals("") || psw == null || psw.equals("")){
             return GlobalName.fail;
         }
@@ -157,6 +159,7 @@ public class UserController {
         session.setAttribute(GlobalName.session_user, user);
         //时限600s
         session.setMaxInactiveInterval(600);
+        SpiderConfig.setSessionSID(sid);
         return GlobalName.success;
     }
 
@@ -341,7 +344,7 @@ public class UserController {
     }
     @RequestMapping("/addArticle")
     @ResponseBody
-    public String addArticles(Model model, HttpServletRequest request){
+    public synchronized String addArticles(Model model, HttpServletRequest request){
         int uid = getThisId(request);
         String notes = request.getParameter("notes");
         String role = request.getParameter("role");
@@ -406,7 +409,7 @@ public class UserController {
     //todo 手动添加/修改
     @RequestMapping("/updateArticle")
     @ResponseBody
-    public String updateArticles(Model model, HttpServletRequest request){
+    public synchronized String updateArticles(Model model, HttpServletRequest request){
         int uid = getThisId(request);
         String notes = request.getParameter("notes");
         String role = request.getParameter("role");
@@ -423,7 +426,7 @@ public class UserController {
         if(!article.getAddWay().equals(GlobalName.addWay_System)){
             article.setJournalIssn(journal);
             Journal journal1 = spiderService.getJournal(journal);
-            if(journal != null) {
+            if(journal1 != null) {
                 article.setJournal(journal1);
                 article.setJid(journal1.getId());
             }
@@ -439,7 +442,7 @@ public class UserController {
         userArticle.setRole(role);
         userArticle.setAid(article.getId());
 
-        if(userService.updateUserArticle(article, userArticle) > 0){
+        if(userService.updateUserArticle(id, article, userArticle) > 0){
             return GlobalName.success;
         }
         return GlobalName.fail;
@@ -524,8 +527,9 @@ public class UserController {
     @RequestMapping("/addConferencePaper")
     @ResponseBody
     public String addConferencePaper(HttpServletRequest request){
-        ConferencePaper patent = getConferencePaper(request);
-        if(userService.addConferencePaper(patent) > 0)
+        ConferencePaper paper = getConferencePaper(request);
+        paper.setBelong(GlobalName.belongApply);
+        if(userService.addConferencePaper(paper) > 0)
             return GlobalName.success;
         return GlobalName.fail;
     }
@@ -589,5 +593,54 @@ public class UserController {
         model.addAttribute("applies", applies);
         model.addAttribute("user", getUser(request));
         return "/user/apply";
+    }
+
+
+    /**
+     * api for login
+     */
+    @RequestMapping("/login.api")
+    public String loginApi(HttpServletRequest request, Model model){
+        String email = request.getParameter("email");
+        String psw = request.getParameter("psw");
+        String sid = request.getParameter("sid");
+        String result = "未知错误";
+        if(email == null || email.equals("") || psw == null || psw.equals("")){
+            result = "请完整填写账号信息";
+            model.addAttribute("result", result);
+            return "/user/simple_index";
+        }
+        User user = userService.login(email, psw);
+        if(user == null){
+            result = "请核对账号信息";
+            model.addAttribute("result", result);
+            return "/user/simple_index";
+        }
+        if(sid == null){
+            result = "请重新获取SID";
+            model.addAttribute("result", result);
+            return "/user/simple_index";
+        }
+        //Utils.saveSession(GlobalName.session_userId, user.getId()+"", request);
+        HttpSession session = request.getSession();
+        user.setPsw("");
+        session.setAttribute(GlobalName.session_user, user);
+        //时限600s
+        session.setMaxInactiveInterval(600);
+        SpiderConfig.setSessionSID(sid);
+        result = "登录成功，当前sid为:"+sid +" 已使用"+ SpiderConfig.getSIDTimes() + "次";
+
+        return "redirect:./login.api.awsl";
+    }
+
+    @RequestMapping("/login.api.awsl")
+    public String loginApiPage(HttpServletRequest request, Model model){
+        User user = getUser(request);
+        String sid = SpiderConfig.getSID();
+//        result = "当前sid为:"+sid +" 已使用"+ SpiderConfig.getSIDTimes() + "次";
+        model.addAttribute("sid", sid);
+        model.addAttribute("user", user);
+        model.addAttribute("sid_times", SpiderConfig.getSIDTimes()-1);
+        return "/user/simple_index";
     }
 }

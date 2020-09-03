@@ -222,7 +222,7 @@ public class RecruitController {
         model.addAttribute("resume", resume);
 //        List<Article> articles = articleService.findByUidStatus(uid, GlobalName.addWay_missing_c);
         List<UserArticle> articles = scienceService.findByUid(uid);
-        articles.removeIf(article -> !article.getFlag().equals(GlobalName.teacher_flag_apply));
+        articles.removeIf(article -> article.getArticle().getAddWay().equals(GlobalName.addWay_System));
         model.addAttribute("articles", articles);
         model.addAttribute("uid", uid);
         model.addAttribute("user", Utils.getAdmin(request));

@@ -91,12 +91,13 @@ public class GlobalName {
     public static final String belongApply = "应聘";
 
     /**
-     * 学院教师期刊论文状态
+     * 学院教师/应聘者期刊论文状态
      */
     public static final String teacher_flag_normal = "正常";
     public static final String teacher_flag_apply = "申请";
     public static final String teacher_flag_claim = "待认领";
     public static final String teacher_flag_other = "其他";
+    public static final String apply_flag_check = "待核验";
 
     /**
      * 用户类型

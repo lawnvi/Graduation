@@ -131,7 +131,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.21</version>
+            <version>8.0.16</version>
         </dependency>
 
         <!-- 邮件 -->
@@ -200,6 +200,11 @@
             <version>3.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 
     </dependencies>
 

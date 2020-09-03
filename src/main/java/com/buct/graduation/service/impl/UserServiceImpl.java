@@ -263,9 +263,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUserArticle(Article article, UserArticle userArticle) {
+    public int updateUserArticle(int aid, Article article, UserArticle userArticle) {
         if(userArticle == null){
             return 0;
+        }
+        if(aid != article.getId()){
+            UserArticle userArticle2 = userArticleMapper.findById(aid, userArticle.getUid());
+            userArticleMapper.deleteById(userArticle2.getId());
+            return -2;
         }
         UserArticle userArticle1 = userArticleMapper.findById(userArticle.getAid(), userArticle.getUid());
         if(userArticle1 == null){
@@ -285,6 +290,9 @@ public class UserServiceImpl implements UserService {
         }
         article = articleMapper.findByName(article.getName());
         userArticle.setAid(article.getId());
+        if(userArticleMapper.findById(userArticle.getAid(), userArticle.getUid()) != null){
+            return 0;
+        }
         return userArticleMapper.add(userArticle);
     }
 

@@ -1,9 +1,6 @@
 package com.buct.graduation.util.spider;
 
 import com.buct.graduation.model.pojo.Article;
-import com.buct.graduation.model.pojo.Journal;
-import com.buct.graduation.model.spider.Periodical;
-import com.buct.graduation.model.spider.PeriodicalTable;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.LogUtil;
 import com.buct.graduation.util.Utils;
@@ -38,30 +35,30 @@ public class SpiderWOS {
      *
      * @return
      */
-    private static volatile String SID = "";
-
     public static String getSID() {
-//        String SID = "";
-        if (!SID.equals(""))
-            return SID;
+        //todo check if remove the IF, will come out bugs or not
+//        if (!SID.equals(""))
+//            return SID;
         String url0 = "http://www.webofknowledge.com/";//校园网下
         HttpUtil util = new HttpUtil();
         String html0 = util.getHtml(url0);
         if(html0 == null || html0.equals(""))
-            return null;
+            return "";
         HttpUtil.writeFile(html0, HttpUtil.tempPath + "/" + System.currentTimeMillis() + (new Random().nextInt(1000)) + ".html");
         Document d0 = Jsoup.parse(html0);// 转换为Dom树
-        SID = d0.select("#SID").attr("value");
+        String SID = d0.select("#SID").attr("value");
         System.out.println("SID:" + SID);
-        if (SID == null || SID.equals(""))
+        if (SID == null || SID.equals("")) {
             System.out.println("getSidFailed, please checkout your network");
+            return "";
+        }
         return SID;
     }
 
     private String initKeyword(String keyword) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < keyword.length(); i++) {
-            if (keyword.charAt(i) == ' ' || keyword.charAt(i) == '?' || keyword.charAt(i) == '*' || keyword.charAt(i) == '$') {
+            if (keyword.charAt(i) == '"' || keyword.charAt(i) == ' ' || keyword.charAt(i) == '?' || keyword.charAt(i) == '*' || keyword.charAt(i) == '$') {
                 str.append("+");
             } else {
                 str.append(keyword.charAt(i));

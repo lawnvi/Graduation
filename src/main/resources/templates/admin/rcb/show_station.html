@@ -96,7 +96,7 @@
                                 <a tabindex="-1" href="../recruit/interview">面试安排</a>
                             </li>
                             <li class="divider"></li>
-                            <li>
+                            <li hidden>
                                 <a tabindex="-1" href="../recruit/config">招聘配置</a>
                             </li>
                         </ul>
@@ -107,23 +107,23 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" target="_blank" href="../tools/visitor">抓取论文数据</a>
+                                <a tabindex="-1" href="/import/tools/visitor" target="_blank">抓取论文数据</a>
                             </li>
                             <li>
-                                <a tabindex="-1" href="../tool/article">抓取论文数据</a>
+                                <a tabindex="-1" href="/import/tools/visitor" target="_blank">抓取期刊数据</a>
                             </li>
                             <li>
-                                <a tabindex="-1" href="../tool/journal">抓取期刊数据</a>
+                                <a tabindex="-1" href="/import/adminUser/research/addProject" target="_blank">抓取项目数据</a>
                             </li>
                             <li>
-                                <a tabindex="-1" href="../tool/project">抓取项目数据</a>
+                                <a tabindex="-1" href="/import/tools/awsl" target="_blank">学院某年期刊论文</a>
                             </li>
                             <li>
-                                <a tabindex="-1" href="../tool/reporter">excel评价</a>
+                                <a tabindex="-1" href="/import/tools/admin" target="_blank">excel评价</a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a tabindex="-1" href="../tool/ipPoolConfig">IP池管理</a>
+                                <a tabindex="-1" href="/import/adminUser/webapp/ipPoolConfig">IP池管理</a>
                             </li>
                         </ul>
                     </li>
@@ -184,7 +184,7 @@
                         <span class="badge badge-important pull-right" th:text="${resumes.getFailed()}">83</span>
                         其他简历</a>
                 </li>
-                <li>
+                <li hidden>
                     <a href="#"><i class="icon-chevron-right"></i> 简历分析</a>
                 </li>
             </ul>

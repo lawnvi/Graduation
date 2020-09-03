@@ -407,7 +407,7 @@ public class TeacherController {
         userArticle.setRole(role);
         userArticle.setAid(article.getId());
 
-        if(userService.updateUserArticle(article, userArticle) > 0){
+        if(userService.updateUserArticle(id, article, userArticle) > 0){
             return GlobalName.success;
         }
         return GlobalName.fail;

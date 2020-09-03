@@ -44,6 +44,7 @@ function updateInfo() {
     var status = document.getElementById("status").value;
     var title = document.getElementsByName("title");
     var fund = document.getElementsByName("funds");
+    var resumePath = document.getElementById("resumePath").value;
 
     var titles = [];
     var op = 0;
@@ -76,8 +77,47 @@ function updateInfo() {
         "major":major,
         "tel":tel,
         "education":education,
-        "status":status
+        "status":status,
+        "resumePath":resumePath
     };
     url = './updateBasicInfo.do';
-    postAjax(datas, url);
+    var formData = new FormData();
+    if(document.getElementById("inputGroupFile01") !== null) {
+        formData.append("file", $("#inputGroupFile01")[0].files[0]);
+    }
+    formData.append("picture", $("#img_upload")[0].files[0]);
+    formData.append("name", name);
+    formData.append("sex", sex);
+    formData.append("funds", funds.toString());
+    formData.append("titles", titles.toString());
+    formData.append("notes", notes);
+    formData.append("birthday", birthday);
+    formData.append("contactAddress", address);
+    formData.append("major", major);
+    formData.append("tel", tel);
+    formData.append("education", education);
+    formData.append("status", status);
+    formData.append("resumePath", resumePath);
+
+    $.ajax({
+        type: 'post',
+        url: url,
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(data){//回调函数，如果请求成功，则会调用success方法
+            if(data) {
+                alert("修改成功");
+                window.location.reload();
+            }else {
+                alert("操作失败");
+            }
+        },
+        error: function(){//如果失败则会调用error方法
+            alert("未知网络错误");
+        }
+    })
+
+//    postAjax(datas, url);
 }

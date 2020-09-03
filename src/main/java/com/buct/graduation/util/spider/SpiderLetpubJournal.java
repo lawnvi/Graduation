@@ -113,6 +113,8 @@ public class SpiderLetpubJournal {
                     periodical.setTitle(title1);
                     periodical.setAbbrTitle(title2);
 
+                    System.out.println("kw:"+keyword+"\nt1:"+title1+"\nt2:"+title2+"\nissn:"+issn);
+
                     if(issn.toUpperCase().equals(keyword.toUpperCase()) || title1.equalsIgnoreCase(keyword) || title2.equalsIgnoreCase(keyword)){
                         periodical.setMatch(true);
                     }else {
@@ -140,12 +142,19 @@ public class SpiderLetpubJournal {
         return table;
     }
 
+    /**
+     * 通过url解析期刊详细数据
+     * @param url
+     * @return
+     */
     public Journal getJournalData(String url) {
         Journal journal = new Journal();
         journal.setUrl(url);
         HttpUtil util = new HttpUtil();
         //todo test
         String html = util.getHtmlWithIp(url);
+
+//        System.out.println(html);
 //        String html = util.getHtml(url);
 
         if(html == null || html.equals("")){
@@ -159,6 +168,7 @@ public class SpiderLetpubJournal {
 //        }
         for (Element element : tr) {
             String text = element.select("td:nth-child(1)").text();
+//            System.out.println("详细数据："+text);
             if(text.equals("期刊名字")){
                 journal.setName(element.select("tr:nth-child(2) > td:nth-child(2) > span:nth-child(1) > a").text());
                 journal.setAbbrTitle(element.select("tr:nth-child(2) > td:nth-child(2) > span:nth-child(1) > font").text());

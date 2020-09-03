@@ -1,7 +1,10 @@
 package com.buct.graduation.util.spider;
 
+import com.buct.graduation.util.Utils;
+
 public class SpiderConfig {
     private static String SID = "";
+    private static String sessionSID = "";
     private static int SIDTimes = 0;
     private static int maxTimes = 32;
 
@@ -12,8 +15,12 @@ public class SpiderConfig {
 
     public static synchronized void visitSIDTimes(){
         System.out.println("sidUseTimes:"+SIDTimes);
-        if(SIDTimes > maxTimes || SID.equals(""))
+        if(SIDTimes > maxTimes || SID.equals("")) {
             getNewSID();
+            if("".equals(SID)){
+                return;
+            }
+        }
         SIDTimes++;
     }
 
@@ -24,9 +31,24 @@ public class SpiderConfig {
         return SID;
     }
 
+    public static int getSIDTimes(){
+        return SIDTimes;
+    }
+
     public static void getNewSID(){
-        SIDTimes = 0;
-        SID = SpiderWOS.getSID();
+        if("".equals(getSessionSID())){
+            SIDTimes = 0;
+            SID = SpiderWOS.getSID();
+        }
+    }
+
+    private static String getSessionSID(){
+        SID = sessionSID;
+        return SID;
+    }
+
+    public static void setSessionSID(String sessionSID) {
+        SpiderConfig.sessionSID = sessionSID;
     }
 
     public static String initSID(){

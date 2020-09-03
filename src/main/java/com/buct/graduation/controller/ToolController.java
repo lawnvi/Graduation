@@ -12,6 +12,7 @@ import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.Utils;
 import com.buct.graduation.util.excel.Excel2Excel;
 import com.buct.graduation.util.spider.GetArticlesByAddress;
+import com.buct.graduation.util.spider.SpiderConfig;
 import com.buct.graduation.util.spider.SpiderLetpubJournal;
 import com.buct.graduation.util.spider.SpiderWOS;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -118,6 +119,9 @@ public class ToolController {
             return dbA;
         }
         SpiderWOS wos = new SpiderWOS();
+        if("".equals(SpiderConfig.getSID())){
+            return null;
+        }
         //todo 状态
         Article article = wos.getArticleByTitle(name);
         if (article == null) {

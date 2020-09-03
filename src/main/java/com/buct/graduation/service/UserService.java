@@ -60,7 +60,7 @@ public interface UserService {
     boolean deletePatent(int id, int uid);
 
     //仅应聘者可改更新 教师的需要申请
-    int updateUserArticle(Article article, UserArticle userArticle);
+    int updateUserArticle(int aid, Article article, UserArticle userArticle);
 
     int addUserArticle(Article article, UserArticle userArticle);
 

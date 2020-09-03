@@ -34,12 +34,13 @@ public class SpiderServiceImpl implements SpiderService {
         if(article == null || !article.getAddWay().equals(GlobalName.addWay_System) || article.getJid() == null ){
             SpiderWOS spiderWOS = new SpiderWOS();
             article = spiderWOS.getESIandtimes(a.getName());
+        }else {
+            return article;
         }
         if(article == null) {
             article = a;
             article.setAddWay(GlobalName.addWay_missing_c);
-        }
-        else {
+        } else {
             article.setSci(true);
             article.setId(a.getId());
         }

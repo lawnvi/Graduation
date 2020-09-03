@@ -93,6 +93,18 @@ public class XLSTransformerExport {
 //        map.put("score", reporter.getScore());
 //        map.put("IF", reporter.getIF());
 //        map.put("citation", reporter.getCitation());
+        for(Project project: projects){
+            project.setId(projects.indexOf(project)+1);
+        }
+        for(Patent project: patents){
+            project.setId(patents.indexOf(project)+1);
+        }
+        for(ConferencePaper project: papers){
+            project.setId(papers.indexOf(project)+1);
+        }
+        for(Article project: articles){
+            project.setId(articles.indexOf(project)+1);
+        }
 
         Map<String, List<Patent>> patentMap = new HashMap<String,List<Patent>>();
         Map<String, List<Project>> projectMap = new HashMap<String,List<Project>>();

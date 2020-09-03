@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>for developing</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+</head>
+<body>
+    <div class="content">
+        <h4 th:text="${user == null ? '登陆失败' : '欢迎登录，'+user.getName() + 'sid:'+sid+' 已使用'+sid_times+'次'}"></h4>
+        <h1 th:text="${result}"></h1>
+    </div>
+
+    <div>
+        <a class="btn-primary" target="_blank" href="../tools/admin">工具页</a>
+        <a class="btn-primary" target="_blank" href="./information">用户信息页</a>
+        <a class="btn-primary" target="_blank" href="../">各用户登录链接页</a>
+    </div>
+
+    <h1>推荐处理建立方法</h1>
+    <h3>1、工具页填写excel</h3>
+    <p>在工具页下载评价模板excel，根据简历填写信息：基本信息、专利、项目、期刊论文、会议论文<br>
+        其中，手动填写以下信息，限制可见excel表头<br>
+        专利（名称|类别：国内/国际），限制：只填写第一发明人|博士生第二导师第一<br>
+        项目(全部)，限制：只填写所主持的项目<br>
+        期刊论文(名称)，限制：第一作者、导师第一本人第二、通讯等<br>
+        会议论文(全部)，同上<br>
+
+        填完后上传进行数据爬取，没找到的以及看起来有错的，手动在wos上确认一下<br>
+        少的话直接修改，再以数据填写完整方式上传，多的话检查期刊论文名称有没有写错，再以数据不完整方式提交<br>
+
+    </p>
+
+    <h3>2、用户页</h3>
+    <p>在用户页填写上述信息，再找个岗位投递，再到后台查看简历详情，下载excel<br>
+        这个方式可以一边填写期刊论文一边检查数据爬取结果<br>
+        如果爬取失败，可删除记录后重新添加或直接修改<br>
+    </p>
+
+    <h4>PS:有不清楚的联系我就行，不一定及时回，看到了会尽快处理的</h4>
+    <hr>
+    <footer class="footer footer-bar">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="footer-link">
+                        <a href="http://www.buct.edu.cn">BUCT</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://jwgl.buct.edu.cn/">教务管理系统</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="http://tree.buct.edu.cn/">校园网</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://www.zizhu.buct.edu.cn/1221/list.htm">北化资助中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="https://w.buct.edu.cn">BUCT-VPN</a>
+                    </div>
+                    <div class="">
+                        <p class="mb-0">Copyright &copy; 2020.Company name All rights reserved.
+                            <a target="_blank" href="#">基于网络爬虫的高校学院级科研评价实践设计</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div><!--end container-->
+    </footer>
+</body>
+</html>
