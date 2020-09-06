@@ -174,8 +174,10 @@ public class SpiderWOS {
                 if (element.child(0).text().contains("出版年") || element.child(0).text().contains("Published")) {
                     year = element.child(1).text();
                     System.out.println("find year" + year);
-                }else if (element.child(0).text().equals("通讯作者地址:") || element.child(0).text().equals("Reprint Address:")) {
-                    CAuthor = element.text().substring(17, element.text().length() - 16);
+                }else if (element.text().length() > element.child(0).text().length() && (element.child(0).text().equals("通讯作者地址:") || element.child(0).text().contains("Corresponding Address:"))) {
+                    System.out.println("通讯作者:"+element.text());
+                    int len = element.child(0).text().length();
+                    CAuthor = element.text().substring(len+1, element.text().length() - len - 1);
                     System.out.println("find 通讯作者" + CAuthor);
                     break;
                 }

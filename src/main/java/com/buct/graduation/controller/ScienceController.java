@@ -180,6 +180,9 @@ public class ScienceController {
         String code = Utils.getAdmin(request).getId()+request.getParameter("code");
         HttpSession session = request.getSession();
         Article article =  (Article)session.getAttribute(code);
+        if(article == null){
+            return "论文已存在";
+        }
         session.removeAttribute(code);
         return scienceService.insertArticle(article);
     }

@@ -86,6 +86,8 @@ public class SpiderLetpubJournal {
             return table;
         }
 //        title1 = tr
+
+//        System.out.println("sfsd:"+d1);
         for (Element e : d1.getAllElements()) {
             if (e.attr("style").equals("border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;")) {
                 if (i % 12 == 0) {

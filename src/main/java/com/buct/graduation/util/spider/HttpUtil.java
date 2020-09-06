@@ -151,7 +151,7 @@ public class HttpUtil {
         IpPort ip = IpPoolUtil.getIP();
 //        ip.setPort(81);
 //        ip.setIp("101.4.136.34");
-        System.out.println("times"+ip.times+" ip"+ip.getIp()+"start visit:"+url);
+        System.out.println("times"+ip.times+" ip"+ip.getIp()+" start visit:"+url);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         // 使用代理 IP ✔
         HttpHost proxy = new HttpHost(ip.getIp(), ip.getPort());
@@ -177,6 +177,7 @@ public class HttpUtil {
             int code = response.getStatusLine().getStatusCode();
             System.out.println("result code:" + code + "  visit:"+url);
             if(code != 200){
+                ip.setStatus(GlobalName.IP_OFFLINE);
                 return getHtmlWithIp(url);
             }
             result = EntityUtils.toString(entry);

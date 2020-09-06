@@ -62,6 +62,7 @@ public class ApiController {
     @RequestMapping("/revive")
     @ResponseBody
     public String revive(){
+        System.out.println("revive");
         int op = 0;
         for(int i = 0; i < 10; i++) {
             op += IpPoolUtil.reviveIps(10);

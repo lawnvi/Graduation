@@ -409,7 +409,7 @@ public class GetArticlesByAddress {
                         cell.setCellValue(aArticle.getJournalIssn());
                         break;
                     case 2 :
-                        cell.setCellValue(aArticle.getJournal().getTop());
+                        cell.setCellValue(aArticle.getJournal().getIs_top());
                         break;
                     case 3 :
                         cell.setCellValue(aArticle.getJournal().getIF());

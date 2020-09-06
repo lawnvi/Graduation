@@ -9,7 +9,7 @@ public class Journal {
     private String name;//期刊名称
     private String AbbrTitle;//简称
     private String ISSN;//唯一码？
-    private Boolean isTop;//是否TOP
+    private Boolean isTop = false;//是否TOP
     private String is_top = "否";
     private Float IF;//影响因子
     private Integer year;//数据年份
