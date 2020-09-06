@@ -71,7 +71,6 @@ public class IpPoolUtil {
     }
 
     public static void releaseIP(IpPort ipPort){
-        ipPort.setStatus("free");
         ipPoolUtil.ipService.updateIp(ipPort);
     }
 
