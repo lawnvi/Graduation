@@ -32,6 +32,6 @@ public interface IpMapper {
     @Delete("delete from ippool where id = #{id}")
     void deleteIP(IpPort ip);
 
-    @Select("SELECT * FROM `ippool` WHERE status = #{status} AND useTimes = (SELECT MIN(useTimes) FROM ippool WHERE status = #{status}) limit 0, 1")
+    @Select("SELECT * FROM `ippool` WHERE status = #{status} order by useTimes asc limit 0, 1")
     IpPort findIPByStatus(String status);
 }
