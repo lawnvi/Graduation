@@ -126,6 +126,10 @@ public class Article {
     }
 
     public Journal getJournal() {
+        if(journal == null){
+            System.out.println("no journal "+ journalIssn);
+            return new Journal();
+        }
         return journal;
     }
 

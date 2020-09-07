@@ -6,10 +6,14 @@ import com.buct.graduation.service.IpService;
 import com.buct.graduation.util.GlobalName;
 import com.buct.graduation.util.ThreadPoolUtil;
 import com.buct.graduation.util.spider.SpiderXiciIp;
+import com.buct.graduation.util.spider.ip.IPNet;
+import com.buct.graduation.util.spider.ip.IPNetDieNiao;
+import com.buct.graduation.util.spider.ip.IPNetNima;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -19,7 +23,15 @@ public class IpServiceImpl implements IpService {
 
     @Override
     public int addIp(IpPort ip) {
-        return ipMapper.addIP(ip);
+        IpPort p = ipMapper.findIPByIp(ip);
+        if(p == null)
+            return ipMapper.addIP(ip);
+        if(ip.getStatus().equals(GlobalName.IP_OFFLINE)){
+            ip.setUseTimes(ip.getUseTimes());
+            ip.setId(ip.getId());
+            return ipMapper.update(ip);
+        }
+        return -1;
     }
 
     @Override
@@ -71,20 +83,19 @@ public class IpServiceImpl implements IpService {
     }
 
     @Override
-    public synchronized int addIPs(int s, int e) {
+    public int addIPs(int s, int e) {
         SpiderXiciIp xiciIp = new SpiderXiciIp();
-        Set<IpPort> set = xiciIp.findUsefulIp(s, e);
+        Set<IpPort> set = new HashSet<>();
+//        Set<IpPort> s2 = new IPNetDieNiao().MopUp();
+        Set<IpPort> s3 = new IPNetNima("http").MopUp();
+//        Set<IpPort> s4 = new IPNetNima("https").MopUp();
+//        Set<IpPort> s5 = new IPNetNima("gaoni").MopUp();
+//        set.addAll(s2);
+        set.addAll(s3);
+//        set.addAll(s4);
+//        set.addAll(s5);
         for(IpPort ip: set){
-            IpPort ipPort = ipMapper.findIPsByIp(ip.getIp());
-            if(ipPort == null) {
-                ipMapper.addIP(ip);
-            }else {
-                if(ipPort.getStatus().equals(GlobalName.IP_OFFLINE)){
-                    ip.setUseTimes(ipPort.getUseTimes());
-                    ip.setId(ipPort.getId());
-                    ipMapper.update(ip);
-                }
-            }
+            addIp(ip);
         }
         return set.size();
     }

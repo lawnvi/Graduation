@@ -74,6 +74,9 @@ public class SpiderLetpubJournal {
         if(html == null || html.equals(""))
             return null;
         Document d1 = Jsoup.parse(html);// 转换为Dom树
+
+        System.out.println("sfsd:"+d1);
+
 //        List<Element> et = d1.select("#border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;");
         int i = 0;
         String issn = "";
@@ -85,9 +88,7 @@ public class SpiderLetpubJournal {
             System.out.println("no match");
             return table;
         }
-//        title1 = tr
 
-//        System.out.println("sfsd:"+d1);
         for (Element e : d1.getAllElements()) {
             if (e.attr("style").equals("border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;")) {
                 if (i % 12 == 0) {

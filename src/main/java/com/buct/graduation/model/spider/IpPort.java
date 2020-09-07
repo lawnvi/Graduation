@@ -43,7 +43,7 @@ public class IpPort {
             // 连接超时时间（默认10秒 10000ms） 单位毫秒（ms）
             int connectionTimeout = 2000;
             // 读取数据超时时间（默认30秒 30000ms） 单位毫秒（ms）
-            int soTimeout = 2000;
+            int soTimeout = 5000;
             httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(connectionTimeout);
             httpClient.getHttpConnectionManager().getParams().setSoTimeout(soTimeout);
             HttpMethod method = new GetMethod(reqUrl);

@@ -14,6 +14,9 @@ public interface IpMapper {
     @Select("select * from ippool where ip = #{ip}")
     IpPort findIPsByIp(String ip);
 
+    @Select("select * from ippool where ip = #{ip} and port = #{port}")
+    IpPort findIPByIp(IpPort ip);
+
     @Select("select * from ippool where status = #{status}")
     Set<IpPort> findIPsByStatus(String status);
 

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.net.*;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.*;
 
 /**
  * ip池
@@ -80,6 +83,12 @@ public class IpPoolUtil {
 
     public static synchronized int addIps(int s, int e){
         int op = ipPoolUtil.ipService.addIPs(s, e);
+        System.out.println("发现"+op+"个可用ip");
+        return op;
+    }
+
+    public static int addIp(IpPort ip){
+        int op = ipPoolUtil.ipService.addIp(ip);
         System.out.println("发现"+op+"个可用ip");
         return op;
     }
@@ -199,6 +208,62 @@ public class IpPoolUtil {
 //        ipList.clear();
         System.out.println("ip pool close");
         return ipList;
+    }
+
+    /**
+     * 监测ip有效性
+     * @param ips
+     * @return
+     */
+    public static HashSet<IpPort> checkIPs(Set<IpPort> ips) {
+        ExecutorService cachedThreadPool = new ThreadPoolExecutor(0, 32,    //核心大小=0，最大数量不限，存活时间为60s（若长时间没有任务则该线程池为空）,使用SynchronousQueue作为workeQueue
+                60L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
+        Set<IpPort> usefulIP = Collections.synchronizedSet(new HashSet<>());
+        for(IpPort ip: ips){
+            cachedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    if(ip.isWork()) {
+                        addIp(ip);
+                        usefulIP.add(ip);
+                    }
+                }
+            });
+        }
+        cachedThreadPool.shutdown();
+        try {
+            while (!cachedThreadPool.awaitTermination(2, TimeUnit.SECONDS)) {
+                System.out.println("线程池没有关闭"+usefulIP.size());
+                System.out.println("isTerminated:" + cachedThreadPool.isTerminated());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("检查完成, 发现可用IP"+usefulIP.size()+"个");
+        return new HashSet<IpPort>(usefulIP);
+    }
+
+    /**
+     * 网站可能对字符做了处理
+     * @param port
+     * @return
+     */
+    public static int decodePort(String port){
+        if("".equals(port)){
+            return -1;
+        }
+        boolean isNumber = false;
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < port.length(); i++){
+            if(port.charAt(i) >= '0' && port.charAt(i) <= '9'){
+                isNumber = true;
+                builder.append(port.charAt(i));
+            }else if (isNumber){
+                break;
+            }
+        }
+        return Integer.parseInt(builder.toString());
     }
 
     /**

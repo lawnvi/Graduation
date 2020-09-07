@@ -43,7 +43,8 @@ public class ApiController {
     @ResponseBody
     public void add(){
         long tempTime = System.currentTimeMillis();
-        for(int i = 1; i < 200; i += 100) {
+        IpPoolUtil.addIps(0, 1);
+        /*for(int i = 1; i < 200; i += 100) {
             int finalI = i;
             ThreadPoolUtil.getThreadPool().submit(new Runnable() {
                 @Override
@@ -56,7 +57,7 @@ public class ApiController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @RequestMapping("/revive")

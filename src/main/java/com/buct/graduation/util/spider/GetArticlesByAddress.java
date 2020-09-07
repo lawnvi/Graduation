@@ -323,6 +323,7 @@ public class GetArticlesByAddress {
             SpiderWOS wos = new SpiderWOS();
             Article article = wos.getArticle(url);
             SpiderAPI api = new SpiderAPI();
+            //todo biubiubiu search by database, if null use spider
             SpiderLetpubJournal letpub = new SpiderLetpubJournal();
             article.setJournal(letpub.getJournal(article.getJournalIssn()));
             /*PeriodicalTable table = letpub.getPeriodicals(Journal);
