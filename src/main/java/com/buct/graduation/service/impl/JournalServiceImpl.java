@@ -6,6 +6,8 @@ import com.buct.graduation.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JournalServiceImpl implements JournalService {
     @Autowired
@@ -14,5 +16,20 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public Journal findJournalByName(String journal) {
         return journalMapper.findByKeyword(journal);
+    }
+
+    @Override
+    public List<Journal> getAllJournals() {
+        return journalMapper.findAll();
+    }
+
+    @Override
+    public List<Journal> getAllOldJournals(String date) {
+        return journalMapper.findAllOld(date);
+    }
+
+    @Override
+    public int updateJournal(Journal journal) {
+        return journalMapper.update(journal);
     }
 }

@@ -16,6 +16,7 @@ public class Journal {
     private String section = "JCR-";//jcr分区1/2/3/4
     private String url = "";//letPub网址
     private String notes="";//备注
+    private String updateDate;//更新时间
 
     public Journal() {
         this.name = "404";
@@ -27,6 +28,14 @@ public class Journal {
         this.section = "未知";
         this.url = "not find";
         this.notes = "404";
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 
     public String getIs_top() {

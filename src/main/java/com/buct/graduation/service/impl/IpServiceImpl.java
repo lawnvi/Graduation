@@ -86,12 +86,13 @@ public class IpServiceImpl implements IpService {
     public int addIPs(int s, int e) {
         SpiderXiciIp xiciIp = new SpiderXiciIp();
         Set<IpPort> set = new HashSet<>();
+        set.addAll(xiciIp.findUsefulIp(21, 30));
 //        Set<IpPort> s2 = new IPNetDieNiao().MopUp();
-        Set<IpPort> s3 = new IPNetNima("http").MopUp();
+//        Set<IpPort> s3 = new IPNetNima("http").MopUp();
 //        Set<IpPort> s4 = new IPNetNima("https").MopUp();
 //        Set<IpPort> s5 = new IPNetNima("gaoni").MopUp();
 //        set.addAll(s2);
-        set.addAll(s3);
+//        set.addAll(s3);
 //        set.addAll(s4);
 //        set.addAll(s5);
         for(IpPort ip: set){

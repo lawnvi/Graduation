@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class SpiderServiceImpl implements SpiderService {
@@ -82,6 +83,13 @@ public class SpiderServiceImpl implements SpiderService {
         Journal journal = journalMapper.findByKeyword(keyword);
         if(journal != null){
             return journal;
+        }
+        try {
+            Random random = new Random();
+            int awsl = random.nextInt(5);
+            Thread.sleep(1000*(awsl + 5));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         SpiderLetpubJournal letpub = new SpiderLetpubJournal();
         journal = letpub.getJournal(keyword);

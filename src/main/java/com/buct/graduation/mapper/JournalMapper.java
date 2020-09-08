@@ -18,10 +18,14 @@ public interface JournalMapper {
     @Results({@Result(column="impact_factor", property="IF")})
     List<Journal> findAll();
 
+    @Select("select * from journal where updateDate < #{date}")
+    @Results({@Result(column="impact_factor", property="IF")})
+    List<Journal> findAllOld(String date);
+
     @Select("select * from journal where issn = #{kw} or AbbrTitle=#{kw} or name=#{kw}")
     @Results({@Result(column="impact_factor", property="IF")})
     Journal findByKeyword(String kw);
 
-    @Update("update journal set name=#{name}, AbbrTitle=#{AbbrTitle}, issn=#{ISSN}, impact_factor=#{IF}, year=#{year}, section=#{section}, url=#{url}, notes=#{notes} where id=#{id}")
+    @Update("update journal set name=#{name}, AbbrTitle=#{AbbrTitle}, issn=#{ISSN}, impact_factor=#{IF}, year=#{year}, section=#{section}, url=#{url}, notes=#{notes}, updateDate=#{updateDate} where id=#{id}")
     int update(Journal journal);
 }

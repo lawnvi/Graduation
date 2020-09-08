@@ -193,9 +193,16 @@ public class SpiderLetpubProject {
     }
 
     public List<ProjectData> searchProjects(String url){
+        try {
+            Random random = new Random();
+            int awsl = random.nextInt(5);
+            Thread.sleep(1000*(awsl + 5));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         url = url + "&startTime="+startYear+"&endTime="+endYear;
         HttpUtil util = new HttpUtil();
-        String html_list_projects =  util.getHtmlWithIp(url);
+        String html_list_projects =  util.getHtml(url);
 //        String html_list_projects =  util.getHtml(url);
         if(html_list_projects == null || "".equals(html_list_projects)) {
             System.out.println("get html failed");

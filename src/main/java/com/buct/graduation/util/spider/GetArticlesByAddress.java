@@ -93,7 +93,10 @@ public class GetArticlesByAddress {
         title.add("isESI");
         title.add("url");
         title.add("year");
-        title.add("分区");
+        title.add("月份");
+        title.add("卷号");
+        title.add("期号");
+        title.add("起止页码");
         title.add("备注");
 
         journal10.add("SCIENCE ROBOTICS");
@@ -111,7 +114,7 @@ public class GetArticlesByAddress {
     //todo add threadPool & listPool 待定
     public List<Article> getArticles(String keyword, int year){
         this.keyword = keyword;
-        ops=0;
+        ops = 0;
         List<Article> articles = new ArrayList<>();
         String SID = SpiderConfig.getSID();
         HttpUtil httpUtil = new HttpUtil();
@@ -324,8 +327,8 @@ public class GetArticlesByAddress {
             Article article = wos.getArticle(url);
             SpiderAPI api = new SpiderAPI();
             //todo biubiubiu search by database, if null use spider
-            SpiderLetpubJournal letpub = new SpiderLetpubJournal();
-            article.setJournal(letpub.getJournal(article.getJournalIssn()));
+//            SpiderLetpubJournal letpub = new SpiderLetpubJournal();
+//            article.setJournal(letpub.getJournal(article.getJournalIssn()));
             /*PeriodicalTable table = letpub.getPeriodicals(Journal);
             if(table.getNumber() == 0){
                 System.out.println("not find journal "+ article.getName()+"\n论文"+article.getJournal().getName());
@@ -410,7 +413,7 @@ public class GetArticlesByAddress {
                         cell.setCellValue(aArticle.getJournalIssn());
                         break;
                     case 2 :
-                        cell.setCellValue(aArticle.getJournal().getIs_top());
+                        cell.setCellValue(aArticle.getJournal().getTop());
                         break;
                     case 3 :
                         cell.setCellValue(aArticle.getJournal().getIF());
@@ -431,12 +434,32 @@ public class GetArticlesByAddress {
                         cell.setCellValue(aArticle.getUrl());
                         break;
                     case 9 :
-                        cell.setCellValue(aArticle.getYear());
+                        String year = "";
+                        if(aArticle.getYear().length() >= 4) {
+                            year = aArticle.getYear().substring(0, 4);
+                        }
+                        cell.setCellValue(year);
                         break;
                     case 10 :
-                        cell.setCellValue(aArticle.getJournal().getSection());
+                        String mon = "";
+                        if(aArticle.getYear().length() > 4) {
+                            mon = aArticle.getYear().substring(5, 7);
+                        }
+                        cell.setCellValue(mon);
                         break;
                     case 11 :
+                        cell.setCellValue(aArticle.getVolume());
+                        break;
+                    case 12 :
+                        cell.setCellValue(aArticle.getIssue());
+                        break;
+                    case 13 :
+                        cell.setCellValue(aArticle.getPage());
+                        break;
+                    case 14 :
+                        cell.setCellValue(aArticle.getJournal().getSection());
+                        break;
+                    case 15 :
                         cell.setCellValue(aArticle.getNotes()+aArticle.getJournal().getNotes());
                         break;
                     default:

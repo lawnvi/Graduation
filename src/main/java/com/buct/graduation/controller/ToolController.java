@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -216,7 +217,9 @@ public class ToolController {
         GetArticlesByAddress op = new GetArticlesByAddress();
         try {
             list.addAll(op.getArticles(keyword, year));
-
+            for(Article a: list){
+                a.setJournal(spiderService.getJournal(a.getJournalIssn()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,5 +237,34 @@ public class ToolController {
             e.printStackTrace();
         }
 //        return "/admin/showArticle";
+    }
+
+    @RequestMapping("/awsl2")
+    @ResponseBody
+    public String refreshJournal(HttpServletRequest request){
+        List<Journal> journals = journalService.getAllOldJournals("2020-09-07");
+        SpiderLetpubJournal letpub = new SpiderLetpubJournal();
+        int op = 0;
+        for(Journal j: journals){
+            if("not-JCR".equals(j.getSection())){
+                continue;
+            }
+            Journal jn = letpub.getJournal(j.getISSN());
+            if(jn != null && !"404".equals(jn.getName())) {
+                jn.setId(j.getId());
+                jn.setUpdateDate(Utils.getDate().toDate());
+                journalService.updateJournal(jn);
+                op++;
+                System.out.println("find journal "+ journals.indexOf(j) +" success:"+j.getISSN());
+            }else {
+                System.out.println("find journal "+ journals.indexOf(j) +" error:"+j.getISSN());
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return "update success "+op;
     }
 }

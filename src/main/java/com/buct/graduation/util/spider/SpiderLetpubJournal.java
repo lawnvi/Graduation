@@ -57,9 +57,10 @@ public class SpiderLetpubJournal {
         }
         String url2 = urlSearchISSN + keyword;
         String url1 = urlSearch + kw;
-        table = searchPeriodical(url1, keyword);
-        if((table == null || table.getList().size() == 0) && keyword.length() == 9 && keyword.charAt(4) == '-'){
+        if(table.getList().size() == 0 && keyword.length() == 9 && keyword.charAt(4) == '-'&& !keyword.contains(" ")){
             table = searchPeriodical(url2, keyword);
+        }else {
+            table = searchPeriodical(url1, keyword);
         }
         return table;
     }
@@ -68,14 +69,16 @@ public class SpiderLetpubJournal {
         PeriodicalTable table = new PeriodicalTable();
         HttpUtil util = new HttpUtil();
         //todo 测试
-        String html = util.getHtmlWithIp(u);
+//        String html = util.getHtmlWithIp(u);
 
-//        String html = util.getHtml(u);
-        if(html == null || html.equals(""))
+        String html = util.getHtml(u);
+        if(html == null || html.equals("")) {
+            System.out.println("no match null");
             return null;
+        }
         Document d1 = Jsoup.parse(html);// 转换为Dom树
 
-        System.out.println("sfsd:"+d1);
+//        System.out.println("sfsd:"+d1);
 
 //        List<Element> et = d1.select("#border:1px #DDD solid; border-collapse:collapse; text-align:left; padding:8px 8px 8px 8px;");
         int i = 0;
@@ -155,10 +158,10 @@ public class SpiderLetpubJournal {
         journal.setUrl(url);
         HttpUtil util = new HttpUtil();
         //todo test
-        String html = util.getHtmlWithIp(url);
+//        String html = util.getHtmlWithIp(url);
 
 //        System.out.println(html);
-//        String html = util.getHtml(url);
+        String html = util.getHtml(url);
 
         if(html == null || html.equals("")){
             System.out.println("get joural data failing "+url);
