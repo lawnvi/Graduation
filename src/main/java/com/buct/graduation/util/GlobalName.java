@@ -53,8 +53,8 @@ public class GlobalName {
      */
     //todo change path & db_psw
     //文件存储路径(ABSOLUTEPATH)
-    public static final String ABSOLUTE_ROOT_PATH = "D:\\schoolHelper\\mybuffer\\import\\";
-//    public static final String ABSOLUTE_ROOT_PATH = "/usr/local/programs/myBuffer/import/";
+//    public static final String ABSOLUTE_ROOT_PATH = "D:\\schoolHelper\\mybuffer\\import\\";
+    public static final String ABSOLUTE_ROOT_PATH = "/home/lcp/files/myBuffer/import/";
 
     public static final String MAPPING_PATH = "upload/";
     public static final String ABSOLUTE_PATH = ABSOLUTE_ROOT_PATH+MAPPING_PATH;
